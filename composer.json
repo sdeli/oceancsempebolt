@@ -1,0 +1,33 @@
+{
+    "name": "sandordeli/wp-local-env",
+    "authors": [
+        {
+            "name": "Sandor Deli",
+            "email": "bgfkszmsdeli@gmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type":"composer",
+            "url":"https://wpackagist.org"
+        }
+    ],
+    "require": {
+      "johnpbloch/wordpress": "^5.8",
+      "monolog/monolog": "^2.0"
+    },
+    "scripts": {
+        "up": "docker-compose up",
+        "down": "docker-compose down",
+        "restart": "docker-compose restart",
+        "ls": "docker container ls -a",
+        "replace": "./scripts/replace-domain.sh",
+        "purge": "docker container rm -f $(docker container ls -aq)"
+    },
+    "config": { 
+        "vendor-dir": "wp/wp-content/vendor" 
+    },
+    "autoload": {
+        "psr-4": {"Libs\\": "wp/wp-content/Libs"}
+    }
+}

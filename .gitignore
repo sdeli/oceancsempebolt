@@ -1,0 +1,11 @@
+wp/*
+!wp/wp-content
+wp/wp-content/*
+!wp/wp-content/themes
+wp/wp-content/themes/*
+!wp/wp-content/themes/flatsome-child
+.DS_Store
+mysql/*
+!mysql/.gitkeep
+!assets
+assets/*
