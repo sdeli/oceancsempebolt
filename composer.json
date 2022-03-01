@@ -13,8 +13,7 @@
         }
     ],
     "require": {
-      "johnpbloch/wordpress": "^5.8",
-      "monolog/monolog": "^2.0"
+      "leeoniya/dump-r": "^2.1"
     },
     "scripts": {
         "up": "docker-compose up",
@@ -25,7 +24,7 @@
         "purge": "docker container rm -f $(docker container ls -aq)"
     },
     "config": { 
-        "vendor-dir": "wp/wp-content/vendor" 
+        "vendor-dir": "wp/wp-content/themes/flatsome-child/vendor" 
     },
     "autoload": {
         "psr-4": {"Libs\\": "wp/wp-content/Libs"}
