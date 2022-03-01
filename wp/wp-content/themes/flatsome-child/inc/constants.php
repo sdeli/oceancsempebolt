@@ -44,3 +44,7 @@ const TEL_NUMBERS = [
   ["06 30 397 4150", "06-30-397-4150", "Szabó István"],
   ["06 70 601 4600", "06-70-601-4600", "Illés László"]
 ];
+
+const PDF_CATALOGS_BY_PRODUCT_CATEGORIES = [
+  'rock-ceramic' => [ 'term_id' => 4116, 'url' => "/rock-ceramic-katalogus/", 'name' => 'rock ceramic']
+];

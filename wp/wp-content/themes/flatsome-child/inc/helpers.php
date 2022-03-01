@@ -115,3 +115,20 @@ function get_payment_and_shipment_notes() {
 
   return $notes;
 }
+
+function get_catalog_for_category($category) {
+  $slug = $category->slug;
+  $hasCatalogUrl = isset(PDF_CATALOGS_BY_PRODUCT_CATEGORIES[$slug]);
+  if ($hasCatalogUrl) {
+    return PDF_CATALOGS_BY_PRODUCT_CATEGORIES[$slug];
+  }
+  
+  $categs_term_id = $category->term_id;
+  $parent_category_ids = get_ancestors($categs_term_id, 'product_cat');
+  foreach(PDF_CATALOGS_BY_PRODUCT_CATEGORIES as $categ_slug => $catalog_data) { 
+    $parent_categ_with_catalog_found = in_array($catalog_data['term_id'], $parent_category_ids);
+    if ($parent_categ_with_catalog_found) return $catalog_data;
+  }
+
+  return false;
+}

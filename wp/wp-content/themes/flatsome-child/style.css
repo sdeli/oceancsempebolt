@@ -7,6 +7,14 @@ Version: 3.0
 */
 
 /*************** ADD CUSTOM CSS HERE.   ***************/
+.color-alert-yellow {
+  color: #ffbd3d;
+}
+
+.text-shadow-sharp {
+  text-shadow: 1px 1px 1px #bab7b7
+}
+
 .nav>li {
   margin: unset;
   padding: 0 7px;
@@ -200,6 +208,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Pagination */
+#main .next.page-number .icon-angle-right,
+#main .prev.page-number .icon-angle-left {
+  padding: 4px;
+}
+
 #main a.page-number,
 #main .page-number.dots {
   border-color: #567ca1;
@@ -1289,7 +1302,12 @@ animation: lineLoader 1.3s ease-in-out infinite;
   padding-top: 4px;
   padding-bottom: 3px;
 }
-/* margin-bottom: 4px; */
+
+.catalog-legend {
+  font-weight: 600;
+  text-shadow: 1px 1px 1px #dddddd;
+  text-transform: capitalize;
+}
 
 @media only screen and (min-width: 850px) {
   .sidebar-filter.--col-md-display-none,

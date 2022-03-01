@@ -1000,6 +1000,9 @@
 				if ($cat->slug === "pastel") {
           $smartSliderId = 301;
 				}
+        if ($cat->slug === "esenzia") {
+          $smartSliderId = 302;
+				}
         ?>
       <div class="row">
         <div class="col design-col">
@@ -1040,8 +1043,10 @@
           </div>
 
           <?php
-            if ($cat->slug === "rock-ceramic") {
-              echo '<a href="/rock-ceramic-katalogus/" target="_blank"><strong style="display: inline;">ITT MEGTEKINTHETI A TELJES KATALÓGUST:</strong> click</a>';
+            $catalog = get_catalog_for_category($cat);
+            if ($catalog) {
+              $catalog_name = strtoupper($catalog['name']);
+              echo "<a href=\"${catalog['url']}\" target=\"_blank\" class=\"catalog-legend\">ITT MEGTEKINTHETI A TELJES <span class=\"color-alert-yellow text-shadow-sharp\">${catalog_name}</span> KATALÓGUST: <span class=\"color-alert-yellow text-shadow-sharp\">CLICK</span></a>";
             }
           ?>
         </div>
@@ -1133,3 +1138,4 @@
 		?>
 		</div>
 </div>
+<!--  -->
