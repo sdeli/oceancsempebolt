@@ -1046,9 +1046,10 @@
             $catalog = get_catalog_for_category($cat);
             if ($catalog) {
               $catalog_name = strtoupper($catalog['name']);
-              echo "<a href=\"${catalog['url']}\" target=\"_blank\" class=\"catalog-legend\">ITT MEGTEKINTHETI A TELJES <span class=\"color-alert-yellow text-shadow-sharp\">${catalog_name}</span> KATALÓGUST: <span class=\"color-alert-yellow text-shadow-sharp\">CLICK</span></a>";
-            }
           ?>
+          
+            <a href="<? $catalog['url'] ?>" target="_blank" class="catalog-legend">ITT MEGTEKINTHETI A TELJES <span class="color-alert-yellow text-shadow-sharp"><? $catalog_name ?></span> KATALÓGUST: <span class="color-alert-yellow text-shadow-sharp">CLICK</span></a>
+          <?php } ?>
         </div>
       </div>
       
