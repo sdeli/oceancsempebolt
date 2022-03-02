@@ -1,6 +1,9 @@
 <?php
-require_once(get_theme_file_path('/vendor/autoload.php'));
+
 require_once(get_theme_file_path('/inc/constants.php'));
+if (wp_get_environment_type() === ENVIRONMENT_TYPE_LOCAL) {
+  require_once(get_theme_file_path('/vendor/autoload.php'));
+}
 require_once(get_theme_file_path('/inc/classes.php'));
 require_once(get_theme_file_path('/inc/elements.php'));
 require_once(get_theme_file_path('/inc/helpers.php'));
@@ -59,14 +62,10 @@ function flatsome_email_instructions( $order, $sent_to_admin ) {
   }
 }
 
-add_action( 'woocommerce_email_before_order_table', 'flatsome_email_instructions', 9, 3 );
+add_action( 'woocommerce_email_before_order_table', 'flatsome_email_instructions', 9, 3 ); 
 
-function action_woocommerce_before_single_product( $wc_print_notices, $int ) { 
-  // make action magic happen here... 
-  // echo 'sannya1212';
-}; 
-       
-// // add the action 
-// add_action( 'woocommerce_before_single_product', 'action_woocommerce_before_single_product', 10, 2 ); 
+function disable_wc_terms_toggle() { 
+  remove_action( "woocommerce_checkout_terms_and_conditions", "wc_terms_and_conditions_page_content", 30 ); 
+}
 
-function disable_wc_terms_toggle() { remove_action( "woocommerce_checkout_terms_and_conditions", "wc_terms_and_conditions_page_content", 30 ); } add_action( "wp", "disable_wc_terms_toggle" );
+add_action( "wp", "disable_wc_terms_toggle" );

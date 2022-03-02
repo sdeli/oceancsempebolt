@@ -214,7 +214,6 @@ global $flatsome_opt;
     if (isShopOrCategPage()) {
       revealDesignSliderPlaceholder()
       swapDesignPlaceholderToSlider()
-      hidePlaceholderCategories();
       addToCartBtnsOnClick();
       addNamesToBeRocketColorIcons();
       parallaxShopHeader();
@@ -351,11 +350,6 @@ global $flatsome_opt;
     + "</li>";
   }
 
-  function hidePlaceholderCategories() {
-    PLACEHOLDER_CATEGORY_SELECTOR.forEach((placeHolderCategClass) => {
-      document.querySelector(placeHolderCategClass).style.display = 'none';
-    })
-  }
 
   function filterItemsOnClick() {
     const allFilterItems = Array.from(document.querySelectorAll('.filter-form li label'));

@@ -1046,13 +1046,18 @@
           </div>
 
           <?php
-            $catalog = get_catalog_for_category($cat);
-            if ($catalog) {
-              $catalog_name = strtoupper($catalog['name']);
+            $is_category_page = !is_shop();
+            if ($is_category_page) {
+              $catalog = get_catalog_for_category($cat);
+              if ($catalog) {
+                $catalog_name = strtoupper($catalog['name']);
           ?>
           
-            <a href="<? $catalog['url'] ?>" target="_blank" class="catalog-legend">ITT MEGTEKINTHETI A TELJES <span class="color-alert-yellow text-shadow-sharp"><? $catalog_name ?></span> KATALÓGUST: <span class="color-alert-yellow text-shadow-sharp">CLICK</span></a>
-          <?php } ?>
+            <a href="<?= $catalog['url'] ?>" target="_blank" class="catalog-legend">ITT MEGTEKINTHETI A TELJES <span class="color-alert-yellow text-shadow-sharp"><?= $catalog_name ?></span> KATALÓGUST: <span class="color-alert-yellow text-shadow-sharp">CLICK</span></a>
+          <?php 
+              } 
+            } 
+          ?>
         </div>
       </div>
       
