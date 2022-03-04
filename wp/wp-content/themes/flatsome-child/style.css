@@ -1341,14 +1341,29 @@ animation: lineLoader 1.3s ease-in-out infinite;
 
 }
 
+.slider-pointer-icon {
+  background-image: url("/wp-content/uploads/2021/11/pointer-outline-white.png");
+  height: 24px;
+  width: 24px;
+  vertical-align: inherit;
+  display: inline-block;
+  background-size: cover;
+  margin-bottom: -5px;
+}
+
+@media only screen and (max-width: 350px) {
+  .slider-title a.n2-ow {
+    font-size: 20px !important;
+  }
+}
+
 @media only screen and (min-width: 550px) {
   .identity-header__background {
     background-image: url('/wp-content/uploads/2021/10/WHITE-LUXOR-BUMPY-MAINZU.jpg');
   }
   .slider-pointer-icon {
-    height: 35px;
-    width: 35px;
-    vertical-align: inherit;
+    height: 32px;
+    width: 32px;
   }
 }
 
