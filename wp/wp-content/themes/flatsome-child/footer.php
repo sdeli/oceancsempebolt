@@ -89,7 +89,7 @@ global $flatsome_opt;
   const GOOGLE_MAPS_CONATINER_SELECTOR = '.lazy-load-google-maps-until-user-interaction';
   const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = `.ocean-promo-video-container`;
   const TABBER_CONTAINER_SELECTOR = ".tabber-container";
-  const SLIDER_TITLE_LINK_SELECTOR = 'a.n2-ow';
+  const SLIDER_TITLE_LINK_SELECTOR = '.slider-title a.n2-ow';
   const SMART_SLIDER_SELECTOR = '[data-ssid]';
   const SMART_SLIDER_ARROWS_SELECTOR = '.nextend-arrow';
   const POINTER_ICON_CLASS_NAME = 'icon-pointer';
@@ -182,10 +182,6 @@ global $flatsome_opt;
     sidebarFilterLinksOnClick();
     jQuery(PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR).click(() => clickDesktopHamburgerToOpenSidebar());
     setTimeout(() => {slideUpAndDownMobileMenuBar()}, 0)
-    // if (window.location.href.includes('/zuhanykabinok/')) {
-    //   revealDesignSliderPlaceholder()
-    //   swapDesignPlaceholderToSlider()
-    // }
 
     const isHomePage = document.querySelector('.home');
     if (isHomePage) {
@@ -253,9 +249,6 @@ global $flatsome_opt;
         swapBoxAndSquarMetersPrice();
       }; 
     }
-
-    const hasSmartSliderOnPage = !!document.querySelector(SMART_SLIDER_SELECTOR);
-    if (hasSmartSliderOnPage) addPointerIconToSliderTitle();
 
     const bigPhoneCallIcons = document.querySelectorAll(BIG_PHONE_CALL_ICON_SELECTOR);
     const hasPhoneCallIconsOnPage = !!bigPhoneCallIcons.length;
@@ -820,7 +813,7 @@ global $flatsome_opt;
           console.log('isSliderLoadedInterval2');
           // console.log(SMART_SLIDER_ARROWS_SELECTOR)
           // console.log(jQuery(SMART_SLIDER_ARROWS_SELECTOR));
-          const isSliderLoaded = jQuery(SMART_SLIDER_ARROWS_SELECTOR).length;
+          const isSliderLoaded = jQuery(SLIDER_TITLE_LINK_SELECTOR).length;
           if (isSliderLoaded) {
             console.log('loaded');
             clearInterval(isSliderLoadedInterval);
@@ -846,10 +839,13 @@ global $flatsome_opt;
       isSliderSet = true;
       const designSlider = loadSlider();
       await checkIfisLiderLoaded();
+      console.log('load slider');
       gtmSliderEventTriggerSetup();
       const designSliderPlaceholder = jQuery(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
+      console.log('placeholder');
       designSlider.css({"z-index": 2});
       designSlider.fadeIn(2000, function() {
+        console.log('fade');
         setSliderContainerHeight(designSlider)
         addPointerIconToSliderTitle();
       });
@@ -892,14 +888,17 @@ global $flatsome_opt;
     }, SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT);
   }
 
-  function addPointerIconToSliderTitle() {    
+  function addPointerIconToSliderTitle() {  
+    console.log('addPointerIconToSliderTitle');  
     const addPointerIntoSliderTitleInterval = setInterval(function() {
       const sliderTitleLink = jQuery(SLIDER_TITLE_LINK_SELECTOR);
       if (!sliderTitleLink.length) return; 
       clearInterval(addPointerIntoSliderTitleInterval);
-      const poitnerIcon = jQuery(POINTER_ICON_HTML);
-      sliderTitleLink.append(poitnerIcon);
-    }, 400);
+      const pointerIcon = jQuery(POINTER_ICON_HTML);
+      pointerIcon.hide();
+      sliderTitleLink.append(pointerIcon);
+      pointerIcon.fadeIn(1000);
+    }, 200);
   }
 
   function revealDesignSliderPlaceholder() {

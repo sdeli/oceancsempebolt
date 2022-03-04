@@ -1043,10 +1043,10 @@
           <?php } ?>
           <div class="not-fake-slider"></div>
           <div class="fake-slider" style="display: none;">
-          <?php 
-            $smartSliderHtmlAsString = htmlspecialchars(do_shortcode("[smartslider3 slider=\"$smartSliderId\"]"));
-            echo $smartSliderHtmlAsString;
-          ?>
+            <?php 
+              $smartSliderHtmlAsString = htmlspecialchars(do_shortcode("[smartslider3 slider=\"$smartSliderId\"]"));
+              echo $smartSliderHtmlAsString;
+            ?>
           </div>
           
           <div class="sort-disclaimer">
