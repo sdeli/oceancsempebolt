@@ -1005,6 +1005,24 @@
           if ($cat->slug === "obsydian") {
             $smartSliderId = 305;
           } 
+          if ($cat->slug === "calacatta-rock-ceramic") {
+            $smartSliderId = 308;
+          }           
+          if ($cat->slug === "gante") {
+            $smartSliderId = 309;
+          }           
+          if ($cat->slug === "obsydian") {
+            $smartSliderId = 310;
+          }           
+          if ($cat->slug === "obsydian") {
+            $smartSliderId = 305;
+          }           
+          if ($cat->slug === "obsydian") {
+            $smartSliderId = 305;
+          } 
+          if ($cat->slug === "cement") {
+            $smartSliderId = 311;
+          } 
         }
         ?>
       <div class="row">
@@ -1053,7 +1071,7 @@
                 $catalog_name = strtoupper($catalog['name']);
           ?>
           
-            <a href="<?= $catalog['url'] ?>" target="_blank" class="catalog-legend">ITT MEGTEKINTHETI A TELJES <span class="color-alert-yellow text-shadow-sharp"><?= $catalog_name ?></span> KATALÓGUST: <span class="color-alert-yellow text-shadow-sharp">CLICK</span></a>
+            <a href="<?= $catalog['url'] ?>" target="_blank" class="catalog-legend">ITT MEGTEKINTHETI A TELJES <span class="color-alert-yellow text-shadow-sharp"><?= $catalog_name ?></span> KATALÓGUST: <span class="color-alert-yellow text-shadow-sharp">KATTINTS IDE</span></a>
           <?php 
               } 
             } 
