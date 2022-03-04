@@ -89,7 +89,8 @@ global $flatsome_opt;
   const GOOGLE_MAPS_CONATINER_SELECTOR = '.lazy-load-google-maps-until-user-interaction';
   const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = `.ocean-promo-video-container`;
   const TABBER_CONTAINER_SELECTOR = ".tabber-container";
-  const SLIDER_TITLE_LINK_SELECTOR = '.slider-title a.n2-ow';
+  const FIRST_SLIDER_TITLE_LINK_SELECTOR = '[data-first] .slider-title a.n2-ow';
+  const ACTIVE_SLIDER_TITLE_LINK_SELECTOR = '.n2-ss-slide-active .slider-title a.n2-ow';
   const SMART_SLIDER_SELECTOR = '[data-ssid]';
   const SMART_SLIDER_ARROWS_SELECTOR = '.nextend-arrow';
   const POINTER_ICON_CLASS_NAME = 'icon-pointer';
@@ -798,8 +799,6 @@ global $flatsome_opt;
     const loadSlider = () => {
       const fakeSliderContainer = jQuery(".design-slider-container");
       const designSlider = jQuery(jQuery(".fake-slider").text());
-      console.log('designSlider')
-      console.log(designSlider);
       designSlider.hide();
       fakeSliderContainer.append(designSlider);
       return designSlider;
@@ -810,10 +809,9 @@ global $flatsome_opt;
       return new Promise((resolve, reject) => {
         let i = 0;
         var isSliderLoadedInterval = setInterval(function() {
-          console.log('isSliderLoadedInterval2');
           // console.log(SMART_SLIDER_ARROWS_SELECTOR)
           // console.log(jQuery(SMART_SLIDER_ARROWS_SELECTOR));
-          const isSliderLoaded = jQuery(SLIDER_TITLE_LINK_SELECTOR).length;
+          const isSliderLoaded = jQuery(FIRST_SLIDER_TITLE_LINK_SELECTOR).length;
           if (isSliderLoaded) {
             console.log('loaded');
             clearInterval(isSliderLoadedInterval);
@@ -839,15 +837,14 @@ global $flatsome_opt;
       isSliderSet = true;
       const designSlider = loadSlider();
       await checkIfisLiderLoaded();
-      console.log('load slider');
       gtmSliderEventTriggerSetup();
       const designSliderPlaceholder = jQuery(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
-      console.log('placeholder');
       designSlider.css({"z-index": 2});
       designSlider.fadeIn(2000, function() {
         console.log('fade');
         setSliderContainerHeight(designSlider)
         addPointerIconToSliderTitle();
+        addPointerIconToSliderTitleOnSlideFinish();
       });
       const originalWidth = designSliderPlaceholder.width() + "px";
       designSliderPlaceholder.css({
@@ -888,10 +885,26 @@ global $flatsome_opt;
     }, SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT);
   }
 
+  function addPointerIconToSliderTitleOnSlideFinish() {
+    const designSliderId = jQuery(`${DESIGN_SLIDER_CONTAINER_SELECTOR} [data-ssid]`).attr('data-ssid');
+    const designSliderSelector = `#n2-ss-${designSliderId}`;
+
+    var slider = _N2[designSliderSelector];
+    slider.sliderElement.addEventListener('mainAnimationComplete', function(e) {
+      const sliderTitleLink = jQuery(ACTIVE_SLIDER_TITLE_LINK_SELECTOR);
+      const hasPointerIconAlready = !!sliderTitleLink.children(POINTER_ICON_SELECTOR).length;
+      if (hasPointerIconAlready) return;
+      const pointerIcon = jQuery(POINTER_ICON_HTML);
+      pointerIcon.hide();
+      sliderTitleLink.append(pointerIcon);
+      pointerIcon.fadeIn(500);
+    });
+  } 
+
   function addPointerIconToSliderTitle() {  
     console.log('addPointerIconToSliderTitle');  
     const addPointerIntoSliderTitleInterval = setInterval(function() {
-      const sliderTitleLink = jQuery(SLIDER_TITLE_LINK_SELECTOR);
+      const sliderTitleLink = jQuery(FIRST_SLIDER_TITLE_LINK_SELECTOR);
       if (!sliderTitleLink.length) return; 
       clearInterval(addPointerIntoSliderTitleInterval);
       const pointerIcon = jQuery(POINTER_ICON_HTML);
