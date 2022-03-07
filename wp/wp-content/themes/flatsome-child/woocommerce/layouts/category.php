@@ -1022,8 +1022,21 @@
           } 
           if ($cat->slug === "cement") {
             $smartSliderId = 311;
+          }
+          if ($cat->slug === "denia") {
+            $smartSliderId = 315;
+          } 
+          if ($cat->slug === "kronos") {
+            $smartSliderId = 314;
+          } 
+          if ($cat->slug === "moody") {
+            $smartSliderId = 313;
+          } 
+          if ($cat->slug === "luxor-csalad") {
+            $smartSliderId = 312;
           } 
         }
+
         ?>
       <div class="row">
         <div class="col design-col">
