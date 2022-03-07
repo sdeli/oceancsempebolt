@@ -1063,7 +1063,13 @@
           </div>
           
           <div class="sort-disclaimer">
-            <p><strong>Rendezés</strong> és <strong>kategóriák</strong> a <strong class="open-mobile-menu-text" onclick="clickHamburgerToOpenMobileSidebar()">menu <i class="icon-menu"></i></strong> iconra kattintva érhetőek el.</p>
+            <p
+              class="filter-btn"
+              data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="">
+              <strong class="open-mobile-menu-text">Rendezés,</strong> 
+              <strong>Kategóriák</strong> és 
+              <strong>Szűrők <i class="icon-equalizer" style="vertical-align: text-bottom; font-size: 17px;"></i></strong> 
+            </p>
           </div>
         
           <?php if (isset($categorySpecificFilterId)) { ?>

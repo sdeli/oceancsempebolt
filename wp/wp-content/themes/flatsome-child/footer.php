@@ -80,8 +80,8 @@ global $flatsome_opt;
   const MOBILE_SIDEBAR_CANCEL_OVERLAY = '.mfp-container.mfp-s-ready.mfp-inline-holder';
   const MOBILE_SIDEBAR_CANCEL_BTN = '.mfp-close';
   const PARALLAX_HEADER_SELECTOR = '.identity-header__background';
-  const HAMBURGER_BTN_SELECTOR = '[data-open="#main-menu"]';
-  const FILTER_BTN_SELECTOR = '[data-open="#shop-sidebar"]';  
+  const HAMBURGER_BTN_SELECTOR = '[aria-controls="main-menu"]';
+  const FILTER_BTN_SELECTOR = '.filter-btn';  
   const BR_ROCKET_COLOR_ICON_SELECTOR = ".filter-form__szin [aria-label]";
   const MAIN_SHOP_PAGE_SLUG = 'shop';
   const DESKTOP_MENU_TRIGGER_CLASS = 'desktop-hamburger-btn';
@@ -537,9 +537,9 @@ global $flatsome_opt;
 
     hamburgerBtn.click(function() {
       setTimeout(() => {
-        const isDesktopHamburgerBtnClicked = jQuery(this).hasClass(DESKTOP_MENU_TRIGGER_CLASS);
-        if (isShopOrCategPage() || isDesktopHamburgerBtnClicked) {
-          createShopMenu(null, isDesktopHamburgerBtnClicked);
+        const isDesktopProductCategsBtnClicked = jQuery(this).hasClass(DESKTOP_MENU_TRIGGER_CLASS);
+        if (isDesktopProductCategsBtnClicked) {
+          createShopMenu(null, isDesktopProductCategsBtnClicked);
         } else {
           insertShopMenuSwitchBtnsIntoMobileSidebar();
         }
@@ -548,12 +548,13 @@ global $flatsome_opt;
     
     filterMenuBtn.click(() => {
       setTimeout(() => {
-        insertMainMenuSwitchBtnsIntoMobileSidebar();
+        createShopMenu(null, false);
       }, 0);
     });
   }
 
   function createShopMenu(e, isDesktopMenu = false) {
+    console.log('createShopMenu');
     if (e) e.stopPropagation();
     if (!isMenuSwitchFinised) return;
 
