@@ -11,6 +11,10 @@ Version: 3.0
   color: #ffbd3d;
 }
 
+.color-alert-coral {
+  color:#dd4133;
+}
+
 .text-shadow-sharp {
   text-shadow: 1px 1px 1px #bab7b7
 }
@@ -1177,6 +1181,10 @@ animation: lineLoader 1.3s ease-in-out infinite;
   margin-bottom: 0;
   font-weight: 200;
   text-align: center;
+}
+
+.sort-disclaimer {
+  cursor: pointer;
 }
 
 .sort-disclaimer p {

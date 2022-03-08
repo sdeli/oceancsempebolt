@@ -1068,7 +1068,7 @@
               data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="">
               <strong class="open-mobile-menu-text">Rendezés,</strong> 
               <strong>Kategóriák</strong> és 
-              <strong>Szűrők <i class="icon-equalizer" style="vertical-align: text-bottom; font-size: 17px;"></i></strong> 
+              <strong>Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></strong> 
             </p>
           </div>
         
