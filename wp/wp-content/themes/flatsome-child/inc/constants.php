@@ -38,7 +38,7 @@ const BANK_TRANSFER_LABEL = 'bacs';
 
 const ON_HOLD_ORDER_STATUS = 'on-hold';
 
-const CHANGING_PRICES_MESSAGE = '<p style="margin-bottom: 0px;">A feltüntetett árak tájékoztató jellegűek, nem minősülnek konkrét árajánlattételnek.</p>';
+const CHANGING_PRICES_MESSAGE = '<p style="margin-bottom: 0px;">A honlapon szereplő árak az ukrajnai háborus helyzet miatt kialakult ellátási zavarokra tekintettel <strong>tájékoztató jellegűek<strong>, nem minősülnek konkrét árajánlattételnek.</p>';
 
 const TEL_NUMBERS = [
   ["06 70 942 5095", "06-70-942-5095", "Pinti István"],

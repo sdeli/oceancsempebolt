@@ -1034,7 +1034,13 @@
           } 
           if ($cat->slug === "luxor-csalad") {
             $smartSliderId = 312;
-          } 
+          }
+          if ($cat->slug === "organic-matt") {
+            $smartSliderId = 316;
+          }
+          if ($cat->slug === "funky") {
+            $smartSliderId = 317;
+          }
         }
 
         ?>

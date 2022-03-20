@@ -12,7 +12,11 @@ Version: 3.0
 }
 
 .color-alert-coral {
-  color:#dd4133;
+  color: #dd4133;
+}
+
+.color-alert-red {
+  color: #ca0036 !important;
 }
 
 .text-shadow-sharp {
@@ -60,6 +64,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 5px;
 }
 
+.ux-builder-margin-bottom-0 {
+  margin-bottom: 0;
+}
+
 .ux-builder-is-crap .col:before {
   border-left: unset !important;
   border-bottom: unset !important;
@@ -79,6 +87,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .ux-builder-mobile-top-padding {
   padding-top: 15px !important;
+}
+
+.ux-builder-transform-center {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .grid-box-shadow .col-inner {
@@ -634,6 +648,7 @@ a.add_to_cart_button.button.primary {
   background-position: -203px -44px;
 }
 
+.sidebar-filter__circle[title="ezüst"] a,
 .sidebar-filter__circle[title="króm"] a {
   background-color: none;
   background-image: url(/wp-content/uploads/2021/11/textures.png);
@@ -812,6 +827,7 @@ span.filter-form__szin__label {
   background-position: -203px -44px;
 }
 
+.filter-form__szin [aria-label="ezüst"] span,
 .filter-form__szin [aria-label="króm"] span {
   background-image: url(/wp-content/uploads/2021/11/textures.png);
   background-position: -101px -44px;
