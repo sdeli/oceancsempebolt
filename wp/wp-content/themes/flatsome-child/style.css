@@ -65,7 +65,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .ux-builder-margin-bottom-0 {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
+}
+
+.ux-builder-margin-top-0 {
+  margin-top: 0 !important;
+}
+
+.ux-builder-padding-top-0 {
+  margin-top: 0 !important;
+}
+
+.ux-builder-padding-bottom-0 {
+  padding-bottom: 0 !important;
+}
+
+.ux-builder-padding-bottom-5 {
+  padding-bottom: 5 !important;
+}
+
+.ux-builder-padding-bottom-2 {
+  padding-bottom: 3px !important;
 }
 
 .ux-builder-is-crap .col:before {
@@ -75,6 +95,15 @@ h1, h2, h3, h4, h5, h6 {
 
 .ux-builder-is-crap.row:last-child {
   margin-bottom: 50px;
+}
+
+.ux-builder-padding-top-0 {
+  padding-top: 0 !important;
+}
+
+.ux-builder-accordion-full-width .accordion-inner {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
 }
 
 .ux-builder-padding-top-13 {
@@ -414,6 +443,7 @@ a.button.primary.is-outline:not(.add_to_cart_button) {
   box-shadow: 0px 1px 6px #d1cece !important;
   line-height: 2.5em;
   border: 2px solid #0f71cc;
+  transition: all 0.3s ease-in-out !important;
 }
 
 a.button.primary.is-outline.button-continue-shopping:not(.add_to_cart_button) {
@@ -421,7 +451,7 @@ a.button.primary.is-outline.button-continue-shopping:not(.add_to_cart_button) {
   min-height: unset;
 }
 
-a.more-link.button.primary.is-outline:not(.add_to_cart_button):hover {
+a.button.primary.is-outline:not(.add_to_cart_button):hover {
   background-color: #0f71cc !important;
   color: white !important;
 }
@@ -1301,7 +1331,7 @@ animation: lineLoader 1.3s ease-in-out infinite;
   cursor: pointer;
 }
 
-.ocean-promo-video-container {
+.lazy-load-video-container {
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -1333,6 +1363,17 @@ animation: lineLoader 1.3s ease-in-out infinite;
   text-transform: capitalize;
 }
 
+.google-maps-thin-container {
+  height: 200px;
+}
+
+.google-maps-thin-image {
+  position: relative;
+  height: 200px;
+  background: url(http://dev.oceancsempebolt.hu/wp-content/uploads/2022/04/google-maps-scaled-768w.webp) no-repeat center;
+  z-index: 1;
+}
+
 @media only screen and (min-width: 850px) {
   .sidebar-filter.--col-md-display-none,
   .sort-disclaimer {
@@ -1362,7 +1403,6 @@ animation: lineLoader 1.3s ease-in-out infinite;
   .jumbotron-grid-h3 {
     font-weight: bold;
   }
-
 }
 
 @media only screen and (max-width: 849px) {
@@ -1406,6 +1446,18 @@ animation: lineLoader 1.3s ease-in-out infinite;
   h3.nextend-slider-title a {
     font-size: 145% !important;
   }
+
+  .ux-builder-max-549-pr-0 {
+    padding-right: 0px !important;
+  }
+
+  .ux-builder-max-549-pl-0 {
+    padding-left: 0px !important;
+  }
+
+  .ux-builder-font-size-13 {
+    font-size: 13px !important;
+  }
 }
 
 @media only screen and (max-width: 849px) {
@@ -1421,5 +1473,23 @@ animation: lineLoader 1.3s ease-in-out infinite;
 @media (max-width: 700px) {
   .nextend-arrow img {
       width: 28px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .google-maps-thin-image {
+      background: url(http://dev.oceancsempebolt.hu/wp-content/uploads/2022/04/google-maps-scaled-992w.webp) no-repeat center;
+  }
+}
+
+@media (min-width: 992px) {
+  .google-maps-thin-image {
+      background: url(http://dev.oceancsempebolt.hu/wp-content/uploads/2022/04/google-maps-scaled-1200w.webp) no-repeat center;
+  }
+}
+
+@media (min-width: 1200px) {
+  .google-maps-thin-image {
+      background: url(http://dev.oceancsempebolt.hu/wp-content/uploads/2022/04/google-maps-scaled.webp) no-repeat center;
   }
 }

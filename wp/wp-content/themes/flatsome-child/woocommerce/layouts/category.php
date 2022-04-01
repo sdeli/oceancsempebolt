@@ -1041,6 +1041,54 @@
           if ($cat->slug === "funky") {
             $smartSliderId = 317;
           }
+          if ($cat->slug === "anticatto") {
+            $smartSliderId = 326;
+          }
+          if ($cat->slug === "mainzu") {
+            $smartSliderId = 319;
+          }
+          if ($cat->slug === "aquarel") {
+            $smartSliderId = 320;
+          }
+          if ($cat->slug === "bellagio") {
+            $smartSliderId = 321;
+          }
+          if ($cat->slug === "bumpy") {
+            $smartSliderId = 322;
+          }
+          if ($cat->slug === "cinque-terre") {
+            $smartSliderId = 323;
+          }
+          if ($cat->slug === "estil") {
+            $smartSliderId = 324;
+          }
+          if ($cat->slug === "legno") {
+            $smartSliderId = 325;
+          }
+          if ($cat->slug === "ricordi-venezzia") {
+            $smartSliderId = 327;
+          }
+          if ($cat->slug === "verona") {
+            $smartSliderId = 328;
+          }
+          if ($cat->slug === "vitta") {
+            $smartSliderId = 329;
+          }
+          if ($cat->slug === "goldgreen") {
+            $smartSliderId = 330;
+          }
+          if ($cat->slug === "grunge") {
+            $smartSliderId = 331;
+          }
+          if ($cat->slug === "mosdocsap") {
+            $smartSliderId = 332;
+          }
+          if ($cat->slug === "praga") {
+            $smartSliderId = 333;
+          }
+          if ($cat->slug === "viena") {
+            $smartSliderId = 334;
+          }
         }
 
         ?>

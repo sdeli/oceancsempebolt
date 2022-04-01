@@ -87,7 +87,9 @@ global $flatsome_opt;
   const DESKTOP_MENU_TRIGGER_CLASS = 'desktop-hamburger-btn';
   const PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR = '#menu-item-4854';
   const GOOGLE_MAPS_CONATINER_SELECTOR = '.lazy-load-google-maps-until-user-interaction';
-  const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = `.ocean-promo-video-container`;
+  const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = `#ocean-promo-video-container`;
+  const CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR = `#contec-bull-promo-video-1-container`;
+  const CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR = `#contec-bull-promo-video-2-container`;
   const TABBER_CONTAINER_SELECTOR = ".tabber-container";
   const FIRST_SLIDER_TITLE_LINK_SELECTOR = '[data-first] .slider-title a.n2-ow';
   const ACTIVE_SLIDER_TITLE_LINK_SELECTOR = '.n2-ss-slide-active .slider-title a.n2-ow';
@@ -112,13 +114,19 @@ global $flatsome_opt;
   const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
   const DESIGN_SLIDER_LOADER_SELECTOR = '.n2-padding ss3-loader';
   const BIG_PHONE_CALL_ICON_SELECTOR = '.big-phone-call-icon';
+  const GOOGLE_MAPS_THIN_IMAGE_SELECTOR = '.google-maps-thin-image';
   const PHONE_CALL_NUMBER_LINK = '.phone-call-number-link';
-
+  const OCEAN_PHONE_CALL_LINK_CLASS = 'ocean-phone-call';
+  
   const GTM_SLIDER_INTERACTION_TRIGGER_NAME = 'interacted with slider';
   const GA_VIEW_CART_EVENT_NAME = 'view_cart';
+  const GA_MACHINE_RENT_CALL_EVENT_NAME = 'contact - call - machine rent';
 
   const IS_SLIDER_LOADED_INTERVAL_TIMER = 200;
   const SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT = 1000;
+  const CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR = '.contact-us-inline-infos';
+  const RANDOM_PHONE_BTNS_SELECTOR = '.random-phone-number-btn';
+  const RANDOM_PHONE_BTN_CTA_CLASS = 'default-text--';
 
   const CATEGORIES_WITH_FILTERS_DATA = [
     {
@@ -159,11 +167,24 @@ global $flatsome_opt;
     },
   ];
   const CATEGORIES_SIDEBAR_HEADER_HTML = `<div id="shop-sidebar-switch-btns" class="main-menu__filter-btns"><h3 class="main-menu__filter-btns__btn --header" title="shop-menu-switch-btn">Kategóriák</h3></div>`;
-  const UNNEDED_FILTERS = '[aria-label="01 safari"], [aria-label="02 black"], [aria-label="03 gray"], [aria-label="06 white"], [aria-label="07 sand"], [aria-label="10 steel metal"], [aria-label="12 black metal"], [aria-label="16 white alabaster"], [aria-label="24 warm gray"], [aria-label="26 traupe gray"], [aria-label="metál fekete"], [aria-label="traupe szürke"], [aria-label="safari"], [aria-label="metál fekete"], [aria-label="meleg szürke"], [aria-label="matt fekete"], [aria-label="matt fehér"], [aria-label="fehér LCC bevonattal"], [aria-label="fehér alabaszter"], [aria-label="homok"], [aria-label="acél metál"], [aria-label="antracit"], [aria-label="ezüst"], [aria-label="betonszürke"], [aria-label="kék"], [aria-label="betonszürke"], [data-name="gyümölcsmosóval"], [data-name="csepegtetővel"], [data-name="vandálbiztos"], [data-name="walk-in"], [data-name="szimmetrikus"], [data-name="aszimmetrikus"]';
-  const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`
-  const OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML = `<iframe src="https://www.youtube.com/embed/HieK5jUu8Jc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  const UNNEEDED_FILTERS = '[aria-label="01 safari"], [aria-label="02 black"], [aria-label="03 gray"], [aria-label="06 white"], [aria-label="07 sand"], [aria-label="10 steel metal"], [aria-label="12 black metal"], [aria-label="16 white alabaster"], [aria-label="24 warm gray"], [aria-label="26 traupe gray"], [aria-label="metál fekete"], [aria-label="traupe szürke"], [aria-label="safari"], [aria-label="metál fekete"], [aria-label="meleg szürke"], [aria-label="matt fekete"], [aria-label="matt fehér"], [aria-label="fehér LCC bevonattal"], [aria-label="fehér alabaszter"], [aria-label="homok"], [aria-label="acél metál"], [aria-label="antracit"], [aria-label="ezüst"], [aria-label="betonszürke"], [aria-label="kék"], [aria-label="betonszürke"], [data-name="gyümölcsmosóval"], [data-name="csepegtetővel"], [data-name="vandálbiztos"], [data-name="walk-in"], [data-name="szimmetrikus"], [data-name="aszimmetrikus"]';
+  const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
+  const GOOGLE_MAPS_THIN_IFRAME_CLASS = 'google-maps-thin-iframe';
+  const GOOGLE_MAPS_THIN_IFRAME_HTML = `<iframe class="${GOOGLE_MAPS_THIN_IFRAME_CLASS}" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="200" style="border:0;" allowfullscreen=""></iframe>`;
+  const OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML = `<iframe src="https://www.youtube.com/embed/HieK5jUu8Jc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  const CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/w3AUeYOrx2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+  const CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HRd9bETXuRI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
   const POINTER_ICON_HTML = `<span class="${POINTER_ICON_CLASS_NAME} slider-pointer-icon"></span>`;
   const MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML = '<div class="mobile-menu-arrow-up-down-box"><i class="icon-angle-up mobile-menu-arrow-up-down-box__arrow"></i></div>';
+  const CONTACT_US_INLINE_INFOS_HTML = `
+    <strong style="color:#686868;">Kérdésével forduljon hozzánk bátran</strong>: 
+    <i class="icon-phone" style="color: black;"></i> 
+    <a href="tel:06-30-397-4150" style="cursor: pointer; color: #4e657b">06 30 397 4150 - Szabó István</a><br>
+    <a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975" style="cursor: pointer; color: #4e657b" target="_blank">
+      Térkép a bolthoz
+    <i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>
+    </a>
+  ` 
 
   const PARALLAX_HEADER_SMALL_TABLET_Y_POSITION = -440;
   const PARALLAX_HEADER_LARGE_TABLET_Y_POSITION = -428;
@@ -171,9 +192,31 @@ global $flatsome_opt;
   const SMALL_TABLET_WIDTH = 849;
   const MOBILE_MAX_WIDTH = 499;
   const DESIGN_SLIDER_MOBILE_HEIGHT = 238;
+
   const CONTACTS_PAGE_PATH = '/kapcsolat/';
+  const SALOON_PAGE_PATH = '/szalon/';
   const DISCOUNTS_DISCLAIMER_PAGE_PATH = '/akciok/';
   const CART_PAGE_PATH = '/cart/';
+  const MACHINE_RENT_PAGE_PATH = '/gep-kolcsonzes/';
+
+  const CONTACT_INFOS = [
+    {
+      tel: "06 70 942 5095",
+      name: "Pinti István",
+    },
+    {
+      tel: "06 30 397 4150",
+      name: "Szabó István",
+    },
+    {
+      tel: "06 70 601 4600",
+      name: "Illés László",
+    },
+  ];
+
+const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
+
+ const SERVICE_PAGE_ID = "20391";
 
   let isMenuSwitchFinised = true;
   window.addEventListener('DOMContentLoaded',async function(){
@@ -201,6 +244,11 @@ global $flatsome_opt;
     if (isContactPage) {
       loadElementOnUserInteractionAndInViewport(GOOGLE_MAPS_IFRAME_HTML, GOOGLE_MAPS_CONATINER_SELECTOR);
       loadElementOnUserInteractionAndInViewport(OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML, OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR)
+    }
+
+    const isSaloonPage = window.location.pathname === SALOON_PAGE_PATH;
+    if (isSaloonPage) {
+      loadPageTopGoogleMaps();
     }
 
     const isDiscountsDisclaimerPage = window.location.pathname === DISCOUNTS_DISCLAIMER_PAGE_PATH;
@@ -251,12 +299,32 @@ global $flatsome_opt;
       }; 
     }
 
+    const isServicePage = document.querySelector(`.page-id-${SERVICE_PAGE_ID}`);
+    if (isServicePage) {
+      loadElementOnUserInteractionAndInViewport(GOOGLE_MAPS_IFRAME_HTML, GOOGLE_MAPS_CONATINER_SELECTOR);
+    }
+
     const bigPhoneCallIcons = document.querySelectorAll(BIG_PHONE_CALL_ICON_SELECTOR);
     const hasPhoneCallIconsOnPage = !!bigPhoneCallIcons.length;
     if (hasPhoneCallIconsOnPage) initiateCallOnPhoneCallIconClick(bigPhoneCallIcons);
 
     const isCartPage = window.location.pathname === CART_PAGE_PATH;
     if (isCartPage) sendViewCartEvent();
+
+    const inlineContactInfoElems = document.querySelectorAll(CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR);
+    const hasInlineContactInfosOnPage = !!inlineContactInfoElems.length;
+    if (hasInlineContactInfosOnPage) displayInlineContactInfos(inlineContactInfoElems);
+    
+    const randomPhoneNumberBtns = document.querySelectorAll(RANDOM_PHONE_BTNS_SELECTOR);
+    const hasRandomPhoneNumberBtns = !!inlineContactInfoElems.length;
+    if (hasRandomPhoneNumberBtns) fillContactInfoIntoPhoneNumberBtns(randomPhoneNumberBtns);
+
+    const isMachineRentPage = window.location.pathname === MACHINE_RENT_PAGE_PATH;
+    if (isMachineRentPage) {
+      loadElementOnUserInteractionAndInViewport(CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML, CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR);
+      loadElementOnUserInteractionAndInViewport(CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML, CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR);
+      loadElementOnUserInteractionAndInViewport(OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML, OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR);
+    }
   },false);
 
   function scrollToDesginTabber() {
@@ -554,7 +622,6 @@ global $flatsome_opt;
   }
 
   function createShopMenu(e, isDesktopMenu = false) {
-    console.log('createShopMenu');
     if (e) e.stopPropagation();
     if (!isMenuSwitchFinised) return;
 
@@ -756,11 +823,12 @@ global $flatsome_opt;
   }
 
   function removeUnneededFiltersFromMainShopPage() {
-    const unneededFilters = jQuery(UNNEDED_FILTERS);
+    const unneededFilters = jQuery(UNNEEDED_FILTERS);
     unneededFilters.parent().remove();
   }
 
   function loadElementOnUserInteractionAndInViewport(elementHtml, elementContainerSelector, jo) {
+
     const elemContainer = jQuery(elementContainerSelector);
     let shouldLoadElem = isElemVisible(elementContainerSelector);
     if (shouldLoadElem) {
@@ -795,6 +863,26 @@ global $flatsome_opt;
     return elementBottom > viewportTop && elementTop < viewportBottom;
   }
 
+  function loadPageTopGoogleMaps() {
+    const googleMapsContainer = jQuery(GOOGLE_MAPS_CONATINER_SELECTOR);
+    googleMapsContainer.css({'position': 'absolute', 'top': 0, 'z-index': 0})
+    const googleMapsImageContainer = jQuery(GOOGLE_MAPS_THIN_IMAGE_SELECTOR);
+    
+    setTimeout(() => {
+      loadElementOnUserInteractionAndInViewport(GOOGLE_MAPS_THIN_IFRAME_HTML, GOOGLE_MAPS_CONATINER_SELECTOR);
+      const googleMapsIframe = jQuery(`.${GOOGLE_MAPS_THIN_IFRAME_CLASS}`);
+
+      googleMapsIframe.on('load', function(){
+        setTimeout(() => {
+          googleMapsImageContainer.fadeOut(1000, () => {
+            googleMapsIframe.css('position', 'relative')
+            googleMapsImageContainer.remove();
+          });
+        }, 1000)
+      });
+    }, 2000)
+  }
+
   function swapDesignPlaceholderToSlider() {
     let isSliderSet = false;
     const loadSlider = () => {
@@ -806,15 +894,11 @@ global $flatsome_opt;
     }
     
     const checkIfisLiderLoaded = () => {
-      // '.n2-padding'
       return new Promise((resolve, reject) => {
         let i = 0;
         var isSliderLoadedInterval = setInterval(function() {
-          // console.log(SMART_SLIDER_ARROWS_SELECTOR)
-          // console.log(jQuery(SMART_SLIDER_ARROWS_SELECTOR));
           const isSliderLoaded = jQuery(FIRST_SLIDER_TITLE_LINK_SELECTOR).length;
           if (isSliderLoaded) {
-            console.log('loaded');
             clearInterval(isSliderLoadedInterval);
             resolve(true);
           }
@@ -823,7 +907,6 @@ global $flatsome_opt;
           // and so it triggers loading. It takes a second to load images that is seen by the user this what we wanted to avoid.
           const sliderIsMaybeLoaded = i > 5 && jQuery(DESIGN_SLIDER_LOADER_SELECTOR).length && jQuery('.n2-padding').children().length === 1;
           if (sliderIsMaybeLoaded) {
-            console.log('sliderIsMaybeLoaded');
             clearInterval(isSliderLoadedInterval);
             resolve(true);
           }
@@ -842,7 +925,6 @@ global $flatsome_opt;
       const designSliderPlaceholder = jQuery(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
       designSlider.css({"z-index": 2});
       designSlider.fadeIn(2000, function() {
-        console.log('fade');
         setSliderContainerHeight(designSlider)
         addPointerIconToSliderTitle();
         addPointerIconToSliderTitleOnSlideFinish();
@@ -862,7 +944,6 @@ global $flatsome_opt;
         clearInterval(setContainerHeightOnSliderLoad);
         const designSliderContainer = jQuery(DESIGN_SLIDER_CONTAINER_SELECTOR);
         jQuery(window).resize(() => {
-          console.log(designSliderJqueryObj.height());
           designSliderContainer.height(designSliderJqueryObj.height());
         });
     }, 500);
@@ -903,7 +984,6 @@ global $flatsome_opt;
   } 
 
   function addPointerIconToSliderTitle() {  
-    console.log('addPointerIconToSliderTitle');  
     const addPointerIntoSliderTitleInterval = setInterval(function() {
       const sliderTitleLink = jQuery(FIRST_SLIDER_TITLE_LINK_SELECTOR);
       if (!sliderTitleLink.length) return; 
@@ -1047,7 +1127,6 @@ global $flatsome_opt;
     bigPhoneCallIcons.siblings().find(PHONE_CALL_NUMBER_LINK).click(function(){
       const gtmTriggerName = jQuery(this).attr("data-gtm");
       dataLayer.push({'event': gtmTriggerName});
-      console.log(gtmTriggerName);
     })
   }
 
@@ -1066,6 +1145,55 @@ global $flatsome_opt;
     dataLayer.push({'event': GA_VIEW_CART_EVENT_NAME});
   }
 
+  function displayInlineContactInfos(inlineContactInfoElems) {
+    // inlineContactInfoElems should be the return value of document.querySelectorAll which isnt an array but some kind of iterable
+    const getContactInfoHtml = (tel, name, isInline = false) => {
+return `
+  <strong style="color:#686868;">Kérdésével forduljon hozzánk bátran</strong>: 
+  <i class="icon-phone" style="color: black;"></i> 
+  <a class="${OCEAN_PHONE_CALL_LINK_CLASS}" href="tel:${tel}" style="cursor: pointer; color: #4e657b">${tel} - ${name}</a>
+  ${isInline ? ' - ' : '<br>'}
+  <a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975" style="cursor: pointer; color: #4e657b" target="_blank">
+    Térkép a bolthoz
+  <i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>
+  </a>
+`;
+    }
+    inlineContactInfoElems = [...inlineContactInfoElems];
+    inlineContactInfoElems.forEach((elem) => {
+      inlineContactInfoElem = jQuery(elem);
+      const {tel, name} = getRandomContactInfo();
+      const isInline = inlineContactInfoElem.attr(IS_CONTACT_INFO_INLINE_DATA_ATTR);
+      const html = getContactInfoHtml(tel, name, isInline);
+      inlineContactInfoElem.append(html);
+    })
+  }
+
+  function fillContactInfoIntoPhoneNumberBtns(randomPhoneNumberBtnElems) {
+    const phoneNumberBtns = [...randomPhoneNumberBtnElems];
+    phoneNumberBtns.forEach((elem) => {
+      const phoneNumberBtn = jQuery(elem);
+      const { tel, name } = getRandomContactInfo();
+      phoneNumberBtn.attr('href', `tel:${tel}`);
+
+      const callToActionArr = phoneNumberBtn.attr("class").match(`${RANDOM_PHONE_BTN_CTA_CLASS}[^\\s]*`)
+      let callToActionMessage = '';
+      if (callToActionArr) callToActionMessage = callToActionArr[0].replace(RANDOM_PHONE_BTN_CTA_CLASS, '').replace('-', ' ');
+      const btnInnerText = callToActionMessage ? `${callToActionMessage} - ${tel}` : `${callToActionMessage} - ${name}`;
+      phoneNumberBtn.text(btnInnerText);
+    });
+  }
+
+  function getRandomContactInfo() {
+    return CONTACT_INFOS[Math.floor(Math.random() * CONTACT_INFOS.length)]
+  }
+
+  function machineRentCallEvents() {
+    const phoneCallBtns = jQuery(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
+    phoneCallBtns.on('click', () => {
+      dataLayer.push({'event': GA_MACHINE_RENT_CALL_EVENT_NAME});
+    })
+  }
 </script>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:ital,wght@0,400;0,500;1,100;1,300;1,400&display=swap" rel="stylesheet">

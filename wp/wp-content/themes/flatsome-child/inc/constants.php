@@ -28,9 +28,9 @@ const CHECKED_CLASS = '--checked';
 const SIDEBAR_FILTER_CIRCLE_CLASS = 'sidebar-filter__circle';
 
 const PALLET_SHIPPING_CLASS_ID = 2410;
-const PALLET_SHIPPING_CLASS_NAME = "Raklapos";
+const PALLET_SHIPPING_CLASS_NAME = "Raklapos házhozszállítás";
 
-const BOX_SHIPPING_CLASS_NAME = "Dobozos Szállítás";
+const BOX_SHIPPING_CLASS_NAME = "Dobozos házhozszállítás";
 
 const COMPANY_BANK_ACCOUNT = '11714006-20397245';
 const ON_HOLD_PAYMENT_STATUS_NAME = 'on-hold';
@@ -38,7 +38,7 @@ const BANK_TRANSFER_LABEL = 'bacs';
 
 const ON_HOLD_ORDER_STATUS = 'on-hold';
 
-const CHANGING_PRICES_MESSAGE = '<p style="margin-bottom: 0px;">A honlapon szereplő árak az ukrajnai háborus helyzet miatt kialakult ellátási zavarokra tekintettel <strong>tájékoztató jellegűek<strong>, nem minősülnek konkrét árajánlattételnek.</p>';
+const CHANGING_PRICES_MESSAGE = '<p style="margin-bottom: 0px;">A honlapon szereplő <strong>árak az ukrajnai háborús helyzet miatt</strong> kialakult ellátási zavarokra tekintettel <strong>tájékoztató jellegűek</strong>, nem minősülnek konkrét árajánlattételnek. Amennyiben valamely termékünk megvásárlása iránt érdeklődnek úgy kérjük, hogy a megrendelést megelőzően az árak egyeztetése érdekében társaságunkkal vegyék fel a kapcsolatot, mert csak így tudunk az árakra kötelezettséget vállalni. Megértésüket köszönjük!</p>';
 
 const TEL_NUMBERS = [
   ["06 70 942 5095", "06-70-942-5095", "Pinti István"],
