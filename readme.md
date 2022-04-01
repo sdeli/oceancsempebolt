@@ -94,6 +94,11 @@ define('DISABLE_WP_CRON', true);
 ```
 - At the beginning a plugin called 'smart slider' will create a lot of chache for images which are getting loaded into a slider and thatswhy first calls on urls will be slow but after it will be fast.
 
+### 6. Dev Plugins
+You may install some **debug / dev plugins** like:
+- [Query Monitor](https://wordpress.org/plugins/search/query+monitor/)
+- [show hooks](https://wordpress.org/plugins/search/show+hooks/)
+
 ## Important Commands
 ```sh
 # list all containers
