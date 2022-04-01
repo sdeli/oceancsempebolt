@@ -116,6 +116,18 @@ function get_payment_and_shipment_notes() {
   return $notes;
 }
 
+function flatsome_email_instructions( $order, $sent_to_admin ) {
+  if ( ! $sent_to_admin && BANK_TRANSFER_LABEL === $order->get_payment_method() && $order->has_status( ON_HOLD_ORDER_STATUS ) ) {
+    if ( $order->get_shipping_method() === PALLET_SHIPPING_CLASS_NAME) {
+      echo get_pallet_shipping_notes($order);
+    }
+
+    if ( $order->get_shipping_method() === BOX_SHIPPING_CLASS_NAME) {
+      echo get_box_shipping_notes($order);
+    }
+  }
+}
+
 function get_catalog_for_category($category) {
   $slug = $category->slug;
   $hasCatalogUrl = isset(PDF_CATALOGS_BY_PRODUCT_CATEGORIES[$slug]);
@@ -131,4 +143,24 @@ function get_catalog_for_category($category) {
   }
 
   return false;
+}
+
+function checkHasPalletProductInCart() {
+  foreach ( WC()->cart->get_cart() as $cartItem ) {
+    if ($cartItem["data"]->shipping_class_id === PALLET_SHIPPING_CLASS_ID) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function getAvailableShippingMethods(array $available_methods, bool &$hasPalletProductInCart): array {
+  return array_filter($available_methods, function($method) use ($hasPalletProductInCart) {
+    if ($hasPalletProductInCart) {
+      return $method->label !== BOX_SHIPPING_CLASS_NAME;
+    } else {
+      return $method->label !== PALLET_SHIPPING_CLASS_NAME;
+    }
+  }, ARRAY_FILTER_USE_BOTH);
 }

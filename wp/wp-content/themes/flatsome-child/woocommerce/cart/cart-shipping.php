@@ -24,23 +24,8 @@ $has_calculated_shipping  = ! empty( $has_calculated_shipping );
 $show_shipping_calculator = ! empty( $show_shipping_calculator );
 $calculator_text          = '';
 
-$cartContent = WC()->cart->get_cart();
-$hasPalletProductInCart = false;
-foreach ( $cartContent as $cartItem ) {
-  if ($cartItem["data"]->shipping_class_id === PALLET_SHIPPING_CLASS_ID) {
-    $hasPalletProductInCart = true;
-    break;
-  }
-}
-
-$available_methods = array_filter($available_methods, function($method) use ($hasPalletProductInCart) {
-  if ($hasPalletProductInCart) {
-    return $method->label !== BOX_SHIPPING_CLASS_NAME;
-  } else {
-    return $method->label !== PALLET_SHIPPING_CLASS_NAME;
-  }
-}, ARRAY_FILTER_USE_BOTH);
-
+$hasPalletProductInCart = checkHasPalletProductInCart();
+$available_methods = getAvailableShippingMethods($available_methods, $hasPalletProductInCart);
 ?>
 <tr class="woocommerce-shipping-totals shipping <?php if ( get_theme_mod( 'cart_boxed_shipping_labels', 0 ) && 1 < count( $available_methods ) ) echo 'shipping--boxed'; ?>">
 	<td class="shipping__inner" colspan="2">
@@ -52,9 +37,6 @@ $available_methods = array_filter($available_methods, function($method) use ($ha
 						<?php if ( $available_methods ) : ?>
 							<ul id="shipping_method" class="shipping__list woocommerce-shipping-methods">
 								<?php foreach ( $available_methods as $method ) : ?>
-                  <!-- <?php print_r($method) ?>
-                  <?php echo('======') ?>
-                  <?php echo($method->id) ?> -->
 									<li class="shipping__list_item">
 										<?php
 										if ( 1 < count( $available_methods ) ) {

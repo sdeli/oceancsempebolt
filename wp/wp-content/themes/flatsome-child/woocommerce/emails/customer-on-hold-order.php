@@ -25,12 +25,12 @@ do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 <?php /* translators: %s: Customer first name */ ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 
-<?php 
-  $shipping_method = $order->get_shipping_method();
-  if ($shipping_method !== PALLET_SHIPPING_CLASS_NAME && $shipping_method !== BOX_SHIPPING_CLASS_NAME): 
-?>
-  <p><?php esc_html_e( 'Thanks for your order. It’s on-hold until we confirm that payment has been received. In the meantime, here’s a reminder of what you ordered:', 'woocommerce' ); ?></p>
-<?php endif ?>
+  <?php 
+    $shipping_method = $order->get_shipping_method();
+    if ($shipping_method !== PALLET_SHIPPING_CLASS_NAME && $shipping_method !== BOX_SHIPPING_CLASS_NAME): 
+  ?>
+   <p><?php esc_html_e( 'Thanks for your order. It’s on-hold until we confirm that payment has been received. In the meantime, here’s a reminder of what you ordered:', 'woocommerce' ); ?></p>
+  <?php endif ?>
 
 <?php
 

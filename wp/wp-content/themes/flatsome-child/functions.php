@@ -50,18 +50,6 @@ function add_design_post_type() {
 
 add_action('init', 'add_design_post_type');
 
-function flatsome_email_instructions( $order, $sent_to_admin ) {
-  if ( ! $sent_to_admin && BANK_TRANSFER_LABEL === $order->get_payment_method() && $order->has_status( ON_HOLD_ORDER_STATUS ) ) {
-    if ( $order->get_shipping_method() === PALLET_SHIPPING_CLASS_NAME) {
-      echo get_pallet_shipping_notes($order);
-    }
-
-    if ( $order->get_shipping_method() === BOX_SHIPPING_CLASS_NAME) {
-      echo get_box_shipping_notes($order);
-    }
-  }
-}
-
 add_action( 'woocommerce_email_before_order_table', 'flatsome_email_instructions', 9, 3 ); 
 
 function disable_wc_terms_toggle() { 
@@ -69,3 +57,14 @@ function disable_wc_terms_toggle() {
 }
 
 add_action( "wp", "disable_wc_terms_toggle" );
+// woocommerce_before_order_notes
+
+add_filter( 'woocommerce_review_order_after_shipping', 'your_function_name' );
+
+function your_function_name( $variable ) {
+  // Your code 
+  dump_r('sannya');
+  dump_r($variable);
+  dump_r($GLOBALS);
+return $variable;
+}
