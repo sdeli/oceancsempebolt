@@ -167,7 +167,25 @@ global $flatsome_opt;
     },
   ];
   const CATEGORIES_SIDEBAR_HEADER_HTML = `<div id="shop-sidebar-switch-btns" class="main-menu__filter-btns"><h3 class="main-menu__filter-btns__btn --header" title="shop-menu-switch-btn">Kategóriák</h3></div>`;
-  const UNNEEDED_FILTERS = '[aria-label="01 safari"], [aria-label="02 black"], [aria-label="03 gray"], [aria-label="06 white"], [aria-label="07 sand"], [aria-label="10 steel metal"], [aria-label="12 black metal"], [aria-label="16 white alabaster"], [aria-label="24 warm gray"], [aria-label="26 traupe gray"], [aria-label="metál fekete"], [aria-label="traupe szürke"], [aria-label="safari"], [aria-label="metál fekete"], [aria-label="meleg szürke"], [aria-label="matt fekete"], [aria-label="matt fehér"], [aria-label="fehér LCC bevonattal"], [aria-label="fehér alabaszter"], [aria-label="homok"], [aria-label="acél metál"], [aria-label="antracit"], [aria-label="ezüst"], [aria-label="betonszürke"], [aria-label="kék"], [aria-label="betonszürke"], [data-name="gyümölcsmosóval"], [data-name="csepegtetővel"], [data-name="vandálbiztos"], [data-name="walk-in"], [data-name="szimmetrikus"], [data-name="aszimmetrikus"]';
+  const UNNEEDED_FILTERS = `
+[aria-label="01 safari"], [aria-label="02 black"], [aria-label="03 gray"], [aria-label="06 white"], 
+[aria-label="07 sand"], [aria-label="10 steel metal"], [aria-label="12 black metal"], 
+[aria-label="16 white alabaster"], [aria-label="24 warm gray"], [aria-label="26 traupe gray"], 
+[aria-label="metál fekete"], [aria-label="traupe szürke"], [aria-label="safari"], 
+[aria-label="metál fekete"], [aria-label="meleg szürke"], [aria-label="matt fekete"], [aria-label="matt fehér"], 
+[aria-label="fehér LCC bevonattal"], [aria-label="fehér alabaszter"], [aria-label="homok"], 
+[aria-label="acél metál"], [aria-label="antracit"], [aria-label="ezüst"], [aria-label="betonszürke"], 
+[aria-label="kék"], [aria-label="betonszürke"], [data-name="gyümölcsmosóval"], [data-name="csepegtetővel"],
+[data-name="vandálbiztos"], [data-name="walk-in"], [data-name="szimmetrikus"], [data-name="aszimmetrikus"], 
+[aria-label="lila"], [aria-label="narancssárga"], [aria-label="piros"], [aria-label="grafit shine"], [aria-label="fehér alabaszter"],
+[aria-label="fehér LCC bevonattal"], [aria-label="acél metál"], [aria-label="homok"], [aria-label="grafit"],
+[data-name="állatkísérlet mentes"], [data-name="antibakteriális"], [data-name="boltban megtekinthető"], [data-name="energizáló"],
+[data-name="feszesítő"], [data-name="frissítő"], [data-name="gyümölcsös"], [data-name="hidratáló"], [data-name="karcsúsító"],
+[data-name="kézzel készített"], [data-name="Legszebb burkolatok"], [data-name="luxus"], [data-name="nagyméretű burkolat"], 
+[data-name="olcsó burkolat"], [data-name="öregedésgátló"], [data-name="pároknak"], [data-name="romantikus"],
+[data-name="soft close"], [data-name="tapadókorongos"], [data-name="tartósan alacsony árú"], [data-name="vegán"],
+[aria-label="rózsaszín"], [aria-label="sárga"]
+`;
   const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
   const GOOGLE_MAPS_THIN_IFRAME_CLASS = 'google-maps-thin-iframe';
   const GOOGLE_MAPS_THIN_IFRAME_HTML = `<iframe class="${GOOGLE_MAPS_THIN_IFRAME_CLASS}" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="200" style="border:0;" allowfullscreen=""></iframe>`;
