@@ -93,6 +93,7 @@ source ./assets/[file-name].sql
 define('DISABLE_WP_CRON', true);
 ```
 - At the beginning a plugin called 'smart slider' will create a lot of chache for images which are getting loaded into a slider and thatswhy first calls on urls will be slow but after it will be fast.
+- In a plugin called "Berocket" you need to save any of the filters, without any change, that it starts to work properly.
 
 ### 6. Dev Plugins
 You may install some **debug / dev plugins** like:
