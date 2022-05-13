@@ -40,6 +40,13 @@ const ON_HOLD_ORDER_STATUS = 'on-hold';
 
 const CHANGING_PRICES_MESSAGE = '<p style="margin-bottom: 0px;">A honlapon szereplő <strong>árak az ukrajnai háborús helyzet miatt</strong> kialakult ellátási zavarokra tekintettel <strong>tájékoztató jellegűek</strong>, nem minősülnek konkrét árajánlattételnek. Amennyiben valamely termékünk megvásárlása iránt érdeklődnek úgy kérjük, hogy a megrendelést megelőzően az árak egyeztetése érdekében társaságunkkal vegyék fel a kapcsolatot, mert csak így tudunk az árakra kötelezettséget vállalni. Megértésüket köszönjük!</p>';
 
+const OCEAN_PHONE_CALL_LINK_CLASS = 'ocean-phone-call';
+const BE_ROCKET_FILTERS_QUERY_VAR_NAME = 'filters';
+const GET_LAST_BE_ROCKET_ROOM_FILTER_ID_REGEX = '/szoba.*[\[-](\d+)*\]/';
+const LIVING_ROOM_AND_MORE_ID = 3651;
+const KITCHEN_ID = 3650;
+const BATHROOM_ID = 3649;
+
 const TEL_NUMBERS = [
   ["06 70 942 5095", "06-70-942-5095", "Pinti István"],
   ["06 30 397 4150", "06-30-397-4150", "Szabó István"],

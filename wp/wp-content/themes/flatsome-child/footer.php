@@ -66,6 +66,8 @@ global $flatsome_opt;
 
 </div>
 <script type="text/javascript">
+  let calledPerson = "sannya";
+
   const CHECKED_SELECTOR = '--checked';
   const COLOR_FILTER_ICONS_SELECTOR = 'filter-form__szin';
   const SHOP_SIDEBAR_SWITCH_BTNS_SELECTOR = '#shop-sidebar-switch-btns';
@@ -114,13 +116,18 @@ global $flatsome_opt;
   const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
   const DESIGN_SLIDER_LOADER_SELECTOR = '.n2-padding ss3-loader';
   const BIG_PHONE_CALL_ICON_SELECTOR = '.big-phone-call-icon';
+  const BIG_PHONE_CALL_ICON_SALES_AGENT_NAME_SELECTOR = '.icon-box-text strong';
   const GOOGLE_MAPS_THIN_IMAGE_SELECTOR = '.google-maps-thin-image';
   const PHONE_CALL_NUMBER_LINK = '.phone-call-number-link';
   const OCEAN_PHONE_CALL_LINK_CLASS = 'ocean-phone-call';
+  const CATEGORY_GRID_BANNER_SELECTOR = '.category-grid-banner';
   
   const GTM_SLIDER_INTERACTION_TRIGGER_NAME = 'interacted with slider';
-  const GA_VIEW_CART_EVENT_NAME = 'view_cart';
-  const GA_MACHINE_RENT_CALL_EVENT_NAME = 'contact - call - machine rent';
+  const GTM_VIEW_CART_EVENT_NAME = 'view_cart';
+  const GTM_MACHINE_RENT_EVENT_NAME = 'ga - machine rent call';
+  const GTM_CALL_EVENT_NAME = 'ga - call';
+  const GTM_SALES_AGENT_NAME_VARIABLE = 'salesAgentsName';
+  const GTM_HTML_ELEMENT_VARIABLE = 'htmlElement';
 
   const IS_SLIDER_LOADED_INTERVAL_TIMER = 200;
   const SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT = 1000;
@@ -232,9 +239,15 @@ global $flatsome_opt;
     },
   ];
 
-const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
+  const FOOTER_CALL_LINK_NAME = 'footer-call-link';
+  const UX_BUILDER_CALL_ICON_BOX_NAME = 'ux-builder-call-icon-box';
+  const INLINE_CALL_LINK_NAME = 'inline-call-link';
+  const CALL_BUTTON_NAME = 'button';
 
- const SERVICE_PAGE_ID = "20391";
+  const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
+
+  const SERVICE_PAGE_ID = "20391";
+  const SALES_AGENTS_NAME_ATTRIBUTE = 'data-sales-agents-name';
 
   let isMenuSwitchFinised = true;
   window.addEventListener('DOMContentLoaded',async function(){
@@ -264,7 +277,7 @@ const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
       loadElementOnUserInteractionAndInViewport(OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML, OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR)
     }
 
-    const isSaloonPage = window.location.pathname === SALOON_PAGE_PATH;
+    const isSaloonPage = window.location.pathname === SALOON_PAGE_PATH || window.location.pathname === '/szalon-test/';
     if (isSaloonPage) {
       loadPageTopGoogleMaps();
     }
@@ -341,7 +354,18 @@ const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
     if (isMachineRentPage) {
       loadElementOnUserInteractionAndInViewport(CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML, CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR);
       loadElementOnUserInteractionAndInViewport(CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML, CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR);
-      loadElementOnUserInteractionAndInViewport(OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML, OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR);
+    }
+
+    const callBtnsOnPage = jQuery(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
+    if (callBtnsOnPage.length) {
+      gtmPhoneCallEvents(callBtnsOnPage)
+    }
+
+    const categoryBanners = jQuery(CATEGORY_GRID_BANNER_SELECTOR);
+    // has category selector html elem on page
+    if (categoryBanners.length) {
+      hasCategoryBanner(categoryBanners);
+    }
     }
   },false);
 
@@ -846,7 +870,6 @@ const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
   }
 
   function loadElementOnUserInteractionAndInViewport(elementHtml, elementContainerSelector, jo) {
-
     const elemContainer = jQuery(elementContainerSelector);
     let shouldLoadElem = isElemVisible(elementContainerSelector);
     if (shouldLoadElem) {
@@ -1138,13 +1161,19 @@ const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
 
   function initiateCallOnPhoneCallIconClick(bigPhoneCallIcons) {
     bigPhoneCallIcons = jQuery(bigPhoneCallIcons);
+
     bigPhoneCallIcons.click(function() {
-      // click on jquery elem itself doesnt trigger phone call... weird.
       jQuery(this).siblings().find(PHONE_CALL_NUMBER_LINK)[0].click();
     });
+
     bigPhoneCallIcons.siblings().find(PHONE_CALL_NUMBER_LINK).click(function(){
-      const gtmTriggerName = jQuery(this).attr("data-gtm");
-      dataLayer.push({'event': gtmTriggerName});
+      const salesAgentName = jQuery(this).parent().siblings().find('h3').text();
+      const callEventOpts = {
+        'event': GTM_CALL_EVENT_NAME
+      }
+      callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = UX_BUILDER_CALL_ICON_BOX_NAME;
+      callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = salesAgentName;
+      dataLayer.push(callEventOpts);
     })
   }
 
@@ -1160,7 +1189,7 @@ const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
   }
 
   function sendViewCartEvent() {
-    dataLayer.push({'event': GA_VIEW_CART_EVENT_NAME});
+    dataLayer.push({'event': GTM_VIEW_CART_EVENT_NAME});
   }
 
   function displayInlineContactInfos(inlineContactInfoElems) {
@@ -1193,6 +1222,7 @@ return `
       const phoneNumberBtn = jQuery(elem);
       const { tel, name } = getRandomContactInfo();
       phoneNumberBtn.attr('href', `tel:${tel}`);
+      phoneNumberBtn.attr(SALES_AGENTS_NAME_ATTRIBUTE, name);
 
       const callToActionArr = phoneNumberBtn.attr("class").match(`${RANDOM_PHONE_BTN_CTA_CLASS}[^\\s]*`)
       let callToActionMessage = '';
@@ -1206,14 +1236,45 @@ return `
     return CONTACT_INFOS[Math.floor(Math.random() * CONTACT_INFOS.length)]
   }
 
-  function machineRentCallEvents() {
-    const phoneCallBtns = jQuery(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
-    phoneCallBtns.on('click', () => {
-      dataLayer.push({'event': GA_MACHINE_RENT_CALL_EVENT_NAME});
+  function gtmPhoneCallEvents(callBtnsOnPageJqueryObject) {
+    callBtnsOnPageJqueryObject.on('click', function() {
+      callBtn = jQuery(this);
+      const callEventOpts = {
+        'event': GTM_CALL_EVENT_NAME
+      }
+      
+      const isMachineRentPage = window.location.pathname === MACHINE_RENT_PAGE_PATH;
+      const hasButtonShape = callBtn.hasClass('button');
+      if (hasButtonShape) {
+        callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = CALL_BUTTON_NAME;
+        callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = callBtn.attr(SALES_AGENTS_NAME_ATTRIBUTE);
+        dataLayer.push(callEventOpts);
+        if (isMachineRentPage) dataLayer.push({ event: GTM_MACHINE_RENT_EVENT_NAME });
+        return;
+      }
+
+      const isFooterPhoneCallLink = callBtn.parent().attr('itemprop') === 'telephone';
+      if (isFooterPhoneCallLink) {
+        callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = FOOTER_CALL_LINK_NAME;
+      } else {
+        callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = INLINE_CALL_LINK_NAME;
+      }
+      
+      const salesAgentName = callBtn.text().match(/[A-z].*/)[0];
+      callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = salesAgentName;
+      dataLayer.push(callEventOpts);
+      if (isMachineRentPage) dataLayer.push({ event: GTM_MACHINE_RENT_EVENT_NAME });
     })
   }
+
+  function hasCategoryBanner(categoryBanners) {
+    categoryBanners.on('click', function() {
+      const categoryBanner = jQuery(this);
+      const nextPagesLink = categoryBanner.find('a').attr('href');
+      window.open(nextPagesLink, '_blank');
+    });
+  }
 </script>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:ital,wght@0,400;0,500;1,100;1,300;1,400&display=swap" rel="stylesheet">
 </body>
 </html>

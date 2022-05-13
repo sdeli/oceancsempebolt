@@ -15,13 +15,12 @@
 //     echo '<br> slug '.$this->$slug.'<br>';
 // 	}
 // }
-
   const OPENING_HOURS_HTML = <<<EOD
     <div>
       <span itemprop="telephone">
-        <a href="tel:06709425095">06 70 942 5095 - Pinti István</a><br>
-        <a href="tel:06303974150">06 30 397 4150 - Szabó István</a><br>
-        <a href="tel:06706014600">06 70 601 4600 - Illés László</a>
+        <a class="ocean-phone-call" href="tel:06709425095">06 70 942 5095 - Pinti István</a><br>
+        <a class="ocean-phone-call" href="tel:06303974150">06 30 397 4150 - Szabó István</a><br>
+        <a class="ocean-phone-call" href="tel:06706014600">06 70 601 4600 - Illés László</a>
       </span>
     </div>
 

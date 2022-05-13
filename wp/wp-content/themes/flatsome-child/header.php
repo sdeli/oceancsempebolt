@@ -7,6 +7,7 @@
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
   <meta name="facebook-domain-verification" content="2dzoirjyiwbrjn2pamlkk5jqlw2kil" />
+  <meta name="google-site-verification" content="SZZ3F9vJjE__LfFmuf1A6CcwYGr6qD6NbuIaZBLUwe8" />
     <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

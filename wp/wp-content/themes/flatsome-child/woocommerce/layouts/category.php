@@ -27,6 +27,13 @@
         } else {
           if ($cat->slug === "burkolatok") {
             $smartSliderId = 3;
+
+            preg_match(GET_LAST_BE_ROCKET_ROOM_FILTER_ID_REGEX, $_GET[BE_ROCKET_FILTERS_QUERY_VAR_NAME], $roomIdArr);
+            $roomId = intval($roomIdArr[1]);
+            $smartSliderId = $roomId === LIVING_ROOM_AND_MORE_ID ? 109 : $smartSliderId;
+            $smartSliderId = $roomId === KITCHEN_ID ? 230 : $smartSliderId;
+            $smartSliderId = $roomId === BATHROOM_ID ? 106 : $smartSliderId;
+
             $manyItems = true;
           }
   
@@ -386,12 +393,6 @@
             $smartSliderId = 97;	
           }
   
-          if ($cat->slug === "lisztello") {
-  // 					$smartSliderId = 96;	
-          }
-          if ($cat->slug === "mozaik") {
-  // 					$smartSliderId = 97;	
-          }
           if ($cat->slug === "beige") {
             $smartSliderId = 100;	
           }
@@ -564,9 +565,6 @@
           if ($cat->slug === "marmo-doro") {
             $smartSliderId = 157;	
           }
-          // if ($cat->slug === "pastel") {
-          // 	$smartSliderId = 158;	
-          // }
           if ($cat->slug === "palermo") {
             $smartSliderId = 159;	
           }
@@ -781,7 +779,7 @@
             $smartSliderId = 233;	
           }
   
-          if ($cat->slug === "lisztello") {
+          if ($cat->slug === "bordur") {
             $smartSliderId = 235;	
           }
           if ($cat->slug === "mozaik") {
@@ -909,9 +907,6 @@
           if ($cat->slug === "modern-pearl") {
             $smartSliderId = 275;
           }
-          // if ($cat->slug === "mono-pastel") {
-          //   $smartSliderId = 272;
-          // }
           if ($cat->slug === "integrally") {
             $smartSliderId = 271;
           }
@@ -1089,8 +1084,151 @@
           if ($cat->slug === "viena") {
             $smartSliderId = 334;
           }
+          if ($cat->slug === "white-opal") {
+            $smartSliderId = 335;
+          }
+          if ($cat->slug === "grand-cave") {
+            $smartSliderId = 336;
+          }
+          if ($cat->slug === "regal-stone") {
+            $smartSliderId = 337;
+          }
+          if ($cat->slug === "amber-vein") {
+            $smartSliderId = 338;
+          }
+          if ($cat->slug === "ambra-bianca") {
+            $smartSliderId = 339;
+          }
+          if ($cat->slug === "tin") {
+            $smartSliderId = 340;
+          }
+          if ($cat->slug === "specchio-carrara") {
+            $smartSliderId = 341;
+          }
+          if ($cat->slug === "duke-stone") {
+            $smartSliderId = 342;
+          }
+          if ($cat->slug === "persian-tale") {
+            $smartSliderId = 343;
+          }
+          if ($cat->slug === "torano") {
+            $smartSliderId = 344;
+          }
+          if ($cat->slug === "pietrasanta") {
+            $smartSliderId = 345;
+          }
+          if ($cat->slug === "scoglio-grigio") {
+            $smartSliderId = 346;
+          }
+          if ($cat->slug === "black-pulpis") {
+            $smartSliderId = 347;
+          }
+          if ($cat->slug === "tender-stone") {
+            $smartSliderId = 348;
+          }
+          if ($cat->slug === "masterstone") {
+            $smartSliderId = 349;
+          }
+          if ($cat->slug === "grande-marble-look") {
+            $smartSliderId = 355;
+          }
+          if ($cat->slug === "marquina") {
+            $smartSliderId = 356;
+          }
+          if ($cat->slug === "calacatta-cerrad") {
+            $smartSliderId = 357;
+          }
+          if ($cat->slug === "grande-marble-look") {
+            $smartSliderId = 358;
+          }
+          if ($cat->slug === "iceland") {
+            $smartSliderId = 359;
+          }
+          if ($cat->slug === "gold") {
+            $smartSliderId = 360;
+          }
+          if ($cat->slug === "tholos") {
+            $smartSliderId = 361;
+          }
+          if ($cat->slug === "grand-antique-kategoria") {
+            $smartSliderId = 362;
+          }
+          if ($cat->slug === "linz") {
+            $smartSliderId = 363;
+          }
+          if ($cat->slug === "eter") {
+            $smartSliderId = 364;
+          }
+          if ($cat->slug === "eos") {
+            $smartSliderId = 365;
+          }
+          if ($cat->slug === "aurora") {
+            $smartSliderId = 366;
+          }
+          if ($cat->slug === "adar") {
+            $smartSliderId = 367;
+          }
+          if ($cat->slug === "tinta-tubadzin") {
+            $smartSliderId = 368;
+          }
+          if ($cat->slug === "storm") {
+            $smartSliderId = 369;
+          }
+          if ($cat->slug === "acra") {
+            $smartSliderId = 370;
+          }
+          if ($cat->slug === "powder") {
+            $smartSliderId = 371;
+          }
+          if ($cat->slug === "ares") {
+            $smartSliderId = 372;
+          }
+          if ($cat->slug === "newpark") {
+            $smartSliderId = 373;
+          }
+          if ($cat->slug === "kalksten") {
+            $smartSliderId = 374;
+          }
+          if ($cat->slug === "touche") {
+            $smartSliderId = 375;
+          }
+          if ($cat->slug === "marsa") {
+            $smartSliderId = 376;
+          }
+          if ($cat->slug === "folk") {
+            $smartSliderId = 377;
+          }
+          if ($cat->slug === "carrara") {
+            $smartSliderId = 378;
+          }
+          if ($cat->slug === "midas") {
+            $smartSliderId = 380;
+          }
+          if ($cat->slug === "modico") {
+            $smartSliderId = 381;
+          }
+          if ($cat->slug === "lira") {
+            $smartSliderId = 382;
+          }
+          if ($cat->slug === "epulo") {
+            $smartSliderId = 383;
+          }
+          if ($cat->slug === "crema-natural") {
+            $smartSliderId = 384;
+          }
+          if ($cat->slug === "belite") {
+            $smartSliderId = 385;
+          }
+          if ($cat->slug === "amberwood") {
+            $smartSliderId = 386;
+          }
+          if ($cat->slug === "valls-kategoria") {
+            $smartSliderId = 387;
+          }
+          if ($cat->slug === "colour") {
+            $smartSliderId = 388;
+          }
         }
-
         ?>
       <div class="row">
         <div class="col design-col">
