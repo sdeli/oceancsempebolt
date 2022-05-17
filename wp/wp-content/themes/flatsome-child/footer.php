@@ -29,7 +29,8 @@ global $flatsome_opt;
     $cat = $wp_query->get_queried_object();
     $colors_by_categories = get_attributes_by_product_categories();
     foreach ($colors_by_categories as $categorySlug => $attrTemplateValues) {
-      $isNotCurrentCategory = $categorySlug !== $cat->slug;
+      $isCategoryPage = !empty($cat);
+      $isNotCurrentCategory = $isCategoryPage && $categorySlug !== $cat->slug;
       if ($isNotCurrentCategory) {
         echo get_attribute_filter_icons($categorySlug, $attrTemplateValues, $isNotCurrentCategory);
       }
@@ -365,7 +366,6 @@ global $flatsome_opt;
     // has category selector html elem on page
     if (categoryBanners.length) {
       hasCategoryBanner(categoryBanners);
-    }
     }
   },false);
 
@@ -1275,6 +1275,5 @@ return `
     });
   }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:ital,wght@0,400;0,500;1,100;1,300;1,400&display=swap" rel="stylesheet">
 </body>
 </html>

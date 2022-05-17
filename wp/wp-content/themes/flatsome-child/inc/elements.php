@@ -34,6 +34,8 @@ function move_colors_to_front($attrFilterTemplateValuesArr) {
 function get_color_icon($categorySlug, $attrFilterTemplateValues, $shouldNavigate) {
   $colorFilterId = $attrFilterTemplateValues['id'];
   $displayName = $attrFilterTemplateValues["displayName"];
+  $isSidebarFilterLinkClass = "";
+  $isCheckedClass = "";
   
   if ($shouldNavigate) {
     $href ="/{$categorySlug}/?filters=szin[{$colorFilterId}]";
@@ -69,31 +71,3 @@ function get_tag_icon($categorySlug, $attrFilterTemplateValues, $shouldNavigate)
     ."<a href=\"{$href}\">{$displayName}</a>"
   ."</li>";
 }
-
-// function get_color_filter_icons($categorySlug, $colorTemplateValuesObjArr = null, $shouldNavigate = false) {
-  //   // echo '<br>majom ========<br>';
-  //   if (!$colorTemplateValuesObjArr) return '';
-  //   $colorFilterHtml = "<li id=\"{$categorySlug}\" class=\"sidebar-filter cat-item cat-item-1458 color-filter\"><ul>";
-//   foreach($colorTemplateValuesObjArr as $colorTemplateValues) {
-//     // echo '<br>majom 2 ========<br>';
-//     // echo 'main '.$categorySlug;
-//     print_r($colorTemplateValues);
-//     $colorFilterId = $colorTemplateValues->id;
-//     if ($shouldNavigate) {
-//       $href ="/{$categorySlug}/?filters=szin[{$colorFilterId}]";
-//     } else {
-//       $href = "javascript:activateColorFilter({$colorFilterId})";
-//       $currentFilters = $_GET['filters'] ? $_GET['filters'] : "";
-//       $isCheckedClass = str_contains($currentFilters, $colorFilterId) ? "sidebar-filter__circle--checked" : "";
-//     }
-    
-//     $colorFilterHtml .= 
-//     "<li class=\"sidebar-filter__circle sidebar-filter__circle--{$colorTemplateValues->slug} {$isCheckedClass} sidebar__filter-{$colorFilterId}\">"
-//       ."<a href=\"{$href}\"></a>"
-//       ."<label>{$colorTemplateValues->displayName}</label>"
-//     ."</li>";
-//   };
-
-//   $colorFilterHtml .= '</ul></li>';
-//   return $colorFilterHtml;
-// }
