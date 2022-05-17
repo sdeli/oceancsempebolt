@@ -1,20 +1,20 @@
 {
-    "name": "sandordeli/oceancsempebolt",
-    "autoload": {
-        "psr-4": {
-            "Sandordeli\\Oceancsempebolt\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "sdeli",
-            "email": "bgfkszmsdeli@gmail.com"
-        }
-    ],
-    "config": { 
-      "vendor-dir": "vendor" 
+  "name": "sandordeli/oceancsempebolt",
+  "authors": [
+      {
+          "name": "sdeli",
+          "email": "bgfkszmsdeli@gmail.com"
+      }
+  ],
+  "config": { 
+    "vendor-dir": "vendor" 
   },
   "require": {
-        "leeoniya/dump-r": "^2.1"
+    "leeoniya/dump-r": "^2.1"
+  },
+  "autoload": {
+    "psr-4": {
+    "Inc\\" : "Inc"
     }
+}
 }
