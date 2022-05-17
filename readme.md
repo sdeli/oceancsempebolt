@@ -100,6 +100,30 @@ You may install some **debug / dev plugins** like:
 - [Query Monitor](https://wordpress.org/plugins/search/query+monitor/)
 - [show hooks](https://wordpress.org/plugins/search/show+hooks/)
 
+## 7. Xdebug setup
+- In this repo we are using __xdebug-3.1.4__
+- It's settings which make it work lie in __scripts/xdebug-3.1.4/xdebug.ini__
+- With ```composer debug:activate``` you can activate it, and from that point on it listens to any debugging client. (You need to run the command just once.)
+- For Vscode usage you need to have these settings in your launch.json
+```js
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Docker Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "hostname": "localhost",
+      "port": 9003,
+      "log": true,
+      "pathMappings": {
+        "/var/www/html": "${workspaceRoot}/wp",
+      }
+    },
+  ]
+}
+```
+
 ## Important Commands
 ```sh
 # list all containers
@@ -119,4 +143,8 @@ composer purge
 
 # attach/log into a container
 docker exec -it [container-id] /bin/bash
+
+# activate debugger
+# you need to run this command just once in the lifetime of the wp container
+composer debug:activate
 ```

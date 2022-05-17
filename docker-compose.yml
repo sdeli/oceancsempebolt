@@ -4,13 +4,14 @@ services:
   # Database
   db:
     image: mysql:5.7
+    container_name: mysql
     volumes: ['./assets:/assets', './mysql:/var/lib/mysql']
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: client4478dbtynn
       MYSQL_USER: client4478dbtynn
-      MYSQL_PASSWORD: client4478dbtynnPass
+      MYSQL_PASSWORD: QH1vEAN5
     networks:
       - wpsite
   # phpmyadmin
@@ -18,6 +19,7 @@ services:
     depends_on:
       - db
     image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
     restart: always
     ports:
       - '8080:80'
@@ -31,6 +33,7 @@ services:
     depends_on:
       - db
     image: wordpress:latest
+    container_name: wp
     ports:
       - '80:80'
     restart: always
@@ -39,7 +42,7 @@ services:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: client4478dbtynn
       WORDPRESS_DB_NAME: client4478dbtynn
-      WORDPRESS_DB_PASSWORD: client4478dbtynnPass
+      WORDPRESS_DB_PASSWORD: QH1vEAN5
       WP_ENVIRONMENT_TYPE: 'local'
     networks:
       - wpsite

@@ -10,3 +10,4 @@ mysql/*
 !mysql/.gitkeep
 !assets
 assets/*
+.vscode/launch.json
