@@ -1,0 +1,20 @@
+{
+    "name": "sandordeli/oceancsempebolt",
+    "autoload": {
+        "psr-4": {
+            "Sandordeli\\Oceancsempebolt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "sdeli",
+            "email": "bgfkszmsdeli@gmail.com"
+        }
+    ],
+    "config": { 
+      "vendor-dir": "vendor" 
+  },
+  "require": {
+        "leeoniya/dump-r": "^2.1"
+    }
+}

@@ -23,7 +23,8 @@
       "ls": "docker container ls -a",
       "replace": "./scripts/replace-domain.sh",
       "importdb": "./scripts/import-db.sh",
-      "debug:activate": "docker cp ./scripts/xdebug-3.1.4 wp:/xdebug-3.1.4; docker exec -it wp sh -c \"/xdebug-3.1.4/rebuild.sh\"; docker container restart wp"
+      "debug:activate": "docker cp ./scripts/xdebug-3.1.4 wp:/xdebug-3.1.4; docker exec -it wp sh -c \"/xdebug-3.1.4/rebuild.sh\"; docker container restart wp",
+      "attach:wp": "docker exec -it wp /bin/bash"
     },
     "config": { 
         "vendor-dir": "wp/wp-content/themes/flatsome-child/vendor" 
