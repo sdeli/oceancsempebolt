@@ -6,5 +6,4 @@ if (wp_get_environment_type() === ENVIRONMENT_TYPE_LOCAL) {
 }
 
 require_once(get_theme_file_path('/inc/classes.php'));
-require_once(get_theme_file_path('/inc/elements.php'));
 require_once(get_theme_file_path('/inc/helpers.php'));

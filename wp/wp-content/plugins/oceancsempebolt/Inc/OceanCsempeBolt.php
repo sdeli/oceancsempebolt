@@ -7,14 +7,23 @@ class OceanCsempeBolt
   const C = 'constant';
 
 	static function init() {
+    $js_file_path = OCEANCSEMPEBOLT_PATH . 'Inc/js.php';
+    add_action('wp_enqueue_scripts', function() use ($js_file_path) {
+      require_once($js_file_path);
+    }, 10000);
+
     if (wp_get_environment_type() === Config::ENVIRONMENT_TYPE_PROD) {
       self::ocs_add_gtm_to_head();
       self::ocs_add_gtm_to_body();
     }
 
-    add_action( 'init', [ __CLASS__, 'add_design_post_type' ] );
+    add_action( 'init', array( __CLASS__, 'add_design_post_type' ) );
+    add_action( 'flatsome_footer', array( __CLASS__, 'add_design_post_type' ) );
     add_action( 'woocommerce_email_before_order_table', [ __CLASS__, 'ocs_email_instructions' ], 9, 3 ); 
     add_action( "wp", [ __CLASS__, "ocs_disable_wc_terms_toggle" ] );
+    add_action('woocommerce_before_main_content', function () { \Inc\ProductCategoryPage::echoCustomElements(); });
+
+    \Inc\AllPages::displayCustomElements();
 	}
 
   static function add_design_post_type() {

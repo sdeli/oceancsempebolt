@@ -1,73 +1,5 @@
-<?php
-/**
- * The template for displaying the footer.
- *
- * @package flatsome
- */
-
-global $flatsome_opt;
-?>
-
-</main>
-
-<div class="line-loader"></div>
-<div class="site-block-overlay"></div>
-<div class="loader">
-	<h3 class="loader__title">
-				⭐PILLANAT⭐
-	</h3>
-	<div class="loader__circle"></div>
-</div>
-<footer id="footer" class="footer-wrapper">
-
-	<?php do_action('flatsome_footer'); ?>
-
-</footer>
-<div class="sidebar-filters">
-  <?php 
-    global $wp_query;
-    $cat = $wp_query->get_queried_object();
-    $colors_by_categories = get_attributes_by_product_categories();
-    foreach ($colors_by_categories as $categorySlug => $attrTemplateValues) {
-      $isCategoryPage = !empty($cat);
-      $isNotCurrentCategory = $isCategoryPage && $categorySlug !== $cat->slug;
-      if ($isNotCurrentCategory) {
-        echo get_attribute_filter_icons($categorySlug, $attrTemplateValues, $isNotCurrentCategory);
-      }
-    }
-  ?>
-</div>
-
-<?php
-  if(is_front_page()){
-    $bathTubSliderHtmlText = htmlspecialchars(do_shortcode("[smartslider3 slider=\"82\"]"));
-    echo '<div class="bath-tub-slider-text" style="display: none">'.$bathTubSliderHtmlText.'</div>';
-    $tilesSliderHtmlText = htmlspecialchars(do_shortcode("[smartslider3 slider=\"247\"]"));
-    echo '<div class="tiles-slider-text" style="display: none">'.$tilesSliderHtmlText.'</div>';
-  }
- ?>
-
-<?php
-  if( !(is_shop() || is_product_category()) && is_active_sidebar('shop-sidebar')){?>
-    <div class="col large-3 hide-for-medium hidden">
-      <div id="shop-sidebar" class="sidebar-inner col-inner everywhere">
-
-        <?php dynamic_sidebar('shop-sidebar'); ?>
-
-    </div>
-  </div>
-<?php }?>
-
-<?php wp_footer(); ?>
-
-<div>
-  <a href="#" class="desktop-hamburger-btn" data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="" class="is-small" aria-label="Menu" aria-controls="main-menu" aria-expanded="false"></a>
-</div>
-<div class="home-page-sliders">
-
-</div>
 <script type="text/javascript">
-  let calledPerson = "sannya";
+  let calledPerson = "";
 
   const CHECKED_SELECTOR = '--checked';
   const COLOR_FILTER_ICONS_SELECTOR = 'filter-form__szin';
@@ -218,7 +150,8 @@ global $flatsome_opt;
   const SMALL_TABLET_WIDTH = 849;
   const MOBILE_MAX_WIDTH = 499;
   const DESIGN_SLIDER_MOBILE_HEIGHT = 238;
-
+  
+  const PRODUCT_CATEG_URL_BASE = '/termek-kategoria'
   const CONTACTS_PAGE_PATH = '/kapcsolat/';
   const SALOON_PAGE_PATH = '/szalon/';
   const DISCOUNTS_DISCLAIMER_PAGE_PATH = '/akciok/';
@@ -457,39 +390,25 @@ global $flatsome_opt;
 
   function filterItemsOnClick() {
     const allFilterItems = Array.from(document.querySelectorAll('.filter-form li label'));
+    console.log('allFilterItems ========')
+    console.log(allFilterItems);
     allFilterItems.forEach((filterItem) => {
       filterItem.addEventListener('click', function(e) {
         filterItem.parentElement.classList.toggle('checked');
-        const isFilterItemActive = filterItem.parentElement.className.includes('checked');
-        const filterItemId = filterItem.parentElement.children[0].value;
-        const productCategId = window.location.pathname.replace(/\//g, '');
-        const isMainShopPage = productCategId === MAIN_SHOP_PAGE_SLUG;
-
-        if (isMainShopPage) {
-          activateLoader();
-          return;
-        } 
-
-        const sidebarFilterItem = document.querySelector(`#${productCategId} .sidebar__filter-${filterItemId}`);
-        const isSidebarFilterItemActive = sidebarFilterItem.className.includes('--checked');
-
-        if (isFilterItemActive !== isSidebarFilterItemActive) {
-          sidebarFilterItem.classList.toggle('--checked');
-        }
-
         activateLoader();
       })
     })
-  }
-
-  function activateLoader() {
-    document.querySelector('.loader').style.display = 'block';
   }
 
   function activateColorFilter(productCategId, colorFilterId) {
     const clickedSidebarCircle = document.querySelector(`#${productCategId} .sidebar__filter-${colorFilterId}`);
     clickedSidebarCircle.classList.toggle("--checked");
     document.querySelector(`input[value="${colorFilterId}"]`).parentElement.children[1].click();
+    activateLoader();
+  }
+
+  function activateLoader() {
+    document.querySelector('.loader').style.display = 'block';
   }
   
   function activateAttributeFilter(productCategId, attributeFilterId) {
@@ -1275,5 +1194,3 @@ return `
     });
   }
 </script>
-</body>
-</html>
