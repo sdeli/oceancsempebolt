@@ -58,4 +58,15 @@ class Config
   const PALLET_SHIPPING_CLASS_ID = 2410;
   const PALLET_SHIPPING_CLASS_NAME = "Raklapos házhozszállítás";
   const BOX_SHIPPING_CLASS_NAME = "Dobozos házhozszállítás";
+
+  const TEL_NUMBERS = [
+    ["06 70 942 5095", "06-70-942-5095", "Pinti István"],
+    ["06 30 397 4150", "06-30-397-4150", "Szabó István"],
+    ["06 70 601 4600", "06-70-601-4600", "Illés László"]
+  ];
+
+  const OCEAN_PHONE_CALL_LINK_CLASS = 'ocean-phone-call';
+
+  const BANK_TRANSFER_LABEL = 'bacs';
+  const ON_HOLD_ORDER_STATUS = 'on-hold';
 }
