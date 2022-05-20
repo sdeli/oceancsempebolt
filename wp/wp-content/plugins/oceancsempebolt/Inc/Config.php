@@ -55,4 +55,7 @@ class Config
 
   const SIDEBAR_FILTER_LINK_CLASS = 'sidebar-filter__link';
 
+  const PALLET_SHIPPING_CLASS_ID = 2410;
+  const PALLET_SHIPPING_CLASS_NAME = "Raklapos házhozszállítás";
+  const BOX_SHIPPING_CLASS_NAME = "Dobozos házhozszállítás";
 }

@@ -9,11 +9,6 @@ const LOOK_TAG = 'tag_look';
 const CHECKED_CLASS = '--checked';
 const SIDEBAR_FILTER_CIRCLE_CLASS = 'sidebar-filter__circle';
 
-const PALLET_SHIPPING_CLASS_ID = 2410;
-const PALLET_SHIPPING_CLASS_NAME = "Raklapos házhozszállítás";
-
-const BOX_SHIPPING_CLASS_NAME = "Dobozos házhozszállítás";
-
 const COMPANY_BANK_ACCOUNT = '11714006-20397245';
 const ON_HOLD_PAYMENT_STATUS_NAME = 'on-hold';
 const BANK_TRANSFER_LABEL = 'bacs';

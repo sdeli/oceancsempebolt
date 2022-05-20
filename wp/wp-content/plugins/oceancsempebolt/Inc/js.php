@@ -242,7 +242,6 @@
         addAttributeFilterIconsToCurrentCategory();
       }
     }
-    
     const hasProductCards = !!document.querySelectorAll('.product-small.box');
     if (hasProductCards) {
       resizeProductCardTitlesForElliplsis();
@@ -390,8 +389,6 @@
 
   function filterItemsOnClick() {
     const allFilterItems = Array.from(document.querySelectorAll('.filter-form li label'));
-    console.log('allFilterItems ========')
-    console.log(allFilterItems);
     allFilterItems.forEach((filterItem) => {
       filterItem.addEventListener('click', function(e) {
         filterItem.parentElement.classList.toggle('checked');
