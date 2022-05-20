@@ -13,7 +13,7 @@ class CartPage
     $productsInCart = WC()->shipping()->packages[0]['contents'];
     $has_pallet_product_in_cart = false;
     foreach ( $productsInCart as $product ) {
-      $shipping_class_id = $product['data']->shipping_class_id;
+      $shipping_class_id = $product['data']->get_shipping_class_id();
       if ($shipping_class_id === Config::PALLET_SHIPPING_CLASS_ID) {
         $has_pallet_product_in_cart = true;
         break;

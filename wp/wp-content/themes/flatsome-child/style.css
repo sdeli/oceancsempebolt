@@ -515,11 +515,9 @@ a.add_to_cart_button.button.primary {
   position: absolute;
 }
 .design-slider-container__placeholder {
-  transition: height 0.3s ease-in-out;
   height: 20px;
   background: #0f71cc;
   color: white;
-  /* position: absolute; */
 }
 .design-slider-container__placeholder__message {
   display: none;
@@ -527,10 +525,6 @@ a.add_to_cart_button.button.primary {
 
 .design-slider-container__placeholder__message.--visible {
   display: block;
-  /* display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around; */
   position: relative;
   top: 50%;
   transform: translateY(-50%);

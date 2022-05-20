@@ -1,9 +1,9 @@
 <?php
 
-require_once(get_theme_file_path('/inc/constants.php'));
-if (wp_get_environment_type() === ENVIRONMENT_TYPE_LOCAL) {
-  require_once(get_theme_file_path('/vendor/autoload.php'));
+require_once(get_theme_file_path('/inc/widgets.php'));
+
+function disable_wc_terms_toggle() { 
+  remove_action( "woocommerce_checkout_terms_and_conditions", "wc_terms_and_conditions_page_content", 30 ); 
 }
 
-require_once(get_theme_file_path('/inc/classes.php'));
-require_once(get_theme_file_path('/inc/helpers.php'));
+add_action( "wp", "disable_wc_terms_toggle" );

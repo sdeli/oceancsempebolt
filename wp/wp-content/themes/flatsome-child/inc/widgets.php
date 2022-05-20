@@ -1,20 +1,4 @@
 <?php
-// class ColorTemplateValues {
-//   public $id;
-//   public $displayName;
-//   public $slug;
-
-//   function __construct(string $slug, int $id, string $displayName, $i)
-// 	{
-//     $this->$slug = $slug.$i;
-//     $this->$displayName = $displayName;
-//     $this->$id = $id;
-//     echo 'inclasss2 ========';
-//     echo '<br>id '.$this->$id.'<br>';
-//     echo '<br> disp '.$this->$displayName.'<br>';
-//     echo '<br> slug '.$this->$slug.'<br>';
-// 	}
-// }
   const OPENING_HOURS_HTML = <<<EOD
     <div>
       <span itemprop="telephone">

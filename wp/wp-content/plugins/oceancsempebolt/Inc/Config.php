@@ -69,4 +69,10 @@ class Config
 
   const BANK_TRANSFER_LABEL = 'bacs';
   const ON_HOLD_ORDER_STATUS = 'on-hold';
+
+  const LOOK_COLOR = 'color_look';
+  const LOOK_TAG = 'tag_look';
+  const CHECKED_CLASS = '--checked';
+
+  const COMPANY_BANK_ACCOUNT = '11714006-20397245';
 }

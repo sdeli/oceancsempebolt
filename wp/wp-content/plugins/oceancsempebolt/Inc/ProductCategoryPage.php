@@ -55,25 +55,18 @@ class ProductCategoryPage
           </div>
 
           <?php
-            $is_category_page = !is_shop();
-            if ($is_category_page) {
-              global $wp_query;
-              $current_category = $wp_query->get_queried_object();
-              $catalog = \Inc\Utils::get_catalog_for_category($current_category);
+              $catalog = \Inc\Utils::get_pdf_catalog_data_for_category();
               if ($catalog) {
-                $catalog_name = strtoupper($catalog['name']);
           ?>
-          
             <a 
               href="<?= $catalog['url'] ?>" 
               target="_blank" class="catalog-legend"
             >
               ITT MEGTEKINTHETI A TELJES 
-              <span class="color-alert-yellow text-shadow-sharp"><?= $catalog_name ?></span> 
+              <span class="color-alert-yellow text-shadow-sharp"><?= $catalog['name'] ?></span> 
               KATALÓGUST: <span class="color-alert-yellow text-shadow-sharp">KATTINTS IDE</span>
             </a>
-          <?php } } 
-          ?>
+          <?php } ?>
 
         </div>
       </div>

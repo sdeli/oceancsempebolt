@@ -5,8 +5,14 @@ use \Inc\Config;
 class Utils {
   const C = 'constant';
 
-  static function get_catalog_for_category($category) {
+  static function get_pdf_catalog_data_for_category() {
+    if (is_shop()) return false;
+
+    global $wp_query;
+    $category = $wp_query->get_queried_object();
+
     $slug = $category->slug;
+
     $hasCatalogUrl = isset(Config::PDF_CATALOGS_BY_PRODUCT_CATEGORIES[$slug]);
     if ($hasCatalogUrl) {
       return Config::PDF_CATALOGS_BY_PRODUCT_CATEGORIES[$slug];
@@ -14,8 +20,10 @@ class Utils {
     
     $categs_term_id = $category->term_id;
     $parent_category_ids = get_ancestors($categs_term_id, 'product_cat');
+    
     foreach(Config::PDF_CATALOGS_BY_PRODUCT_CATEGORIES as $categ_slug => $catalog_data) { 
       $parent_categ_with_catalog_found = in_array($catalog_data['term_id'], $parent_category_ids);
+
       if ($parent_categ_with_catalog_found) return $catalog_data;
     }
   
@@ -30,7 +38,7 @@ class Utils {
     foreach ($result as $row) {
       $currentCategorySlug = $row->category_slug;
       $displayName = $row->attribute_value_name;
-      $lookOnFrontEnd = $row->attribute_slug === 'pa_szin' ? LOOK_COLOR : LOOK_TAG;
+      $lookOnFrontEnd = $row->attribute_slug === 'pa_szin' ? Config::LOOK_COLOR : LOOK_TAG;
       $filterType = preg_replace('/pa_/i', '', $row->attribute_slug);
       $attributeTemplateValues = [
         'id' => $row->attribute_value_id, 
@@ -57,7 +65,7 @@ class Utils {
     $attrFilterTemplateValuesArr = self::move_colors_to_front($attrFilterTemplateValuesArr);
   
     foreach($attrFilterTemplateValuesArr as $attrFilterTemplateValues) {
-      if ($attrFilterTemplateValues['form'] === LOOK_COLOR) {
+      if ($attrFilterTemplateValues['form'] === Config::LOOK_COLOR) {
         $colorFilterHtml .= self::get_color_icon($categorySlug, $attrFilterTemplateValues, $shouldNavigate);
       } else {
         $colorFilterHtml .= self::get_tag_icon($categorySlug, $attrFilterTemplateValues, $shouldNavigate);
@@ -71,7 +79,7 @@ class Utils {
   
   static function move_colors_to_front($attrFilterTemplateValuesArr) {
     $colors = array_filter($attrFilterTemplateValuesArr, function($templateValues) {
-      return $templateValues['form'] === LOOK_COLOR;
+      return $templateValues['form'] === Config::LOOK_COLOR;
     });
     
     $tags = array_filter($attrFilterTemplateValuesArr, function($templateValues) {
@@ -94,7 +102,7 @@ class Utils {
     } else {
       $href = "javascript:activateColorFilter('$categorySlug', {$colorFilterId})";
       $currentFilters = $_GET['filters'] ? $_GET['filters'] : "";
-      $isCheckedClass = str_contains($currentFilters, $colorFilterId) ? CHECKED_CLASS : "";
+      $isCheckedClass = str_contains($currentFilters, $colorFilterId) ? Config::CHECKED_CLASS : "";
     }
     
     return ''
@@ -110,11 +118,11 @@ class Utils {
     
     if ($shouldNavigate) {
       $href ="/{$categorySlug}/?filters={$filterType}[{$attributeFilterId}]";
-      $isSidebarFilterLinkClass = SIDEBAR_FILTER_LINK_CLASS;
+      $isSidebarFilterLinkClass = Config::SIDEBAR_FILTER_LINK_CLASS;
     } else {
       $href = "javascript:activateAttributeFilter('$categorySlug', {$attributeFilterId})";
       $currentFilters = $_GET['filters'] ? $_GET['filters'] : "";
-      $isCheckedClass = str_contains($currentFilters, $attributeFilterId) ? CHECKED_CLASS : "";
+      $isCheckedClass = str_contains($currentFilters, $attributeFilterId) ? Config::CHECKED_CLASS : "";
     }
     
     return ''
@@ -162,9 +170,9 @@ class Utils {
   }
 
   static function disable_wc_terms_toggle() { 
-    remove_action( "woocommerce_checkout_terms_and_conditions", "wc_terms_and_conditions_page_content", 30 ); 
+    // remove_action( "woocommerce_checkout_terms_and_conditions", "wc_terms_and_conditions_page_content", 30 ); 
   }
-  
+
   static function email_instructions( $order, $sent_to_admin ) {
     if ( ! $sent_to_admin && Config::BANK_TRANSFER_LABEL === $order->get_payment_method() && $order->has_status( Config::ON_HOLD_ORDER_STATUS ) ) {
       if ( $order->get_shipping_method() === Config::PALLET_SHIPPING_CLASS_NAME) {
@@ -207,22 +215,22 @@ class Utils {
   }
 
   protected static function get_pallet_shipping_notes($order) {
-    $C = self::C;
+    $bank_account_number = Config::COMPANY_BANK_ACCOUNT;
     $randTelNumber = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)][1];
   
     return <<<EOD
   Kérjük várd meg kollégánk jelentkezését, aki tájékoztatni fog a szállítás dijáról, valamint időtartamról. Addig is hivd bizalommal kollégánkat a következő telefonszámon: <strong>{$randTelNumber}</strong><br>
-  Miután tájékoztatotást kaptál a szállítási díjról es időről, már átutalhatod nekünk a végösszeget, erre a bankszámlaszámra: <strong>{$C('COMPANY_BANK_ACCOUNT')}</strong><br>
+  Miután tájékoztatotást kaptál a szállítási díjról es időről, már átutalhatod nekünk a végösszeget, erre a bankszámlaszámra: <strong>{$bank_account_number}</strong><br>
   Arra kérünk, hogy rendelésed számát (<strong>{$order->id}</strong>) átutaláskor tüntesd fel a megjegyzés mezőben, köszönjük.
   EOD;
   }
   
   protected static function get_box_shipping_notes($order) {
-    $C = self::C;
+    $bank_account_number = Config::COMPANY_BANK_ACCOUNT;
     $randTelNumber = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)][1];
   
     return <<<EOD
-    Ahoz hogy elindíthassuk megrendelésed folyamatát, kérjük utald el a végösszeget (<strong>{$order->calculate_totals()}Ft</strong>) erre a bankszámlaszámra: <strong>{$C('COMPANY_BANK_ACCOUNT')}</strong><br>
+    Ahoz hogy elindíthassuk megrendelésed folyamatát, kérjük utald el a végösszeget (<strong>{$order->calculate_totals()}Ft</strong>) erre a bankszámlaszámra: <strong>{$bank_account_number}</strong><br>
     Arra kérünk, hogy rendelésed számát (<strong>{$order->id}</strong>) átutaláskor tüntesd fel a megjegyzés mezőben, köszönjük.<br>
     Ha bármi kérdésed merülne fel, hivd bizalommal kollégánkat a következő telefonszámon: <strong>{$randTelNumber}</strong>
   EOD;

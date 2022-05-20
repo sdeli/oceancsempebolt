@@ -15,8 +15,7 @@ class OceanCsempeBolt
     }
 
     add_action( 'init', function() { Utils::add_design_post_type(); });
-    add_action( "wp",  Utils::disable_wc_terms_toggle() );
-    
+
     add_action( 'woocommerce_email_before_order_table', function($order, $sent_to_admin) { 
       Utils::email_instructions($order, $sent_to_admin); 
     }, 9, 3 ); 
@@ -26,5 +25,6 @@ class OceanCsempeBolt
     AllPages::displayCustomElements();
     CartPage::init();
     ProductPage::init();
+    CheckoutPage::init();
 	}
 }
