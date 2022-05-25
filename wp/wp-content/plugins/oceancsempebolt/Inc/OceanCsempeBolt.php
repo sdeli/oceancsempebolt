@@ -23,8 +23,7 @@ class OceanCsempeBolt
     add_action('woocommerce_before_main_content', function () { \Inc\ProductCategoryPage::echoCustomElements(); });
 
     AllPages::displayCustomElements();
-    CartPage::init();
     ProductPage::init();
-    CheckoutPage::init();
+    Purchase::init();
 	}
 }
