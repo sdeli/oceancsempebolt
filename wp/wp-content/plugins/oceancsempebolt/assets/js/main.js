@@ -1,4 +1,6 @@
-let calledPerson = "";
+if (!$) {
+  var $ = jQuery;
+}
 
 const CHECKED_SELECTOR = "--checked";
 const COLOR_FILTER_ICONS_SELECTOR = "filter-form__szin";
@@ -196,7 +198,7 @@ window.addEventListener(
     filterItemsOnClick();
     moveFiltersToCategSidebar();
     sidebarFilterLinksOnClick();
-    jQuery(PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR).click(() =>
+    $(PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR).click(() =>
       clickDesktopHamburgerToOpenSidebar()
     );
     setTimeout(() => {
@@ -216,12 +218,12 @@ window.addEventListener(
         OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML,
         OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR
       );
-      const tilesSliderHtml = jQuery(TILES_SLIDER_TEXT_SELECTOR).text();
+      const tilesSliderHtml = $(TILES_SLIDER_TEXT_SELECTOR).text();
       loadElementOnUserInteractionAndInViewport(
         tilesSliderHtml,
         TILES_SLIDER_HOMEPAGE_CONTAINER
       );
-      const bathtubSliderHtml = jQuery(BATH_TUB_SLIDER_TEXT_SELECTOR).text();
+      const bathtubSliderHtml = $(BATH_TUB_SLIDER_TEXT_SELECTOR).text();
       loadElementOnUserInteractionAndInViewport(
         bathtubSliderHtml,
         BATH_TUB_SLIDER_HOMEPAGE_CONTAINER
@@ -263,12 +265,12 @@ window.addEventListener(
       addNamesToBeRocketColorIcons();
       parallaxShopHeader();
 
-      const isSubCategoryPage = jQuery("h1.shop-page-title").text() !== "Shop";
+      const isSubCategoryPage = $("h1.shop-page-title").text() !== "Shop";
       if (isSubCategoryPage) {
         openCurrentCategoryInSidebar();
       }
 
-      const isMainShopPage = jQuery("h1.shop-page-title").text() === "Shop";
+      const isMainShopPage = $("h1.shop-page-title").text() === "Shop";
       if (isMainShopPage) removeUnneededFiltersFromMainShopPage();
 
       const productCategId = window.location.pathname.replace(/\//g, "");
@@ -293,7 +295,7 @@ window.addEventListener(
       const breadCrumbs = document.querySelector(
         ".woocommerce-breadcrumb.breadcrumbs"
       );
-      const categoriesOfProduct = jQuery(".product_meta .posted_in").text();
+      const categoriesOfProduct = $(".product_meta .posted_in").text();
       const isTilePorductPage =
         categoriesOfProduct.includes("Burkolatok") &&
         !categoriesOfProduct.includes("dekor csempe") &&
@@ -350,12 +352,12 @@ window.addEventListener(
       );
     }
 
-    const callBtnsOnPage = jQuery(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
+    const callBtnsOnPage = $(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
     if (callBtnsOnPage.length) {
       gtmPhoneCallEvents(callBtnsOnPage);
     }
 
-    const categoryBanners = jQuery(CATEGORY_GRID_BANNER_SELECTOR);
+    const categoryBanners = $(CATEGORY_GRID_BANNER_SELECTOR);
     // has category selector html elem on page
     if (categoryBanners.length) {
       hasCategoryBanner(categoryBanners);
@@ -365,16 +367,16 @@ window.addEventListener(
 );
 
 function scrollToDesginTabber() {
-  const win = jQuery(window);
-  const scrollToDesignTabberBtns = jQuery(".scroll-to-design-tabber");
+  const win = $(window);
+  const scrollToDesignTabberBtns = $(".scroll-to-design-tabber");
   scrollToDesignTabberBtns.click(() => {
     win.scrollTo(".design-tabber", 1000);
   });
 }
 
 function scrollToContacts() {
-  const win = jQuery(window);
-  const scrollToDesignTabberBtns = jQuery(".scroll-to-contacts");
+  const win = $(window);
+  const scrollToDesignTabberBtns = $(".scroll-to-contacts");
   scrollToDesignTabberBtns.click(() => {
     win.scrollTo(".contact", 1000);
   });
@@ -423,8 +425,8 @@ function addAttributeFilterIconsToCurrentCategory() {
   sidebarFilterHtml += "</ul></li>";
   const { sidebarFilterClass: currentCategorySidebarClass } =
     getCategoryData(productCategId);
-  const currCategory = jQuery(`${currentCategorySidebarClass} > ul`);
-  const currentCategSidebarFilters = jQuery(sidebarFilterHtml);
+  const currCategory = $(`${currentCategorySidebarClass} > ul`);
+  const currentCategSidebarFilters = $(sidebarFilterHtml);
   currCategory.append(currentCategSidebarFilters);
 }
 
@@ -554,34 +556,34 @@ function getCategoryData(currentCategory) {
 
 function addBasketIconToAddBtns() {
   const basketIconHtml = '<i class="icon-shopping-basket"></i>';
-  const addToCartBtns = jQuery("#main .add-to-cart-button a");
+  const addToCartBtns = $("#main .add-to-cart-button a");
 
   addToCartBtns.each(function () {
-    jQuery(this).append(jQuery(basketIconHtml));
+    $(this).append($(basketIconHtml));
   });
 }
 
 function adjustProductImageHeightOnRectangle() {
   const productImageContainerClass = ".product-small .box-image";
 
-  const nonSquareImageBoxes = jQuery(productImageContainerClass).filter(
-    function (i) {
-      const imageBoxWidth = parseInt(jQuery(this).width(), 10);
-      const imageBoxHeight = parseInt(jQuery(this).height(), 10);
-      return imageBoxWidth !== imageBoxHeight;
-    }
-  );
+  const nonSquareImageBoxes = $(productImageContainerClass).filter(function (
+    i
+  ) {
+    const imageBoxWidth = parseInt($(this).width(), 10);
+    const imageBoxHeight = parseInt($(this).height(), 10);
+    return imageBoxWidth !== imageBoxHeight;
+  });
 
   nonSquareImageBoxes.each(function () {
-    const imageBox = jQuery(this);
+    const imageBox = $(this);
     imageBox.height(imageBox.width());
     const image = imageBox.find("img").eq(0);
     const fuck = image.addClass("non-square");
   });
 
-  jQuery(window).resize(function () {
+  $(window).resize(function () {
     nonSquareImageBoxes.each(function () {
-      const imageBox = jQuery(this);
+      const imageBox = $(this);
       imageBox.height(imageBox.width());
     });
   });
@@ -591,9 +593,9 @@ function adjustBackToTopBtnVisibility() {
   const isOverFooterClass = "is-over-footer";
   const footerClass = "footer";
   const backToTopBtnClass = ".back-to-top";
-  const backToTopBtn = jQuery(backToTopBtnClass);
-  const footer$ = jQuery(footerClass);
-  const document$ = jQuery(document);
+  const backToTopBtn = $(backToTopBtnClass);
+  const footer$ = $(footerClass);
+  const document$ = $(document);
 
   const adjust = () => {
     const wasOverFooter = backToTopBtn.hasClass(isOverFooterClass);
@@ -619,19 +621,19 @@ function adjustBackToTopBtnVisibility() {
   };
 
   adjust();
-  jQuery(window).scroll(adjust);
+  $(window).scroll(adjust);
 }
 
 function addToCartBtnsOnClick() {
   const addToCartButtonsClass = ".add_to_cart_button";
   const addedToCartButtonClass = ".added_to_cart";
 
-  const addToCartBtns = jQuery(addToCartButtonsClass);
+  const addToCartBtns = $(addToCartButtonsClass);
   addToCartBtns.click(function () {
-    const clickedAddToCartBtn = jQuery(this);
+    const clickedAddToCartBtn = $(this);
 
     var addToCartBtnInDom = setInterval(function () {
-      if (jQuery(addedToCartButtonClass).length) {
+      if ($(addedToCartButtonClass).length) {
         clearInterval(addToCartBtnInDom);
         const newAddedToCartBtn = clickedAddToCartBtn.siblings(
           addedToCartButtonClass
@@ -646,34 +648,34 @@ function resizeProductCardTitlesForElliplsis() {
   var productCardTitlesClass =
     ".product-small.box .title-wrapper .product-title a";
   var productTitleContainerCss = ".product-small.box .name.product-title";
-  var productCardTitles = jQuery(productCardTitlesClass);
+  var productCardTitles = $(productCardTitlesClass);
 
-  var currentMaxWidth = jQuery(productTitleContainerCss).width();
+  var currentMaxWidth = $(productTitleContainerCss).width();
   productCardTitles.css("max-width", currentMaxWidth);
 
-  jQuery(window).resize(() => {
-    var currentMaxWidth = jQuery(productTitleContainerCss).width();
+  $(window).resize(() => {
+    var currentMaxWidth = $(productTitleContainerCss).width();
     productCardTitles.css("max-width", currentMaxWidth);
   });
 }
 
 function clickHamburgerToOpenMobileSidebar() {
-  const hamburgerBtn = jQuery(HAMBURGER_BTN_SELECTOR);
+  const hamburgerBtn = $(HAMBURGER_BTN_SELECTOR);
   hamburgerBtn.click();
 }
 
 function clickDesktopHamburgerToOpenSidebar() {
-  const desktopSidebarMenuTrigger = jQuery("." + DESKTOP_MENU_TRIGGER_CLASS);
+  const desktopSidebarMenuTrigger = $("." + DESKTOP_MENU_TRIGGER_CLASS);
   desktopSidebarMenuTrigger.click();
 }
 
 function openSidebar() {
-  const hamburgerBtn = jQuery(HAMBURGER_BTN_SELECTOR);
-  const filterMenuBtn = jQuery(FILTER_BTN_SELECTOR);
+  const hamburgerBtn = $(HAMBURGER_BTN_SELECTOR);
+  const filterMenuBtn = $(FILTER_BTN_SELECTOR);
 
   hamburgerBtn.click(function () {
     setTimeout(() => {
-      const isDesktopProductCategsBtnClicked = jQuery(this).hasClass(
+      const isDesktopProductCategsBtnClicked = $(this).hasClass(
         DESKTOP_MENU_TRIGGER_CLASS
       );
       if (isDesktopProductCategsBtnClicked) {
@@ -695,19 +697,19 @@ function createShopMenu(e, isDesktopMenu = false) {
   if (e) e.stopPropagation();
   if (!isMenuSwitchFinised) return;
 
-  const isOnShopMenuAlready = !!jQuery(
+  const isOnShopMenuAlready = !!$(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
   ).length;
   if (isOnShopMenuAlready) return;
   isMenuSwitchFinised = false;
 
-  const mobileSidebarContainer = jQuery(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  const mainMenu = jQuery(
+  const mobileSidebarContainer = $(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
+  const mainMenu = $(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
   );
-  const shopMenu = jQuery(SHOP_SIDEBAR_MENU_SELECTOR);
-  const shopMenuBtn = jQuery(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
-  const mainMenuBtn = jQuery(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
+  const shopMenu = $(SHOP_SIDEBAR_MENU_SELECTOR);
+  const shopMenuBtn = $(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
+  const mainMenuBtn = $(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
 
   if (isDesktopMenu) {
     insertDesktopSidebarHeader();
@@ -723,13 +725,13 @@ function createShopMenu(e, isDesktopMenu = false) {
 
 function insertShopMenuSwitchBtnsIntoMobileSidebar() {
   const shopSideBarSwitchBtns = getMobileMenuSwitchIcons(true);
-  const hasMainMenuInSidebar = !!jQuery(
+  const hasMainMenuInSidebar = !!$(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
   ).length;
   shopSideBarSwitchBtns.prependTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
 
   if (!hasMainMenuInSidebar) {
-    const mainMenu = jQuery(MAIN_SIDEBAR_MENU_SELECTOR);
+    const mainMenu = $(MAIN_SIDEBAR_MENU_SELECTOR);
     mainMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
   }
   preventCloseOnMenuClick();
@@ -738,13 +740,13 @@ function insertShopMenuSwitchBtnsIntoMobileSidebar() {
 
 function insertMainMenuSwitchBtnsIntoMobileSidebar() {
   const shopSideBarSwitchBtns = getMobileMenuSwitchIcons(false);
-  const hasShopMenuInSidebar = !!jQuery(
+  const hasShopMenuInSidebar = !!$(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
   ).length;
   shopSideBarSwitchBtns.prependTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
 
   if (!hasShopMenuInSidebar) {
-    const shopMenu = jQuery(SHOP_SIDEBAR_MENU_SELECTOR);
+    const shopMenu = $(SHOP_SIDEBAR_MENU_SELECTOR);
     shopMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
   }
   preventCloseOnMenuClick();
@@ -752,14 +754,14 @@ function insertMainMenuSwitchBtnsIntoMobileSidebar() {
 }
 
 function insertDesktopSidebarHeader() {
-  const categoriesSidebarHeader = jQuery(CATEGORIES_SIDEBAR_HEADER_HTML);
+  const categoriesSidebarHeader = $(CATEGORIES_SIDEBAR_HEADER_HTML);
   categoriesSidebarHeader.prependTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
 
-  const hasMainMenuInSidebar = !!jQuery(
+  const hasMainMenuInSidebar = !!$(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
   ).length;
   if (!hasMainMenuInSidebar) {
-    const mainMenu = jQuery(MAIN_SIDEBAR_MENU_SELECTOR);
+    const mainMenu = $(MAIN_SIDEBAR_MENU_SELECTOR);
     mainMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
   }
   preventCloseOnMenuClick();
@@ -770,19 +772,19 @@ function switchToMainMenu(e) {
   e.stopPropagation();
   if (!isMenuSwitchFinised) return;
 
-  const isOnMainMenuAlready = !!jQuery(
+  const isOnMainMenuAlready = !!$(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
   ).length;
   if (isOnMainMenuAlready) return;
   isMenuSwitchFinised = false;
 
-  const mainMenu = jQuery(MAIN_SIDEBAR_MENU_SELECTOR);
-  const mobileSidebarContainer = jQuery(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  const shopMenu = jQuery(
+  const mainMenu = $(MAIN_SIDEBAR_MENU_SELECTOR);
+  const mobileSidebarContainer = $(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
+  const shopMenu = $(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
   );
-  const shopMenuBtn = jQuery(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
-  const mainMenuBtn = jQuery(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
+  const shopMenuBtn = $(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
+  const mainMenuBtn = $(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
 
   shopMenu.fadeOut(() => {
     shopMenu.appendTo(SHOP_SIDEBAR_MENU_SHELTER_SELECTOR);
@@ -802,19 +804,19 @@ function switchToShopMenu(e) {
   if (e) e.stopPropagation();
   if (!isMenuSwitchFinised) return;
 
-  const isOnShopMenuAlready = !!jQuery(
+  const isOnShopMenuAlready = !!$(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
   ).length;
   if (isOnShopMenuAlready) return;
   isMenuSwitchFinised = false;
 
-  const mobileSidebarContainer = jQuery(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  const mainMenu = jQuery(
+  const mobileSidebarContainer = $(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
+  const mainMenu = $(
     `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
   );
-  const shopMenu = jQuery(SHOP_SIDEBAR_MENU_SELECTOR);
-  const shopMenuBtn = jQuery(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
-  const mainMenuBtn = jQuery(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
+  const shopMenu = $(SHOP_SIDEBAR_MENU_SELECTOR);
+  const shopMenuBtn = $(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
+  const mainMenuBtn = $(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
 
   mainMenu.fadeOut(() => {
     mainMenu.appendTo("body");
@@ -839,22 +841,22 @@ function getMobileMenuSwitchIcons(isForMainMenu = true) {
     }" title="${SHOP_MENU_SWITCH_TITLE}" onclick="switchToShopMenu(event)">Kategóriák</a>` +
     "</div>";
 
-  return jQuery(mobileMenuSwitchBtnHtml);
+  return $(mobileMenuSwitchBtnHtml);
 }
 
 function resetSidebarContentOnClose() {
-  const cancelingElements = jQuery(
+  const cancelingElements = $(
     `${MOBILE_SIDEBAR_CANCEL_BTN}, ${MOBILE_SIDEBAR_CANCEL_OVERLAY}`
   );
   cancelingElements.click(() => {
-    const mainMenuInSidebar = jQuery(
+    const mainMenuInSidebar = $(
       `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
     );
     if (mainMenuInSidebar.length) {
       mainMenuInSidebar.appendTo("body");
     }
 
-    const shopMenuInSidebar = jQuery(
+    const shopMenuInSidebar = $(
       `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
     );
     if (shopMenuInSidebar.length) {
@@ -866,14 +868,14 @@ function resetSidebarContentOnClose() {
 }
 
 function preventCloseOnMenuClick() {
-  jQuery(MOBILE_SIDEBAR_CONTAINER_SELECTOR).click((e) => {
+  $(MOBILE_SIDEBAR_CONTAINER_SELECTOR).click((e) => {
     e.stopPropagation();
   });
 }
 
 function clickVariationSwatchIfOneOptionLeft() {
   let clickedByJquery = false;
-  const allVariationSwatchGoups = jQuery(".button-variable-wrapper");
+  const allVariationSwatchGoups = $(".button-variable-wrapper");
   allVariationSwatchGoups.children().click(function () {
     if (clickedByJquery) {
       clickedByJquery = false;
@@ -882,7 +884,7 @@ function clickVariationSwatchIfOneOptionLeft() {
 
     setTimeout(() => {
       allVariationSwatchGoups.each(function () {
-        const variationSwatchGroup = jQuery(this);
+        const variationSwatchGroup = $(this);
         const freeToChooseSwatches = variationSwatchGroup.children(
           ":not(.disabled):not(.selected)"
         );
@@ -900,14 +902,14 @@ function clickVariationSwatchIfOneOptionLeft() {
 }
 
 function parallaxShopHeader() {
-  const parallaxShopHeader = jQuery(PARALLAX_HEADER_SELECTOR);
+  const parallaxShopHeader = $(PARALLAX_HEADER_SELECTOR);
   let baseBackgroundPosition = PARALLAX_HEADER_SMALL_TABLET_Y_POSITION;
   if (window.innerWidth >= SMALL_TABLET_WIDTH) {
     parallaxShopHeader.css("top", baseBackgroundPosition + "px");
     baseBackgroundPosition = PARALLAX_HEADER_LARGE_TABLET_Y_POSITION;
   }
 
-  const jqueryWindow = jQuery(window);
+  const jqueryWindow = $(window);
 
   jqueryWindow.scroll(function () {
     var wScrollPosition = jqueryWindow.scrollTop();
@@ -918,16 +920,16 @@ function parallaxShopHeader() {
 }
 
 function addNamesToBeRocketColorIcons() {
-  const beRocketColorIconNameContainers = jQuery(BR_ROCKET_COLOR_ICON_SELECTOR);
+  const beRocketColorIconNameContainers = $(BR_ROCKET_COLOR_ICON_SELECTOR);
   beRocketColorIconNameContainers.each(function () {
-    const currentIcon = jQuery(this);
+    const currentIcon = $(this);
     const colorName = currentIcon.attr("aria-label");
     currentIcon.children().eq(0).text(colorName);
   });
 }
 
 function removeUnneededFiltersFromMainShopPage() {
-  const unneededFilters = jQuery(UNNEEDED_FILTERS);
+  const unneededFilters = $(UNNEEDED_FILTERS);
   unneededFilters.parent().remove();
 }
 
@@ -936,51 +938,51 @@ function loadElementOnUserInteractionAndInViewport(
   elementContainerSelector,
   jo
 ) {
-  const elemContainer = jQuery(elementContainerSelector);
+  const elemContainer = $(elementContainerSelector);
   let shouldLoadElem = isElemVisible(elementContainerSelector);
   if (shouldLoadElem) {
-    const htmlElem = jQuery(elementHtml);
+    const htmlElem = $(elementHtml);
     elemContainer.append(htmlElem);
     return;
   }
 
   shouldLoadElem = true;
-  jQuery(window).one("scroll", function () {
+  $(window).one("scroll", function () {
     if (!shouldLoadElem) return;
     shouldLoadElem = false;
-    const htmlElem = jQuery(elementHtml);
+    const htmlElem = $(elementHtml);
     elemContainer.append(htmlElem);
     isGoolgeMapsLoaded = true;
   });
 
-  jQuery(window).one("mousemove", function () {
+  $(window).one("mousemove", function () {
     if (!shouldLoadElem) return;
     shouldLoadElem = false;
-    const htmlElem = jQuery(elementHtml);
+    const htmlElem = $(elementHtml);
     elemContainer.append(htmlElem);
     isGoolgeMapsLoaded = true;
   });
 }
 
 function isElemVisible(selector) {
-  const elementTop = jQuery(selector).offset().top;
-  const elementBottom = elementTop + jQuery(this).outerHeight();
-  const viewportTop = jQuery(window).scrollTop();
-  const viewportBottom = viewportTop + jQuery(window).height();
+  const elementTop = $(selector).offset().top;
+  const elementBottom = elementTop + $(this).outerHeight();
+  const viewportTop = $(window).scrollTop();
+  const viewportBottom = viewportTop + $(window).height();
   return elementBottom > viewportTop && elementTop < viewportBottom;
 }
 
 function loadPageTopGoogleMaps() {
-  const googleMapsContainer = jQuery(GOOGLE_MAPS_CONATINER_SELECTOR);
+  const googleMapsContainer = $(GOOGLE_MAPS_CONATINER_SELECTOR);
   googleMapsContainer.css({ position: "absolute", top: 0, "z-index": 0 });
-  const googleMapsImageContainer = jQuery(GOOGLE_MAPS_THIN_IMAGE_SELECTOR);
+  const googleMapsImageContainer = $(GOOGLE_MAPS_THIN_IMAGE_SELECTOR);
 
   setTimeout(() => {
     loadElementOnUserInteractionAndInViewport(
       GOOGLE_MAPS_THIN_IFRAME_HTML,
       GOOGLE_MAPS_CONATINER_SELECTOR
     );
-    const googleMapsIframe = jQuery(`.${GOOGLE_MAPS_THIN_IFRAME_CLASS}`);
+    const googleMapsIframe = $(`.${GOOGLE_MAPS_THIN_IFRAME_CLASS}`);
 
     googleMapsIframe.on("load", function () {
       setTimeout(() => {
@@ -996,8 +998,8 @@ function loadPageTopGoogleMaps() {
 function swapDesignPlaceholderToSlider() {
   let isSliderSet = false;
   const loadSlider = () => {
-    const fakeSliderContainer = jQuery(".design-slider-container");
-    const designSlider = jQuery(jQuery(".fake-slider").text());
+    const fakeSliderContainer = $(".design-slider-container");
+    const designSlider = $($(".fake-slider").text());
     designSlider.hide();
     fakeSliderContainer.append(designSlider);
     return designSlider;
@@ -1007,7 +1009,7 @@ function swapDesignPlaceholderToSlider() {
     return new Promise((resolve, reject) => {
       let i = 0;
       var isSliderLoadedInterval = setInterval(function () {
-        const isSliderLoaded = jQuery(FIRST_SLIDER_TITLE_LINK_SELECTOR).length;
+        const isSliderLoaded = $(FIRST_SLIDER_TITLE_LINK_SELECTOR).length;
         if (isSliderLoaded) {
           clearInterval(isSliderLoadedInterval);
           resolve(true);
@@ -1017,8 +1019,8 @@ function swapDesignPlaceholderToSlider() {
         // and so it triggers loading. It takes a second to load images that is seen by the user this what we wanted to avoid.
         const sliderIsMaybeLoaded =
           i > 5 &&
-          jQuery(DESIGN_SLIDER_LOADER_SELECTOR).length &&
-          jQuery(".n2-padding").children().length === 1;
+          $(DESIGN_SLIDER_LOADER_SELECTOR).length &&
+          $(".n2-padding").children().length === 1;
         if (sliderIsMaybeLoaded) {
           clearInterval(isSliderLoadedInterval);
           resolve(true);
@@ -1035,7 +1037,7 @@ function swapDesignPlaceholderToSlider() {
     const designSlider = loadSlider();
     await checkIfisLiderLoaded();
     gtmSliderEventTriggerSetup();
-    const designSliderPlaceholder = jQuery(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
+    const designSliderPlaceholder = $(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
     designSlider.css({ "z-index": 2 });
     designSlider.fadeIn(2000, function () {
       setSliderContainerHeight(designSlider);
@@ -1057,21 +1059,21 @@ function swapDesignPlaceholderToSlider() {
       );
       if (!isSliderLoaded) return;
       clearInterval(setContainerHeightOnSliderLoad);
-      const designSliderContainer = jQuery(DESIGN_SLIDER_CONTAINER_SELECTOR);
-      jQuery(window).resize(() => {
+      const designSliderContainer = $(DESIGN_SLIDER_CONTAINER_SELECTOR);
+      $(window).resize(() => {
         designSliderContainer.height(designSliderJqueryObj.height());
       });
     }, 500);
   };
 
   setTimeout(() => {
-    jQuery(window).one("mousemove", () => {
+    $(window).one("mousemove", () => {
       _swapDesignPlaceholderToSlider();
     });
-    jQuery(window).one("scroll", () => {
+    $(window).one("scroll", () => {
       _swapDesignPlaceholderToSlider();
     });
-    jQuery(window).one("click", () => {
+    $(window).one("click", () => {
       _swapDesignPlaceholderToSlider();
     });
   }, 0);
@@ -1082,19 +1084,19 @@ function swapDesignPlaceholderToSlider() {
 }
 
 function addPointerIconToSliderTitleOnSlideFinish() {
-  const designSliderId = jQuery(
+  const designSliderId = $(
     `${DESIGN_SLIDER_CONTAINER_SELECTOR} [data-ssid]`
   ).attr("data-ssid");
   const designSliderSelector = `#n2-ss-${designSliderId}`;
 
   var slider = _N2[designSliderSelector];
   slider.sliderElement.addEventListener("mainAnimationComplete", function (e) {
-    const sliderTitleLink = jQuery(ACTIVE_SLIDER_TITLE_LINK_SELECTOR);
+    const sliderTitleLink = $(ACTIVE_SLIDER_TITLE_LINK_SELECTOR);
     const hasPointerIconAlready = !!sliderTitleLink.children(
       POINTER_ICON_SELECTOR
     ).length;
     if (hasPointerIconAlready) return;
-    const pointerIcon = jQuery(POINTER_ICON_HTML);
+    const pointerIcon = $(POINTER_ICON_HTML);
     pointerIcon.hide();
     sliderTitleLink.append(pointerIcon);
     pointerIcon.fadeIn(500);
@@ -1103,10 +1105,10 @@ function addPointerIconToSliderTitleOnSlideFinish() {
 
 function addPointerIconToSliderTitle() {
   const addPointerIntoSliderTitleInterval = setInterval(function () {
-    const sliderTitleLink = jQuery(FIRST_SLIDER_TITLE_LINK_SELECTOR);
+    const sliderTitleLink = $(FIRST_SLIDER_TITLE_LINK_SELECTOR);
     if (!sliderTitleLink.length) return;
     clearInterval(addPointerIntoSliderTitleInterval);
-    const pointerIcon = jQuery(POINTER_ICON_HTML);
+    const pointerIcon = $(POINTER_ICON_HTML);
     pointerIcon.hide();
     sliderTitleLink.append(pointerIcon);
     pointerIcon.fadeIn(1000);
@@ -1114,9 +1116,9 @@ function addPointerIconToSliderTitle() {
 }
 
 function revealDesignSliderPlaceholder() {
-  const designSliderContainer = jQuery(DESIGN_SLIDER_CONTAINER_SELECTOR);
-  const designSliderPlaceholder = jQuery(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
-  const placeHolderMessage = jQuery(
+  const designSliderContainer = $(DESIGN_SLIDER_CONTAINER_SELECTOR);
+  const designSliderPlaceholder = $(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
+  const placeHolderMessage = $(
     ".design-slider-container__placeholder__message"
   );
 
@@ -1130,8 +1132,8 @@ function revealDesignSliderPlaceholder() {
 
 function squareMeterCounter() {
   let amountInABox;
-  jQuery(".woocommerce-product-attributes-item__value").each(function () {
-    const item = jQuery(this);
+  $(".woocommerce-product-attributes-item__value").each(function () {
+    const item = $(this);
     try {
       const showsAmountInABox = item
         .children()
@@ -1146,18 +1148,18 @@ function squareMeterCounter() {
   });
 
   if (!amountInABox) return;
-  var boxCountInput = jQuery('[name="quantity"]');
+  var boxCountInput = $('[name="quantity"]');
 
   const currentBoxAmount = parseInt(boxCountInput.val());
   const message = `<p class="amount-in-box-message"><strong>${currentBoxAmount} doboz</strong> (${
     currentBoxAmount * amountInABox
   } négyzetméter)</p>`;
-  const addToCartSection = jQuery(".sticky-add-to-cart");
+  const addToCartSection = $(".sticky-add-to-cart");
   addToCartSection.append(message);
 
-  jQuery('input[value="-"]').click(function () {
+  $('input[value="-"]').click(function () {
     setTimeout(() => {
-      jQuery(".amount-in-box-message").remove();
+      $(".amount-in-box-message").remove();
       const currentBoxAmount = parseInt(boxCountInput.val());
       const message = `<p class="amount-in-box-message"><strong>${currentBoxAmount} doboz</strong> (${
         currentBoxAmount * amountInABox
@@ -1165,9 +1167,9 @@ function squareMeterCounter() {
       addToCartSection.append(message);
     }, 0);
   });
-  jQuery('input[value="+"]').click(function () {
+  $('input[value="+"]').click(function () {
     setTimeout(() => {
-      jQuery(".amount-in-box-message").remove();
+      $(".amount-in-box-message").remove();
       const currentBoxAmount = parseInt(boxCountInput.val());
       const message = `<p class="amount-in-box-message"><strong>${currentBoxAmount} doboz</strong> (${
         currentBoxAmount * amountInABox
@@ -1178,8 +1180,8 @@ function squareMeterCounter() {
 }
 
 async function slideUpAndDownMobileMenuBar() {
-  let mobileMenuBar = jQuery(MOBILE_MENU_BAR_SELECTOR);
-  const arrowUpDownBox = jQuery(MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML);
+  let mobileMenuBar = $(MOBILE_MENU_BAR_SELECTOR);
+  const arrowUpDownBox = $(MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML);
   let isInAnimation = false;
   let ishideAndShowArrowVisible = true;
 
@@ -1206,12 +1208,12 @@ async function slideUpAndDownMobileMenuBar() {
 
   mobileMenuBar.append(arrowUpDownBox);
   toggleMobileMenuSlideUpDownArrow();
-  jQuery(window).scroll(function () {
+  $(window).scroll(function () {
     if (!checkIsOnMobileView()) return;
     toggleMobileMenuSlideUpDownArrow();
   });
 
-  const hideAndShowMobileMenuArrow = jQuery(MOBILE_MENU_BAR_ARROW_SELECTOR);
+  const hideAndShowMobileMenuArrow = $(MOBILE_MENU_BAR_ARROW_SELECTOR);
   arrowUpDownBox.click(function (e) {
     if (isInAnimation) return;
     isInAnimation = true;
@@ -1228,7 +1230,7 @@ async function slideUpAndDownMobileMenuBar() {
 function getMobileMenuBar() {
   return new Promise((resolve) => {
     let getMobileMenuBarInterval = setInterval(function () {
-      const mobileMenuBar = jQuery(MOBILE_MENU_BAR_SELECTOR);
+      const mobileMenuBar = $(MOBILE_MENU_BAR_SELECTOR);
       if (mobileMenuBar.length) {
         clearInterval(getMobileMenuBarInterval);
         resolve(mobileMenuBar);
@@ -1242,9 +1244,7 @@ function checkIsOnMobileView() {
 }
 
 function swapBoxAndSquarMetersPrice() {
-  const pricesContainer = jQuery(".product-main .price.product-page-price").eq(
-    0
-  );
+  const pricesContainer = $(".product-main .price.product-page-price").eq(0);
   pricesContainer
     .children()
     .last()
@@ -1258,7 +1258,7 @@ function swapBoxAndSquarMetersPrice() {
 }
 
 function setTileUnit() {
-  jQuery(".product-page-price .woocommerce-Price-amount")
+  $(".product-page-price .woocommerce-Price-amount")
     .eq(0)
     .children()
     .children()
@@ -1266,17 +1266,17 @@ function setTileUnit() {
 }
 
 function initiateCallOnPhoneCallIconClick(bigPhoneCallIcons) {
-  bigPhoneCallIcons = jQuery(bigPhoneCallIcons);
+  bigPhoneCallIcons = $(bigPhoneCallIcons);
 
   bigPhoneCallIcons.click(function () {
-    jQuery(this).siblings().find(PHONE_CALL_NUMBER_LINK)[0].click();
+    $(this).siblings().find(PHONE_CALL_NUMBER_LINK)[0].click();
   });
 
   bigPhoneCallIcons
     .siblings()
     .find(PHONE_CALL_NUMBER_LINK)
     .click(function () {
-      const salesAgentName = jQuery(this).parent().siblings().find("h3").text();
+      const salesAgentName = $(this).parent().siblings().find("h3").text();
       const callEventOpts = {
         event: GTM_CALL_EVENT_NAME,
       };
@@ -1287,7 +1287,7 @@ function initiateCallOnPhoneCallIconClick(bigPhoneCallIcons) {
 }
 
 function gtmSliderEventTriggerSetup() {
-  const designSliderId = jQuery(
+  const designSliderId = $(
     `${DESIGN_SLIDER_CONTAINER_SELECTOR} [data-ssid]`
   ).attr("data-ssid");
   const designSliderSelector = `#n2-ss-${designSliderId}`;
@@ -1322,7 +1322,7 @@ function displayInlineContactInfos(inlineContactInfoElems) {
   };
   inlineContactInfoElems = [...inlineContactInfoElems];
   inlineContactInfoElems.forEach((elem) => {
-    inlineContactInfoElem = jQuery(elem);
+    inlineContactInfoElem = $(elem);
     const { tel, name } = getRandomContactInfo();
     const isInline = inlineContactInfoElem.attr(
       IS_CONTACT_INFO_INLINE_DATA_ATTR
@@ -1335,7 +1335,7 @@ function displayInlineContactInfos(inlineContactInfoElems) {
 function fillContactInfoIntoPhoneNumberBtns(randomPhoneNumberBtnElems) {
   const phoneNumberBtns = [...randomPhoneNumberBtnElems];
   phoneNumberBtns.forEach((elem) => {
-    const phoneNumberBtn = jQuery(elem);
+    const phoneNumberBtn = $(elem);
     const { tel, name } = getRandomContactInfo();
     phoneNumberBtn.attr("href", `tel:${tel}`);
     phoneNumberBtn.attr(SALES_AGENTS_NAME_ATTRIBUTE, name);
@@ -1361,7 +1361,7 @@ function getRandomContactInfo() {
 
 function gtmPhoneCallEvents(callBtnsOnPageJqueryObject) {
   callBtnsOnPageJqueryObject.on("click", function () {
-    callBtn = jQuery(this);
+    callBtn = $(this);
     const callEventOpts = {
       event: GTM_CALL_EVENT_NAME,
     };
@@ -1398,7 +1398,7 @@ function gtmPhoneCallEvents(callBtnsOnPageJqueryObject) {
 
 function hasCategoryBanner(categoryBanners) {
   categoryBanners.on("click", function () {
-    const categoryBanner = jQuery(this);
+    const categoryBanner = $(this);
     const nextPagesLink = categoryBanner.find("a").attr("href");
     window.open(nextPagesLink, "_blank");
   });
