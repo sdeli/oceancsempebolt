@@ -4,9 +4,9 @@ namespace Inc;
 class Purchase 
 {
   static function init() {
-    add_action( 'woocommerce_cart_totals_before_shipping', function() {  
-      self::removeInvalidShippingMethods();
-    } );
+    add_action( 'woocommerce_cart_totals_before_shipping', function() { self::removeInvalidShippingMethods(); });
+    add_action( 'woocommerce_review_order_before_shipping', function() { self::removeInvalidShippingMethods(); });
+    add_action( 'woocommerce_review_order_before_payment', function() { self::echo_payment_methods_heading(); });
 
     add_action( 'woocommerce_available_payment_gateways', function( $gateways ) {  
       return self::removeInvalidPaymentMethods($gateways);
@@ -21,7 +21,7 @@ class Purchase
 
   static private function removeInvalidShippingMethods() {
     $has_pallet_product_in_cart = self::has_palet_product_in_cart();
-
+    
     $available_methods = WC()->shipping()->packages[0]['rates'];
     $available_methods = array_filter($available_methods, function($method) use ($has_pallet_product_in_cart) {
       if ($has_pallet_product_in_cart) {
@@ -38,6 +38,7 @@ class Purchase
     $has_pallet_product_in_cart = self::has_palet_product_in_cart( $gateways );
     if ( $has_pallet_product_in_cart ) {
       unset( $gateways['cod'] );
+      unset( $gateways['WC_Gateway_SimplePay_WPS'] );
     };
 
     return $gateways;
@@ -82,5 +83,15 @@ class Purchase
     }
   
     return $notes;
+  }
+
+  static private function echo_payment_methods_heading() {
+    $gateways =WC()->payment_gateways->get_available_payment_gateways();
+    $only_one_gateway = count($gateways) === 1;
+    if ($only_one_gateway ) {
+      echo '<h4>Fizetési Mód:</h4>';
+    } else {
+      echo '<h4>Fizetési Módok</h4>';
+    }
   }
 }
