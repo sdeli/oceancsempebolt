@@ -34,16 +34,6 @@ class Purchase
     WC()->shipping()->packages[0]['rates'] = $available_methods;
   }
 
-  static private function removeInvalidPaymentMethods( $gateways ) {
-    $has_pallet_product_in_cart = self::has_palet_product_in_cart( $gateways );
-    if ( $has_pallet_product_in_cart ) {
-      unset( $gateways['cod'] );
-      unset( $gateways['WC_Gateway_SimplePay_WPS'] );
-    };
-
-    return $gateways;
-  }
-
   static private function has_palet_product_in_cart() {
     $productsInCart = WC()->shipping()->packages[0]['contents'];
     $has_pallet_product_in_cart = false;
@@ -58,6 +48,19 @@ class Purchase
 
     return $has_pallet_product_in_cart;
   }
+  
+  static private function removeInvalidPaymentMethods( $gateways ) {
+    foreach( WC()->cart->get_cart() as $cart_item ){
+      $product_id = $cart_item['product_id'];
+      $is_tile_product = has_term( Config::BURKOLATOK_CATEG_SLUG, 'product_cat', $product_id);
+      if ($is_tile_product) { 
+        unset( $gateways['cod'] );
+        unset( $gateways['WC_Gateway_SimplePay_WPS'] );
+        break;
+      }
+    }
+  }
+
 
   static private function get_payment_and_shipment_notes() {
     $notes = "<h4>Köszönjük megrendelésed, hamarosan kapni fogsz tőlünk egy megerősítő emailt a megrendelésedről, melyet kérünk olvass el.</h4>";

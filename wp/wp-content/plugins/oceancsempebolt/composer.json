@@ -9,12 +9,12 @@
   "config": { 
     "vendor-dir": "vendor" 
   },
-  "require": {
-    "leeoniya/dump-r": "^2.1"
-  },
   "autoload": {
     "psr-4": {
     "Inc\\" : "Inc"
     }
-}
+},
+  "require-dev": {
+    "leeoniya/dump-r": "^2.1"
+  }
 }

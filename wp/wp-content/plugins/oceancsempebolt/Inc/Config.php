@@ -75,4 +75,6 @@ class Config
   const CHECKED_CLASS = '--checked';
 
   const COMPANY_BANK_ACCOUNT = '11714006-20397245';
+
+  const BURKOLATOK_CATEG_SLUG = 'burkolatok';
 }

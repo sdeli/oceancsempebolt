@@ -4,8 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e02aa39417da3dad7f4d1a80d954324f",
-    "packages": [
+    "content-hash": "5c5bd0d283298d21a26e64827bb4c478",
+    "packages": [],
+    "packages-dev": [
         {
             "name": "leeoniya/dump-r",
             "version": "2.1",
@@ -64,7 +65,6 @@
             "time": "2015-09-04T22:05:16+00:00"
         }
     ],
-    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": [],
