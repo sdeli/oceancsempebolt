@@ -4,7 +4,15 @@ use \Inc\Config;
 
 class ProductCategoryPage 
 {
-  static function echoCustomElements() {
+  static function init() {
+    add_action('woocommerce_before_main_content', function() {
+      if (is_shop() || is_product_category()) {
+        self::echoCustomElements();
+      }
+    });
+  }
+
+  protected static function echoCustomElements() {
     [ $smartSliderId, $categorySpecificFilterId ] = ProductCategoryPage::getShortcodeIds();
     ?>
       <div class="row">
@@ -85,12 +93,9 @@ class ProductCategoryPage
     } else {
       if ($cat->slug === "burkolatok") {
         $smartSliderId = 3;
-        preg_match(Config::GET_LAST_BE_ROCKET_ROOM_FILTER_ID_REGEX, $_GET[Config::BE_ROCKET_FILTERS_QUERY_VAR_NAME], $roomIdArr);
-        $roomId = !empty($roomIdArr) ? intval($roomIdArr[1]) : '';
 
-        $smartSliderId = $roomId === Config::LIVING_ROOM_AND_MORE_ID ? 109 : $smartSliderId;
-        $smartSliderId = $roomId === Config::KITCHEN_ID ? 230 : $smartSliderId;
-        $smartSliderId = $roomId === Config::BATHROOM_ID ? 106 : $smartSliderId;
+        $filtered_by_room = array_key_exists(Config::BE_ROCKET_FILTERS_QUERY_VAR_NAME, $_GET);
+        if ($filtered_by_room) $smartSliderId = self::getSmartSliderIdByRoom($smartSliderId);
       }
 
       if ( strpos($current_path, "burkolatok")) {
@@ -1287,5 +1292,17 @@ class ProductCategoryPage
     }
 
     return [$smartSliderId, $categorySpecificFilterId];
+  }
+
+  protected static function getSmartSliderIdByRoom(int $default) {
+    $smartSliderId = $default;
+    preg_match(Config::GET_LAST_BE_ROCKET_ROOM_FILTER_ID_REGEX, $_GET[Config::BE_ROCKET_FILTERS_QUERY_VAR_NAME], $roomIdArr);
+    $roomId = !empty($roomIdArr) ? intval($roomIdArr[1]) : '';
+
+    $smartSliderId = $roomId === Config::LIVING_ROOM_AND_MORE_ID ? 109 : $smartSliderId;
+    $smartSliderId = $roomId === Config::KITCHEN_ID ? 230 : $smartSliderId;
+    $smartSliderId = $roomId === Config::BATHROOM_ID ? 106 : $smartSliderId;
+
+    return $smartSliderId;
   }
 }
