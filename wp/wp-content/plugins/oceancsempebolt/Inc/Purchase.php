@@ -9,7 +9,9 @@ class Purchase
     add_action( 'woocommerce_review_order_before_payment', function() { self::echo_payment_methods_heading(); });
 
     add_action( 'woocommerce_available_payment_gateways', function( $gateways ) {  
-      return self::removeInvalidPaymentMethods($gateways);
+      if (!is_admin()) {
+        return self::removeInvalidPaymentMethods($gateways);
+      }
     } );
 
     add_filter('woocommerce_add_message', function ($message) {
@@ -48,7 +50,7 @@ class Purchase
 
     return $has_pallet_product_in_cart;
   }
-  
+
   static private function removeInvalidPaymentMethods( $gateways ) {
     foreach( WC()->cart->get_cart() as $cart_item ){
       $product_id = $cart_item['product_id'];

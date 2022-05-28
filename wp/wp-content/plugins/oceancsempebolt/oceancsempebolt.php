@@ -18,16 +18,10 @@ require_once(OCEANCSEMPEBOLT_PATH . 'vendor/autoload.php');
 define( 'WP_ENVIRONMENT_TYPE', Config::ENVIRONMENT_TYPE_LOCAL);
 
 define( 'OCS_IS_LOCAL_ENV', wp_get_environment_type() === Config::ENVIRONMENT_TYPE_LOCAL);
-define( 'OCS_IS_PROD_ENV', wp_get_environment_type() === Config::ENVIRONMENT_TYPE_PROD);
 
 require_once(OCEANCSEMPEBOLT_PATH . '/front/enqueue.php');
 
 add_action( 'wp_enqueue_scripts', 'ocs_enqueue' ); 
-
-if (OCS_IS_PROD_ENV) {
-  Utils::add_gtm_to_head();
-  Utils::add_gtm_to_body();
-}
 
 add_action( 'init', function() { Utils::add_design_post_type(); });
 

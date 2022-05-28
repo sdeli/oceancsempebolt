@@ -5,7 +5,9 @@ class ProductPage
 {
   static function init() {
     add_action( 'woocommerce_short_description', function($post_post_excerpt) {
-      return self::addShortDescriptionBefore($post_post_excerpt);
+      if (is_product()) {
+        return self::addShortDescriptionBefore($post_post_excerpt);
+      }
     } );
   }
 
