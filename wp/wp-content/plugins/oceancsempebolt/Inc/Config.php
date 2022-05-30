@@ -7,8 +7,8 @@ class Config
   const ENVIRONMENT_TYPE_DEV = 'development';
   const ENVIRONMENT_TYPE_PROD = 'production';
   // const WP_ENVIRONMENT_TYPE = ENVIRONMENT_TYPE_PROD;
-  const WP_ENVIRONMENT_TYPE = self::ENVIRONMENT_TYPE_DEV;
-  // const WP_ENVIRONMENT_TYPE = ENVIRONMENT_TYPE_DEV;
+  // const WP_ENVIRONMENT_TYPE = self::ENVIRONMENT_TYPE_DEV;
+  const WP_ENVIRONMENT_TYPE = self::ENVIRONMENT_TYPE_LOCAL;
 
   const PDF_CATALOGS_BY_PRODUCT_CATEGORIES = [
     'rock-ceramic' => [ 'term_id' => 4116, 'url' => "/rock-ceramic-katalogus/", 'name' => 'rock ceramic'],

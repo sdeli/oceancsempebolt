@@ -9,7 +9,6 @@ function ocs_enqueue()
   wp_register_style('ocs_main_stylesheet', plugins_url(OCS_PLUGIN_NAME . '/assets/css/main.css'), [], $ver);
   wp_enqueue_style('ocs_main_stylesheet');
   
-  wp_enqueue_style( 'your-style-id', get_template_directory_uri() . '/stylesheets/somestyle.css' );
   add_action( 'get_footer', 'prefix_add_footer_styles' );
   wp_register_script('ocs_main_js', plugins_url(OCS_PLUGIN_NAME . '/assets/js/main.js'), ['jquery'], $ver);
   wp_enqueue_script('ocs_main_js', null, ['jquery'], false, true);

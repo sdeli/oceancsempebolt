@@ -61,6 +61,8 @@ class Purchase
         break;
       }
     }
+
+    return $gateways;
   }
 
 
