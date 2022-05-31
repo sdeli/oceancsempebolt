@@ -96,8 +96,7 @@ class Utils {
     $isCheckedClass = "";
     
     if ($shouldNavigate) {
-      $url_base = Config::PRODUCT_CATEG_URL_BASE; 
-      $href ="{$url_base}/{$categorySlug}/?filters=szin[{$colorFilterId}]";
+      $href ="/{$categorySlug}/?filters=szin[{$colorFilterId}]";
       $isSidebarFilterLinkClass = Config::SIDEBAR_FILTER_LINK_CLASS; 
     } else {
       $href = "javascript:activateColorFilter('$categorySlug', {$colorFilterId})";

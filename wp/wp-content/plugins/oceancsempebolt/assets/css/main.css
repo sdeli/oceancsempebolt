@@ -32,6 +32,13 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif !important;
 }
 
+.mfp-bg.mfp-ready {
+  opacity: 0.3 !important;
+}
+.mfp-bg {
+  background: #ccc;
+}
+
 /* Ux Builder Classes */
 .home #main > #content {
   display: flex;
@@ -1368,6 +1375,35 @@ animation: lineLoader 1.3s ease-in-out infinite;
   z-index: 1;
 }
 
+.design-slider {
+  position: relative;
+}
+
+.design-slider__fake-slider-img {
+  z-index: 10;
+  width: 100%;
+  height: 46vw;
+  overflow: hidden;
+}
+
+.design-slider__fake-slider-img img {
+  width: 100%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.design-slider__real-slider {
+  position: absolute;
+  z-index: -10;
+  top: 0;
+  width: 100%;
+}
+
+.design-slider__slider-code-in-text {
+  display: none;
+}
+
 @media only screen and (min-width: 850px) {
   .sidebar-filter.--col-md-display-none,
   .sort-disclaimer {
@@ -1397,6 +1433,11 @@ animation: lineLoader 1.3s ease-in-out infinite;
   .jumbotron-grid-h3 {
     font-weight: bold;
   }
+
+  .design-slider__fake-slider-img {
+    height: 35vw;
+  }
+
 }
 
 @media only screen and (max-width: 849px) {
@@ -1481,6 +1522,11 @@ animation: lineLoader 1.3s ease-in-out infinite;
   }
 }
 
+@media (min-width: 548px) {
+  .design-slider {
+    margin-bottom: 10px;
+  }
+}
 @media (min-width: 992px) {
   .google-maps-thin-image {
       background: url(/wp-content/uploads/2022/04/google-maps-scaled-1200w.webp) no-repeat center;
@@ -1490,5 +1536,11 @@ animation: lineLoader 1.3s ease-in-out infinite;
 @media (min-width: 1200px) {
   .google-maps-thin-image {
       background: url(/wp-content/uploads/2022/04/google-maps-scaled-1.webp) no-repeat center;
+  }
+}
+
+@media (min-width: 1296px) {
+  .design-slider__fake-slider-img {
+      height: 462.25px;
   }
 }

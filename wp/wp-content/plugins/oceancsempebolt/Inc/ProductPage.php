@@ -4,11 +4,15 @@ namespace Inc;
 class ProductPage 
 {
   static function init() {
-    add_action( 'woocommerce_short_description', function($post_post_excerpt) {
+    add_filter( 'woocommerce_short_description', function($post_post_excerpt) {
       if (is_product()) {
         return self::addShortDescriptionBefore($post_post_excerpt);
       }
-    } );
+    });
+
+    add_action( 'woocommerce_after_single_product_summary', function() { 
+      self::addSliderLocation(); 
+    }, 25);
   }
 
   static private function addShortDescriptionBefore($post_post_excerpt) {
@@ -27,5 +31,9 @@ class ProductPage
           . $post_post_excerpt;
 
     return $post_post_excerpt;
+  }
+
+  static private function addSliderLocation() {
+    echo do_shortcode("[woocommerce_prl_recommendations id='23534']");
   }
 }

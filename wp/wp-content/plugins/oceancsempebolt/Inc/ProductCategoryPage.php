@@ -18,29 +18,7 @@ class ProductCategoryPage
       <div class="row">
         <div class="col design-col">
 
-          <?php if (isset($smartSliderId)) { ?>
-            <div class="design-slider-container">
-              <?php 
-                  echo <<<EOD
-                  <div class="design-slider-container__placeholder">
-                    <div class="design-slider-container__placeholder__message">
-                      <p style="color: #ffd075;">Design Tervek</p>
-                      <p style="color: #ffd075;">Töltődése Folyamatban</p>
-                    </div>
-                  </div>      
-                  EOD;
-              ?>      
-            </div>
-          <?php } ?>
-
-          <div class="not-fake-slider"></div>
-
-          <div class="fake-slider" style="display: none;">
-            <?php 
-              $smartSliderHtmlAsString = htmlspecialchars(do_shortcode("[smartslider3 slider=\"$smartSliderId\"]"));
-              echo $smartSliderHtmlAsString;
-            ?>
-          </div>
+          <?php if (isset($smartSliderId)) self::echoSmartSlider($smartSliderId) ?>
           
           <div class="sort-disclaimer">
             <p
@@ -1304,5 +1282,23 @@ class ProductCategoryPage
     $smartSliderId = $roomId === Config::BATHROOM_ID ? 106 : $smartSliderId;
 
     return $smartSliderId;
+  }
+
+  protected static function echoSmartSlider($smartSliderId) {
+    ?>
+      <div class="design-slider">
+        <div class="design-slider__fake-slider-img">
+          <img src="http://localhost/wp-content/uploads/slider/cache/bd39c948693713c959aea1cf9a5e97ca/design-tubadzin-colour7.webp" alt="">     
+        </div>
+        <div class="design-slider__real-slider"></div>
+      </div>
+    
+      <div class="design-slider__slider-code-in-text">
+        <?php 
+          $smartSliderHtmlAsString = htmlspecialchars(do_shortcode("[smartslider3 slider=\"$smartSliderId\"]"));
+          echo $smartSliderHtmlAsString;
+        ?>
+      </div>
+    <?php 
   }
 }

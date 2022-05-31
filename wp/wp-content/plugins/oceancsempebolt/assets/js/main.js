@@ -38,9 +38,6 @@ const POINTER_ICON_CLASS_NAME = "icon-pointer";
 const POINTER_ICON_SELECTOR = "." + POINTER_ICON_CLASS_NAME;
 const PLACEHOLDER_CATEGORY_SELECTOR = [".cat-item-3724"];
 const BATH_TUB_SLIDER_SELECTOR = ['[data-ssid="82"]'];
-const DESIGN_SLIDER_CONTAINER_SELECTOR = ".design-slider-container";
-const DESIGN_SLIDER_PLACEHOLDER_SELECTOR =
-  ".design-slider-container__placeholder";
 const BATH_TUB_SLIDER_HOMEPAGE_CONTAINER = ".home-page-kadak-slider-container";
 const BATH_TUB_SLIDER_TEXT_SELECTOR = ".bath-tub-slider-text";
 const TILES_SLIDER_HOMEPAGE_CONTAINER =
@@ -53,6 +50,10 @@ const STICKY_MOBILE_MENU_BAR_SELECTOR = "." + STICKY_MOBILE_MENU_BAR_CLASS_NAME;
 const MOBILE_MENU_BAR_ARROW_SELECTOR = ".mobile-menu-arrow-up-down-box__arrow";
 const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = "nav-invisible";
 const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = "--rotated";
+const DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR =
+  ".design-slider__slider-code-in-text";
+const DESIGN_SLIDER_FAKE_IMG_SELECTOR = ".design-slider__fake-slider-img";
+const DESIGN_SLIDER_CONTAINER_SELECTOR = ".design-slider__real-slider";
 const DESIGN_SLIDER_LOADER_SELECTOR = ".n2-padding ss3-loader";
 const BIG_PHONE_CALL_ICON_SELECTOR = ".big-phone-call-icon";
 const BIG_PHONE_CALL_ICON_SALES_AGENT_NAME_SELECTOR = ".icon-box-text strong";
@@ -158,7 +159,6 @@ const SMALL_TABLET_WIDTH = 849;
 const MOBILE_MAX_WIDTH = 499;
 const DESIGN_SLIDER_MOBILE_HEIGHT = 238;
 
-const PRODUCT_CATEG_URL_BASE = "/termek-kategoria";
 const CONTACTS_PAGE_PATH = "/kapcsolat/";
 const SALOON_PAGE_PATH = "/szalon/";
 const DISCOUNTS_DISCLAIMER_PAGE_PATH = "/akciok/";
@@ -262,7 +262,6 @@ window.addEventListener(
     }
 
     if (isShopOrCategPage()) {
-      revealDesignSliderPlaceholder();
       swapDesignPlaceholderToSlider();
       addToCartBtnsOnClick();
       addNamesToBeRocketColorIcons();
@@ -1001,15 +1000,14 @@ function loadPageTopGoogleMaps() {
 function swapDesignPlaceholderToSlider() {
   let isSliderSet = false;
   const loadSlider = () => {
-    const fakeSliderContainer = $(".design-slider-container");
-    const designSlider = $($(".fake-slider").text());
-    designSlider.hide();
-    fakeSliderContainer.append(designSlider);
-    return designSlider;
+    const designSlider = $($(DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR).text());
+    const realSliderContainer = $(DESIGN_SLIDER_CONTAINER_SELECTOR);
+    realSliderContainer.append(designSlider);
+    return realSliderContainer;
   };
 
-  const checkIfisLiderLoaded = () => {
-    return new Promise((resolve, reject) => {
+  const waitUntilSliderIsLoaded = () => {
+    return new Promise((resolve) => {
       let i = 0;
       var isSliderLoadedInterval = setInterval(function () {
         const isSliderLoaded = $(FIRST_SLIDER_TITLE_LINK_SELECTOR).length;
@@ -1018,15 +1016,18 @@ function swapDesignPlaceholderToSlider() {
           resolve(true);
         }
 
+        console.log($(DESIGN_SLIDER_LOADER_SELECTOR));
         // its awful I know => in some cases smart slider doesnt start to load while being hidden, so in that case we just allow it display
         // and so it triggers loading. It takes a second to load images that is seen by the user this what we wanted to avoid.
         const sliderIsMaybeLoaded =
           i > 5 &&
           $(DESIGN_SLIDER_LOADER_SELECTOR).length &&
-          $(".n2-padding").children().length === 1;
+          $('[aria-label="next arrow"]').children().length === 1;
         if (sliderIsMaybeLoaded) {
           clearInterval(isSliderLoadedInterval);
-          resolve(true);
+          setTimeout(() => {
+            resolve(true);
+          }, 100);
         }
 
         i++;
@@ -1038,35 +1039,18 @@ function swapDesignPlaceholderToSlider() {
     if (isSliderSet) return;
     isSliderSet = true;
     const designSlider = loadSlider();
-    await checkIfisLiderLoaded();
-    gtmSliderEventTriggerSetup();
-    const designSliderPlaceholder = $(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
-    designSlider.css({ "z-index": 2 });
-    designSlider.fadeIn(2000, function () {
-      setSliderContainerHeight(designSlider);
-      addPointerIconToSliderTitle();
-      addPointerIconToSliderTitleOnSlideFinish();
-    });
-    const originalWidth = designSliderPlaceholder.width() + "px";
-    designSliderPlaceholder.css({
-      "z-index": 1,
-      position: "absolute",
-      width: originalWidth,
-    });
-  };
 
-  const setSliderContainerHeight = (designSliderJqueryObj) => {
-    const setContainerHeightOnSliderLoad = setInterval(function () {
-      const isSliderLoaded = !!document.querySelector(
-        SMART_SLIDER_ARROWS_SELECTOR
-      );
-      if (!isSliderLoaded) return;
-      clearInterval(setContainerHeightOnSliderLoad);
-      const designSliderContainer = $(DESIGN_SLIDER_CONTAINER_SELECTOR);
-      $(window).resize(() => {
-        designSliderContainer.height(designSliderJqueryObj.height());
-      });
-    }, 500);
+    await waitUntilSliderIsLoaded();
+    gtmSliderEventTriggerSetup();
+
+    designSlider.css({ "z-index": 10 });
+    const sliderFakeImg = $(DESIGN_SLIDER_FAKE_IMG_SELECTOR);
+    sliderFakeImg.css({ "z-index": -10 });
+
+    setTimeout(() => {
+      sliderFakeImg.remove();
+      designSlider.css({ position: "relative" });
+    }, 200);
   };
 
   setTimeout(() => {
@@ -1116,21 +1100,6 @@ function addPointerIconToSliderTitle() {
     sliderTitleLink.append(pointerIcon);
     pointerIcon.fadeIn(1000);
   }, 200);
-}
-
-function revealDesignSliderPlaceholder() {
-  const designSliderContainer = $(DESIGN_SLIDER_CONTAINER_SELECTOR);
-  const designSliderPlaceholder = $(DESIGN_SLIDER_PLACEHOLDER_SELECTOR);
-  const placeHolderMessage = $(
-    ".design-slider-container__placeholder__message"
-  );
-
-  const height = designSliderPlaceholder.width() / 2;
-
-  designSliderPlaceholder.height(height);
-  designSliderContainer.height(height);
-  designSliderContainer.css("overflow", "hidden");
-  placeHolderMessage.addClass("--visible");
 }
 
 function squareMeterCounter() {
