@@ -32,7 +32,7 @@ class ProductCategoryPage
         
           <?php if (isset($categorySpecificFilterId)) { ?>
             <div class="filter-form">
-              <?php echo do_shortcode("[br_filters_group group_id=${categorySpecificFilterId}]"); ?>
+              <?php self::echoBerocketFilters($categorySpecificFilterId); ?>
             </div>
           <?php } ?>
 
@@ -57,6 +57,22 @@ class ProductCategoryPage
         </div>
       </div>
     <?php
+  }
+
+  protected static function echoBerocketFilters(int $categorySpecificFilterId) {
+    $berocket_filters_html = do_shortcode("[br_filters_group group_id=${categorySpecificFilterId}]");
+    $doc = new \DOMDocument();
+    $doc->loadHTML(mb_convert_encoding($berocket_filters_html, 'HTML-ENTITIES', 'UTF-8'));
+    $be_rocket_color_icon_name_containers = $doc->getElementsByTagName('label');
+
+    foreach($be_rocket_color_icon_name_containers as $color_icon_container) {
+      $color = $color_icon_container->getAttribute('aria-label');
+      if ($color) {
+        $color_icon_container->firstChild->textContent = $color;
+      }
+    }
+
+    echo $doc->saveHTML();
   }
 
   protected static function getSmartSliderIdByRoom(int $default) {

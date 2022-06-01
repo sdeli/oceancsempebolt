@@ -19,7 +19,6 @@ const MOBILE_SIDEBAR_CANCEL_BTN = ".mfp-close";
 const PARALLAX_HEADER_SELECTOR = ".identity-header__background";
 const HAMBURGER_BTN_SELECTOR = '[aria-controls="main-menu"]';
 const FILTER_BTN_SELECTOR = ".filter-btn";
-const BR_ROCKET_COLOR_ICON_SELECTOR = ".filter-form__szin [aria-label]";
 const MAIN_SHOP_PAGE_SLUG = "shop";
 const DESKTOP_MENU_TRIGGER_CLASS = "desktop-hamburger-btn";
 const PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR = "#menu-item-4854";
@@ -142,8 +141,7 @@ const CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML = `<iframe width="560" height="315" 
 const POINTER_ICON_HTML = `<span class="${POINTER_ICON_CLASS_NAME} slider-pointer-icon"></span>`;
 const MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML =
   '<div class="mobile-menu-arrow-up-down-box"><i class="icon-angle-up mobile-menu-arrow-up-down-box__arrow"></i></div>';
-const CONTACT_US_INLINE_INFOS_HTML = `
-    <strong style="color:#686868;">Kérdésével forduljon hozzánk bátran</strong>: 
+const CONTACT_US_INLINE_INFOS_HTML = `n hozzánk bátran</strong>: 
     <i class="icon-phone" style="color: black;"></i> 
     <a href="tel:06-30-397-4150" style="cursor: pointer; color: #4e657b">06 30 397 4150 - Szabó István</a><br>
     <a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975" style="cursor: pointer; color: #4e657b" target="_blank">
@@ -264,7 +262,6 @@ window.addEventListener(
     if (isShopOrCategPage()) {
       swapDesignPlaceholderToSlider();
       addToCartBtnsOnClick();
-      addNamesToBeRocketColorIcons();
       parallaxShopHeader();
 
       const isSubCategoryPage = $("h1.shop-page-title").text() !== "Shop";
@@ -921,15 +918,6 @@ function parallaxShopHeader() {
   });
 }
 
-function addNamesToBeRocketColorIcons() {
-  const beRocketColorIconNameContainers = $(BR_ROCKET_COLOR_ICON_SELECTOR);
-  beRocketColorIconNameContainers.each(function () {
-    const currentIcon = $(this);
-    const colorName = currentIcon.attr("aria-label");
-    currentIcon.children().eq(0).text(colorName);
-  });
-}
-
 function removeUnneededFiltersFromMainShopPage() {
   const unneededFilters = $(UNNEEDED_FILTERS);
   unneededFilters.parent().remove();
@@ -937,8 +925,7 @@ function removeUnneededFiltersFromMainShopPage() {
 
 function loadElementOnUserInteractionAndInViewport(
   elementHtml,
-  elementContainerSelector,
-  jo
+  elementContainerSelector
 ) {
   const elemContainer = $(elementContainerSelector);
   let shouldLoadElem = isElemVisible(elementContainerSelector);
