@@ -59,6 +59,67 @@ class ProductCategoryPage
     <?php
   }
 
+  protected static function getSmartSliderIdByRoom(int $default) {
+    $smartSliderId = $default;
+    preg_match(Config::GET_LAST_BE_ROCKET_ROOM_FILTER_ID_REGEX, $_GET[Config::BE_ROCKET_FILTERS_QUERY_VAR_NAME], $roomIdArr);
+    $roomId = !empty($roomIdArr) ? intval($roomIdArr[1]) : '';
+
+    $smartSliderId = $roomId === Config::LIVING_ROOM_AND_MORE_ID ? 109 : $smartSliderId;
+    $smartSliderId = $roomId === Config::KITCHEN_ID ? 230 : $smartSliderId;
+    $smartSliderId = $roomId === Config::BATHROOM_ID ? 106 : $smartSliderId;
+
+    return $smartSliderId;
+  }
+
+  protected static function echoSmartSlider($smartSliderId) {
+    ?>
+      <div class="design-slider">
+        <div class="design-slider__fake-slider-img">
+          <?php self::echoSmartSliderFirstImage(); ?>
+        </div>
+        <div class="design-slider__real-slider"></div>
+      </div>
+    
+      <div class="design-slider__slider-code-in-text">
+        <?php 
+          $smartSliderHtmlAsString = htmlspecialchars(do_shortcode("[smartslider3 slider=\"$smartSliderId\"]"));
+          echo $smartSliderHtmlAsString;
+        ?>
+      </div>
+    <?php 
+  }
+
+  protected static function echoSmartSliderFirstImage() {
+    $design_category_name = is_shop() ? Config::SHOP_PAGE_SLIDER_CATEGORY : get_queried_object()->name;
+    $query = new \WP_Query( array( 
+      'post_type'      => 'designs',
+      'posts_per_page' => 1,
+      'tax_query' => array(
+        array(
+          'taxonomy' => 'design_category',
+          'field'    => 'name',
+          'terms'    => $design_category_name,
+        ),
+      ),
+    ));
+    
+    $featured_image_url_medium = get_the_post_thumbnail_url($query->post->ID, 'medium');
+    $featured_image_url_medium_large = get_the_post_thumbnail_url($query->post->ID, 'medium_large');
+    $featured_image_url_large = get_the_post_thumbnail_url($query->post->ID, 'large');
+    $featured_image_url_full = get_the_post_thumbnail_url($query->post->ID, 'full');
+    $featured_image_url_original = get_the_post_thumbnail_url($query->post->ID);
+
+    ?>
+    <img 
+    src="<?php echo $featured_image_url_original ?>"
+    srcset="<?php echo $featured_image_url_medium ?> 600w,  
+            <?php echo $featured_image_url_medium_large ?> 768w, 
+            <?php echo $featured_image_url_large ?> 1121w,
+            <?php echo $featured_image_url_full ?> 1320w" 
+    >
+  <?php 
+  }
+
   protected static function getShortcodeIds(): array {
     global $wp_query;
     $cat = $wp_query->get_queried_object();
@@ -1270,35 +1331,5 @@ class ProductCategoryPage
     }
 
     return [$smartSliderId, $categorySpecificFilterId];
-  }
-
-  protected static function getSmartSliderIdByRoom(int $default) {
-    $smartSliderId = $default;
-    preg_match(Config::GET_LAST_BE_ROCKET_ROOM_FILTER_ID_REGEX, $_GET[Config::BE_ROCKET_FILTERS_QUERY_VAR_NAME], $roomIdArr);
-    $roomId = !empty($roomIdArr) ? intval($roomIdArr[1]) : '';
-
-    $smartSliderId = $roomId === Config::LIVING_ROOM_AND_MORE_ID ? 109 : $smartSliderId;
-    $smartSliderId = $roomId === Config::KITCHEN_ID ? 230 : $smartSliderId;
-    $smartSliderId = $roomId === Config::BATHROOM_ID ? 106 : $smartSliderId;
-
-    return $smartSliderId;
-  }
-
-  protected static function echoSmartSlider($smartSliderId) {
-    ?>
-      <div class="design-slider">
-        <div class="design-slider__fake-slider-img">
-          <img src="http://localhost/wp-content/uploads/slider/cache/bd39c948693713c959aea1cf9a5e97ca/design-tubadzin-colour7.webp" alt="">     
-        </div>
-        <div class="design-slider__real-slider"></div>
-      </div>
-    
-      <div class="design-slider__slider-code-in-text">
-        <?php 
-          $smartSliderHtmlAsString = htmlspecialchars(do_shortcode("[smartslider3 slider=\"$smartSliderId\"]"));
-          echo $smartSliderHtmlAsString;
-        ?>
-      </div>
-    <?php 
   }
 }

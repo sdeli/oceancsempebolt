@@ -76,4 +76,5 @@ class Config
   const COMPANY_BANK_ACCOUNT = '11714006-20397245';
 
   const BURKOLATOK_CATEG_SLUG = 'burkolatok';
+  const SHOP_PAGE_SLIDER_CATEGORY = 'legszebb-termekek';
 }

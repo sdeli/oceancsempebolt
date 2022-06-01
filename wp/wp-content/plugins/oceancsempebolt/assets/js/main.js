@@ -1048,8 +1048,9 @@ function swapDesignPlaceholderToSlider() {
     sliderFakeImg.css({ "z-index": -10 });
 
     setTimeout(() => {
-      sliderFakeImg.remove();
       designSlider.css({ position: "relative" });
+      sliderFakeImg.css({ position: "absolute" });
+      sliderFakeImg.fadeOut(2000, () => sliderFakeImg.remove());
     }, 200);
   };
 
