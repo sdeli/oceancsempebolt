@@ -18,7 +18,7 @@ class ProductCategoryPage
       <div class="row">
         <div class="col design-col">
 
-          <?php if (isset($smartSliderId)) self::echoSmartSlider($smartSliderId) ?>
+          <?php if (!is_null($smartSliderId)) self::echoSmartSlider($smartSliderId) ?>
           
           <div class="sort-disclaimer">
             <p
@@ -30,7 +30,7 @@ class ProductCategoryPage
             </p>
           </div>
         
-          <?php if (isset($categorySpecificFilterId)) { ?>
+          <?php if (!is_null($categorySpecificFilterId)) { ?>
             <div class="filter-form">
               <?php self::echoBerocketFilters($categorySpecificFilterId); ?>
             </div>
@@ -140,8 +140,9 @@ class ProductCategoryPage
     global $wp_query;
     $cat = $wp_query->get_queried_object();
     [$current_path] = explode("?", $_SERVER['REQUEST_URI']);
-    $categorySpecificFilterId = '';
-
+    $categorySpecificFilterId = null;
+    $smartSliderId = null;
+    
     if (is_shop()) {
       $smartSliderId = 248;
       $categorySpecificFilterId = 10595;
@@ -1343,6 +1344,12 @@ class ProductCategoryPage
       }
       if ($cat->slug === "colour") {
         $smartSliderId = 388;
+      }
+      if ($cat->slug === "treverkmore") {
+        $smartSliderId = 401;
+      }
+      if ($cat->slug === "pret-a-porter") {
+        $smartSliderId = 402;
       }
     }
 

@@ -8,16 +8,14 @@ Plugin Name: oceancsempebolt
 */
 namespace Inc;
 
-define( 'OCS_PLUGIN_NAME', 'oceancsempebolt' );
+
 define( 'OCEANCSEMPEBOLT_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once(OCEANCSEMPEBOLT_PATH . 'vendor/autoload.php');
-// dump_r(plugin_dir_path( __FILE__ ));
 
-// This constant needs to be set by hand, when deploying.
-define( 'WP_ENVIRONMENT_TYPE', Config::ENVIRONMENT_TYPE_LOCAL);
-
-define( 'OCS_IS_LOCAL_ENV', wp_get_environment_type() === Config::ENVIRONMENT_TYPE_LOCAL);
+if (!defined('WP_ENVIRONMENT_TYPE')) {
+  define('WP_ENVIRONMENT_TYPE', Config::ENVIRONMENT_TYPE_LOCAL);
+}
 
 require_once(OCEANCSEMPEBOLT_PATH . '/front/enqueue.php');
 add_styles_to_footer();

@@ -28,8 +28,5 @@
     },
     "autoload": {
         "psr-4": {"Libs\\": "wp/wp-content/Libs"}
-    },
-    "require-dev": {
-        "leeoniya/dump-r": "^2.1"
     }
 }

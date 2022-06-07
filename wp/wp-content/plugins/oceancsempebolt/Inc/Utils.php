@@ -5,6 +5,18 @@ use \Inc\Config;
 class Utils {
   const C = 'constant';
 
+  static function is_local() {
+    return wp_get_environment_type() === Config::ENVIRONMENT_TYPE_LOCAL;
+  }
+
+  static function is_prod() {
+    return wp_get_environment_type() === Config::ENVIRONMENT_TYPE_PROD;
+  }
+
+  static function is_dev() {
+    return wp_get_environment_type() === Config::ENVIRONMENT_TYPE_DEV;
+  }
+
   static function get_pdf_catalog_data_for_category() {
     if (is_shop()) return false;
 

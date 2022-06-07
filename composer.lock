@@ -4,65 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45aae85e3eb551e9b8df4b8afcea4f0b",
+    "content-hash": "6f1039c15daf49b684d99b1faef170d6",
     "packages": [],
     "packages-dev": [
         {
-            "name": "leeoniya/dump-r",
-            "version": "2.1",
+            "name": "digitalnature/php-ref",
+            "version": "v1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/leeoniya/dump_r.php.git",
-                "reference": "f6d3694f4ddd7dc08d7b3900875116eaf600034d"
+                "url": "git@github.com:digitalnature/php-ref.git",
+                "reference": "2381f04d7ebcbce1072e86b98a0ccbad191f3290"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leeoniya/dump_r.php/zipball/f6d3694f4ddd7dc08d7b3900875116eaf600034d",
-                "reference": "f6d3694f4ddd7dc08d7b3900875116eaf600034d",
+                "url": "https://api.github.com/repos/digitalnature/php-ref/zipball/2381f04d7ebcbce1072e86b98a0ccbad191f3290",
+                "reference": "2381f04d7ebcbce1072e86b98a0ccbad191f3290",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0"
-            },
-            "suggest": {
-                "jdorn/sql-formatter": "Pretty-print dumped SQL strings"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "dump_r.php"
-                ],
-                "psr-4": {
-                    "dump_r\\": "src/dump_r"
-                }
+                    "ref.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "authors": [
-                {
-                    "name": "Leon Sorokin",
-                    "email": "leeoniya@gmail.com",
-                    "homepage": "https://github.com/leeoniya",
-                    "role": "Developer"
-                }
-            ],
-            "description": "a cleaner, leaner mix of print_r() and var_dump()",
-            "homepage": "https://github.com/leeoniya/dump_r.php",
+            "description": "A nicer print_r/var_dump alternative for PHP 5.3+",
+            "homepage": "https://github.com/digitalnature/php-ref",
             "keywords": [
                 "debug",
-                "dump",
-                "pretty",
-                "print",
-                "print_r",
                 "var_dump"
             ],
-            "support": {
-                "issues": "https://github.com/leeoniya/dump_r.php/issues",
-                "source": "https://github.com/leeoniya/dump_r.php/tree/master"
-            },
-            "time": "2015-09-04T22:05:16+00:00"
+            "time": "2020-01-28T21:41:16+00:00"
         }
     ],
     "aliases": [],

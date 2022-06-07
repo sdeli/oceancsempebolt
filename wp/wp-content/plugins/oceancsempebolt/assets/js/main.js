@@ -202,9 +202,6 @@ window.addEventListener(
     setTimeout(() => {
       slideUpAndDownMobileMenuBar();
     }, 0);
-    setTimeout(() => {
-      dataLayer.push({ event: GTM_SPENT_10_SECONDS_EVENT_NAME });
-    }, 10000);
 
     const isHomePage = document.querySelector(".home");
     if (isHomePage) {
