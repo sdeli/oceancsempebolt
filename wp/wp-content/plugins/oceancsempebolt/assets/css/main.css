@@ -1460,6 +1460,14 @@ animation: lineLoader 1.3s ease-in-out infinite;
 }
 /* END all pages - when opening hamburger menu or kateogires menu the product categ listing */
 
+.single-product .product-info {
+  padding-bottom: unset;
+}
+
+.single-product .product-main {
+  padding-bottom: 15px;
+}
+
 @media only screen and (min-width: 850px) {
   .sidebar-filter.--col-md-display-none,
   .sort-disclaimer {
