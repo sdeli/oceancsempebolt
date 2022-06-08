@@ -240,13 +240,6 @@ window.addEventListener(
       );
     }
 
-    const isSaloonPage =
-      window.location.pathname === SALOON_PAGE_PATH ||
-      window.location.pathname === "/szalon-test/";
-    if (isSaloonPage) {
-      loadPageTopGoogleMaps();
-    }
-
     const isDiscountsDisclaimerPage =
       window.location.pathname === DISCOUNTS_DISCLAIMER_PAGE_PATH;
     if (isDiscountsDisclaimerPage) {
@@ -956,29 +949,6 @@ function isElemVisible(selector) {
   const viewportTop = $(window).scrollTop();
   const viewportBottom = viewportTop + $(window).height();
   return elementBottom > viewportTop && elementTop < viewportBottom;
-}
-
-function loadPageTopGoogleMaps() {
-  const googleMapsContainer = $(GOOGLE_MAPS_CONATINER_SELECTOR);
-  googleMapsContainer.css({ position: "absolute", top: 0, "z-index": 0 });
-  const googleMapsImageContainer = $(GOOGLE_MAPS_THIN_IMAGE_SELECTOR);
-
-  setTimeout(() => {
-    loadElementOnUserInteractionAndInViewport(
-      GOOGLE_MAPS_THIN_IFRAME_HTML,
-      GOOGLE_MAPS_CONATINER_SELECTOR
-    );
-    const googleMapsIframe = $(`.${GOOGLE_MAPS_THIN_IFRAME_CLASS}`);
-
-    googleMapsIframe.on("load", function () {
-      setTimeout(() => {
-        googleMapsImageContainer.fadeOut(1000, () => {
-          googleMapsIframe.css("position", "relative");
-          googleMapsImageContainer.remove();
-        });
-      }, 1000);
-    });
-  }, 2000);
 }
 
 function swapDesignPlaceholderToSlider() {

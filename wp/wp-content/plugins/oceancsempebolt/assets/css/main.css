@@ -47,6 +47,17 @@ h1, h2, h3, h4, h5, h6 {
   /* gap: 20px; */
 }
 
+.ux-builder-floating-button.button {
+  position: absolute;
+  margin: unset;
+  bottom: 5%;
+  left: 5%;
+}
+
+.ux-builder-floating-button.button.white.button.is-outline {
+  color: white !important;
+ }
+
 .ux-builder-no-top-bottom-padding {
   padding: unset;
   padding-top: unset !important;
@@ -1386,7 +1397,7 @@ animation: lineLoader 1.3s ease-in-out infinite;
   overflow: hidden;
 }
 
-.design-slider__fake-slider-img img {
+.design-slider__fake-slider-img > img {
   width: 100%;
   position: relative;
   top: 50%;
@@ -1402,6 +1413,23 @@ animation: lineLoader 1.3s ease-in-out infinite;
 
 .design-slider__slider-code-in-text {
   display: none;
+}
+
+.slider-fake-arrow {
+  color: white;
+  font-size: 51px;
+  line-height: 0;
+  vertical-align: middle;
+  position: relative;
+  left: 8%;
+}
+
+.slider-fake-arrow.left {
+  left: 8%;
+}
+
+.slider-fake-arrow.right {
+  right: 8%;
 }
 
 @media only screen and (min-width: 850px) {
