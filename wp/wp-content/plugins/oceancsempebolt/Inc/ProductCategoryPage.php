@@ -162,24 +162,25 @@ class ProductCategoryPage
         transition: opacity 1s ease-in-out;
         z-index: 100;
       }
-      .wrapper{
+      .slider-loader__wrapper{
         position: absolute;
         width: 100%;
         height: 100%;
         top: 0;
         left: 0;
-        justify-content: center;
-        align-items: center;
       }
 
-      .loader{
+      .slider-loader__loader{
         display: flex;
         position: relative;
         width: 250px;
         height: 88px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
 
-      .wave{
+      .slider-loader__wave{
         display: flex;
         justify-content: space-between;
         position: absolute;
@@ -190,14 +191,14 @@ class ProductCategoryPage
         perspective: 100px;
       }
 
-      .wave > div{
+      .slider-loader__wave > div{
         position: relative;
         width: 16px;
         height: 16px;
         border-radius: 100%;
       }
 
-      .wave > div::before{
+      .slider-loader__wave > div::before{
         content: '';
         position: absolute;
         top: 0;
@@ -208,87 +209,87 @@ class ProductCategoryPage
         border-radius: 50%;
       }
 
-      .top-wave > div::before {
+      .slider-loader__top-wave > div::before {
         background-color: #1184EF;
       }
 
-      .top-wave > div{
+      .slider-loader__top-wave > div{
         animation: move 3s ease-in-out infinite reverse;
         
       }
       
-      .top-wave > div::before{
+      .slider-loader__top-wave > div::before{
         animation: grow 3s linear infinite reverse; 
       }
 
-      .bottom-wave > div{
+      .slider-loader__bottom-wave > div{
         animation: move 3s ease-in-out infinite;
       }
       
-      .bottom-wave > div::before{
+      .slider-loader__bottom-wave > div::before{
         animation: grow 3s linear infinite;
       }
 
-      .wave > div:nth-child(10){
+      .slider-loader__wave > div:nth-child(10){
         animation-delay: 0s;
       }
-      .wave > div:nth-child(9){
+      .slider-loader__wave > div:nth-child(9){
         animation-delay: -0.1s;
       }
-      .wave > div:nth-child(8){
+      .slider-loader__wave > div:nth-child(8){
         animation-delay: -0.2s;
       }
-      .wave > div:nth-child(7){
+      .slider-loader__wave > div:nth-child(7){
         animation-delay: -0.3s;
       }
-      .wave > div:nth-child(6){
+      .slider-loader__wave > div:nth-child(6){
         animation-delay: -0.4s;
       }
-      .wave > div:nth-child(5){
+      .slider-loader__wave > div:nth-child(5){
         animation-delay: -0.5s;
       }
-      .wave > div:nth-child(4){
+      .slider-loader__wave > div:nth-child(4){
         animation-delay: -0.6s;
       }
-      .wave > div:nth-child(3){
+      .slider-loader__wave > div:nth-child(3){
         animation-delay: -0.7s;
       }
-      .wave > div:nth-child(2){
+      .slider-loader__wave > div:nth-child(2){
         animation-delay: -0.8s;
       }
-      .wave > div:nth-child(1){
+      .slider-loader__wave > div:nth-child(1){
         animation-delay: -0.9s;
       }
 
 
-      .bottom-wave > div:nth-child(10){
+      .slider-loader__bottom-wave > div:nth-child(10){
         animation-delay: 0.75s;
       }
-      .bottom-wave > div:nth-child(9){
+      .slider-loader__bottom-wave > div:nth-child(9){
         animation-delay: 0.65s;
       }
-      .bottom-wave > div:nth-child(8){
+      .slider-loader__bottom-wave > div:nth-child(8){
         animation-delay: 0.55s;
       }
-      .bottom-wave > div:nth-child(7){
+      .slider-loader__bottom-wave > div:nth-child(7){
         animation-delay: 0.45s;
       }
-      .bottom-wave > div:nth-child(6){
+      .slider-loader__bottom-wave > div:nth-child(6){
         animation-delay: 0.35s;
       }
-      .bottom-wave > div:nth-child(5){
+      .slider-loader__bottom-wave > div:nth-child(5){
         animation-delay: 0.25s;
       }
-      .bottom-wave > div:nth-child(4){
+      .slider-loader__bottom-wave > div:nth-child(4){
         animation-delay: 0.15s;
       }
-      .bottom-wave > div:nth-child(3){
+      .slider-loader__bottom-wave > div:nth-child(3){
         animation-delay: 0.05s;
       }
-      .bottom-wave > div:nth-child(2){
+      .slider-loader__bottom-wave > div:nth-child(2){
         animation-delay: -0.05s;
       }
-      .bottom-wave > div:nth-child(1){
+      .slider-loader__bottom-wave > div:nth-child(1){
         animation-delay: -0.15s;
       }
 
@@ -325,9 +326,9 @@ class ProductCategoryPage
       }
     </style>
 
-    <div class="slider-loader wrapper">
-      <div class="loader">
-        <div class="wave top-wave">
+    <div class="slider-loader slider-loader__wrapper">
+      <div class="slider-loader__loader">
+        <div class="slider-loader__wave slider-loader__top-wave">
           <div></div>
           <div></div>
           <div></div>
@@ -339,7 +340,7 @@ class ProductCategoryPage
           <div></div>
           <div></div>
         </div>
-        <div class="wave bottom-wave">
+        <div class="slider-loader__wave slider-loader__bottom-wave">
           <div></div>
           <div></div>
           <div></div>
