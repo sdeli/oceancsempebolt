@@ -30,6 +30,9 @@ class Config
   const KITCHEN_ID = 3650;
   const BATHROOM_ID = 3649;
 
+  const TILE_BRANDS_PRODUCT_CATEG_ID = 2787;
+  const BRANDS_PRODUCT_CATEG_ID = 2241;
+
   const BATHROOM_TAP_SLUG = 'furdoszobai-csaptelep';
   const TILES_SLUG = 'burkolatok';
   const BATHROOM_AUXILIARY_SLUG = 'furdoszoba-kiegeszitok';

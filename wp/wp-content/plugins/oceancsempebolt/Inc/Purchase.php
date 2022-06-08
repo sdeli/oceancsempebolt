@@ -54,8 +54,7 @@ class Purchase
   static private function removeInvalidPaymentMethods( $gateways ) {
     foreach( WC()->cart->get_cart() as $cart_item ){
       $product_id = $cart_item['product_id'];
-      $is_tile_product = has_term( Config::BURKOLATOK_CATEG_SLUG, 'product_cat', $product_id);
-      if ($is_tile_product) { 
+      if (Utils::is_tile($product_id)) { 
         unset( $gateways['cod'] );
         unset( $gateways['WC_Gateway_SimplePay_WPS'] );
         break;

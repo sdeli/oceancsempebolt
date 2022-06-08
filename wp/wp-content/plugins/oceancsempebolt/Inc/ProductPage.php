@@ -11,13 +11,15 @@ class ProductPage
     });
 
     add_action( 'woocommerce_after_single_product_summary', function() {
+      self::echoRelatedProductsByFamily();
+    }, 1);
+
+    add_action( 'woocommerce_after_single_product_summary', function() {
       global $product;
-      $product_id = $product->get_id();
-      $is_tile_product = has_term( Config::BURKOLATOK_CATEG_SLUG, 'product_cat', $product_id);
-      if ($is_tile_product) {
+      if (Utils::is_tile($product->get_id())) {
         echo Config::UKRAINE_WAR_MESSAGE;
       }
-    }, 1);
+    }, 15);
   }
 
   static private function addShortDescriptionBefore($post_post_excerpt) {
@@ -35,5 +37,16 @@ class ProductPage
           . '</a></div>';
 
     return $post_post_excerpt;
+  }
+
+  static function echoRelatedProductsByFamily() {
+    $args = array(
+			'posts_per_page' => 8,
+			'columns'        => 2,
+			'orderby'        => 'rand', // @codingStandardsIgnoreLine.
+			'order'          => 'desc',
+		);
+
+    Utils::get_related_products_by_family($args);
   }
 }

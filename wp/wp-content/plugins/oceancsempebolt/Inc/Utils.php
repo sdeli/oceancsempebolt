@@ -17,6 +17,10 @@ class Utils {
     return wp_get_environment_type() === Config::ENVIRONMENT_TYPE_DEV;
   }
 
+  static function is_tile(string $product_id) {
+    return has_term( Config::BURKOLATOK_CATEG_SLUG, 'product_cat', $product_id);
+  }
+
   static function get_pdf_catalog_data_for_category() {
     if (is_shop()) return false;
 
@@ -245,5 +249,110 @@ class Utils {
     Arra kérünk, hogy rendelésed számát (<strong>{$order->id}</strong>) átutaláskor tüntesd fel a megjegyzés mezőben, köszönjük.<br>
     Ha bármi kérdésed merülne fel, hivd bizalommal kollégánkat a következő telefonszámon: <strong>{$randTelNumber}</strong>
   EOD;
+  }
+
+  static function get_related_products_by_family($args) {  
+    global $product;
+		if ( ! $product ) {
+			return;
+		}
+    $product_id = $product->get_id();
+    $defaults = array(
+			'posts_per_page' => 8,
+			'columns'        => 2,
+			'orderby'        => 'rand', // @codingStandardsIgnoreLine.
+			'order'          => 'desc',
+		);
+
+    $args = wp_parse_args( $args, $defaults );
+    [$family_categories, $brand_categories] = static::get_family_categories();
+    // What comes next is a nested if, which is the ugliest thing I know but it was just fast and makes the job done...
+    if (!empty($family_categories) || !empty($brand_categories)) {
+      $data_store    = \WC_Data_Store::load( 'product' );
+      $args['related_products'] = [];
+
+      if (!empty($family_categories)) {
+        $args['related_products_family'] = array_map( 
+            'wc_get_product', 
+            $data_store->get_related_products( $family_categories, [], [], 8, $product_id )
+          );
+        $related_products = wc_products_array_orderby( $args['related_products_family'], $args['orderby'], $args['order'] );
+        $args['related_products'] = array_merge($args['related_products'], $related_products);
+      }
+      
+      if (!empty($brand_categories)) {
+        $args['related_products_brand'] = array_map( 
+          'wc_get_product', 
+          $data_store->get_related_products( $brand_categories, [], [], 20, $product_id )
+        );
+        $related_products = wc_products_array_orderby( $args['related_products_brand'], $args['orderby'], $args['order'] );
+        $args['related_products'] = array_merge($args['related_products'], $related_products);
+      }
+    } else {
+      $args = wp_parse_args( $args, $defaults );
+      $args['related_products'] = array_map( 'wc_get_product', wc_get_related_products( $product->get_id(), $args['posts_per_page'], $product->get_upsell_ids()) );
+      $args['related_products'] = wc_products_array_orderby( $args['related_products'], $args['orderby'], $args['order'] );  
+    }
+    
+    $type             = get_theme_mod( 'related_products', 'slider' );
+    $repeater_classes = array();
+
+    if ( $type == 'hidden' ) return;
+    if ( $type == 'grid' ) $type = 'row';
+
+    if ( get_theme_mod('category_force_image_height' ) ) $repeater_classes[] = 'has-equal-box-heights';
+    if ( get_theme_mod('equalize_product_box' ) ) $repeater_classes[] = 'equalize-box';
+
+    $repeater['type']         = $type;
+    $repeater['columns']      = get_theme_mod( 'related_products_pr_row', 4 );
+    $repeater['columns__md']  = get_theme_mod( 'related_products_pr_row_tablet', 3 );
+    $repeater['columns__sm']  = get_theme_mod( 'related_products_pr_row_mobile', 2 );
+    $repeater['class']        = implode( ' ', $repeater_classes );
+    $repeater['slider_style'] = 'reveal';
+    $repeater['row_spacing']  = 'small';
+    
+    ?>
+      <div class="related related-products-wrapper product-section">
+        <?php 
+        get_flatsome_repeater_start( $repeater );
+
+        foreach ( $args['related_products'] as $related_product ) {
+          $post_object = get_post( $related_product->get_id() );
+          setup_postdata( $GLOBALS['post'] =& $post_object );
+          include(OCEANCSEMPEBOLT_PATH . '/templates/content-tiny-product.php');
+        }
+        
+        get_flatsome_repeater_end( $repeater ); ?>
+      </div>
+    <?php 
+  }
+
+  static protected function get_family_categories() {
+    global $product;
+
+    $brands_categ_id = self::is_tile($product->get_id()) ? Config::TILE_BRANDS_PRODUCT_CATEG_ID : Config::BRANDS_PRODUCT_CATEG_ID;
+
+    $terms = get_the_terms( $product->get_id(), 'product_cat' );
+    $family_categories = [];
+    $brand_categories = [];
+
+    foreach ($terms as $term) {
+      $is_brand_categ = $term->parent === $brands_categ_id;
+      if ($is_brand_categ) {
+        $brand_categories[] = $term->term_id;
+        continue; 
+      }
+
+      $parent_cat = get_term($term->parent, 'product_cat');
+      if (is_wp_error($parent_cat)) continue;
+
+      $is_family_categ = $parent_cat->parent === $brands_categ_id;
+      if ($is_family_categ) {
+        $family_categories[] = $term->term_id;
+        continue; 
+      }
+    }
+
+    return [$family_categories, $brand_categories];
   }
 }
