@@ -4,9 +4,8 @@ use \Inc\Config;
 
 class AllPages 
 {
-  static function displayCustomElements() {
+  static function init() {
     self::modifyFlatsomeMobileSidebar();
-
     add_action('flatsome_before_footer', function () {
       if(is_front_page()){
         self::echoFrontPageSliders(); 

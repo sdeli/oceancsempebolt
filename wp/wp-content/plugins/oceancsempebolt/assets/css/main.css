@@ -1382,12 +1382,9 @@ animation: lineLoader 1.3s ease-in-out infinite;
 }
 
 .single-product .call-us {
-  border-bottom: 2px solid #fb8b81;
-  border-top: 2px solid #fb8b81;
-  padding-bottom: -2px;
   margin-bottom: 5px;
   padding-top: 4px;
-  padding-bottom: 3px;
+  padding-bottom: 5px;
 }
 
 .catalog-legend {
