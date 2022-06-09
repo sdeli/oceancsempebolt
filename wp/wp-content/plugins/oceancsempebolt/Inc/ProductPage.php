@@ -13,13 +13,16 @@ class ProductPage
     add_action( 'woocommerce_after_single_product_summary', function() {
       self::echoRelatedProductsByFamily();
     }, 1);
-
+    
     add_action( 'woocommerce_after_single_product_summary', function() {
       global $product;
       if (Utils::is_tile($product->get_id())) {
         echo Config::UKRAINE_WAR_MESSAGE;
       }
     }, 15);
+    add_action( 'woocommerce_after_single_product_summary', function() {
+      self::echoPopularProducts();
+    }, 25);
   }
 
   static private function addShortDescriptionBefore($post_post_excerpt) {
@@ -48,5 +51,52 @@ class ProductPage
 		);
 
     Utils::get_related_products_by_family($args);
+  }
+
+  static function echoPopularProducts() {
+    ?>
+      <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+        Most Népszerű			
+      </h3>
+    <?php 
+    
+    $products_query = self::get_popular_products_query(8);
+    
+    if( $products_query->have_posts() ){
+      ?>
+        <div class="products row row-small large-columns-4 medium-columns-3 small-columns-1 popular-products-loop ux-builder-margin-bottom-15">
+      <?php 
+        while( $products_query->have_posts() ){
+          $products_query->the_post();
+          do_action( 'woocommerce_shop_loop' );
+
+          wc_get_template_part( 'content', 'product' );
+        }
+      ?>
+        </div>
+      <?php 
+      
+    }
+  }
+
+  static function get_popular_products_query(int $product_amount = 12, array $exclude_ids = []): \WP_Query {
+    $args = array(
+      'post_type'             => 'product',
+      'post_status'           => 'publish',
+      'ignore_sticky_posts'   => 1,
+      'orderby'               => 'rand',
+      'posts_per_page'        => $product_amount,
+      'post__not_in' => array( $exclude_ids ),
+      'tax_query'             => array(
+        array(
+            'taxonomy'      => 'pa_nepszeruseg',
+            'field' => 'term_id',
+            'terms'         => '6656',
+            'operator'      => 'IN'
+        ),
+      )
+    );
+
+    return new \WP_Query($args);
   }
 }

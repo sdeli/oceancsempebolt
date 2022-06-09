@@ -32,6 +32,7 @@ $classes   = array();
 $classes[] = 'product-small';
 $classes[] = 'col';
 $classes[] = 'has-hover';
+$classes[] = 'family-brand-product';
 
 if ( $out_of_stock ) $classes[] = 'out-of-stock';
 

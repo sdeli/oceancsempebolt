@@ -42,7 +42,7 @@ class Utils {
     $products = new \WP_Query($args);
     return $products->posts;
   }
-  
+
   static function get_pdf_catalog_data_for_category() {
     if (is_shop()) return false;
 
@@ -305,9 +305,9 @@ class Utils {
     
     ?>
       <div class="related related-products-wrapper product-section">
-        <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+        <h5 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase ux-builder-padding-top-5 ux-builder-padding-bottom-5">
           Ez is tetszhet			
-        </h3>
+        </h5>
         <?php 
         get_flatsome_repeater_start( $repeater );
 

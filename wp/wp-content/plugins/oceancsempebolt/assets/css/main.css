@@ -87,7 +87,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .ux-builder-margin-bottom-15 {
-  margin-bottom: 15px;
+  margin-bottom: 15px !important;
 }
 
 .ux-builder-margin-bottom-5 {
@@ -102,16 +102,12 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0 !important;
 }
 
-.ux-builder-padding-top-0 {
-  margin-top: 0 !important;
-}
-
 .ux-builder-padding-bottom-0 {
   padding-bottom: 0 !important;
 }
 
 .ux-builder-padding-bottom-5 {
-  padding-bottom: 5 !important;
+  padding-bottom: 5px !important;
 }
 
 .ux-builder-padding-bottom-2 {
@@ -129,6 +125,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .ux-builder-padding-top-0 {
   padding-top: 0 !important;
+}
+
+.ux-builder-padding-top-5 {
+  padding-top: 5px !important;
 }
 
 .ux-builder-accordion-full-width .accordion-inner {
@@ -1484,11 +1484,23 @@ animation: lineLoader 1.3s ease-in-out infinite;
 }
 
 /* related products slider - width of product cards */
-.ocs .related .col {
+.related .col {
   max-width: 240px !important; 
   padding: 0 5px 19.6px !important;
 }
 /* END related products slider - width of product cards */
+
+/* product page - 'ez is tetszhet' slider */
+.related .family-brand-product.col {
+  max-width: 178px !important; 
+}
+/* END product page - 'ez is tetszhet' slider */
+
+/* product page - popular products - */
+.popular-products-loop .product-small {
+  padding: 5px 5px !important;
+}
+/* END product page - popular products - */
 
 @media only screen and (min-width: 850px) {
   .sidebar-filter.--col-md-display-none,
