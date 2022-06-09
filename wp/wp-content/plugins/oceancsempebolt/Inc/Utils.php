@@ -21,6 +21,28 @@ class Utils {
     return has_term( Config::BURKOLATOK_CATEG_SLUG, 'product_cat', $product_id);
   }
 
+  static function get_products_by_cat_ids(array $cat_ids, array $exclude_ids, int $product_amount = 12) {
+    $args = array(
+      'post_type'             => 'product',
+      'post_status'           => 'publish',
+      'ignore_sticky_posts'   => 1,
+      'orderby'               => 'rand',
+      'posts_per_page'        => $product_amount,
+      'post__not_in' => array( $exclude_ids ),
+      'tax_query'             => array(
+        array(
+            'taxonomy'      => 'product_cat',
+            'field' => 'term_id',
+            'terms'         => $cat_ids,
+            'operator'      => 'IN'
+        ),
+      )
+    );
+
+    $products = new \WP_Query($args);
+    return $products->posts;
+  }
+  
   static function get_pdf_catalog_data_for_category() {
     if (is_shop()) return false;
 
@@ -200,35 +222,6 @@ class Utils {
     }
   }
 
-
-  static function add_gtm_to_head() {
-    $get_gtm_script_tag = function() {
-      ?>
-        <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-MHFCRTX');</script>
-        <!-- End Google Tag Manager -->
-      <?php
-    };
-    add_action('wp_head', $get_gtm_script_tag, -10000);
-  }
-  
-  static function add_gtm_to_body() {
-    $get_gtm_script_tag = function() {
-      ?>
-        <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MHFCRTX"
-          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-        <!-- End Google Tag Manager (noscript) -->
-      <?php
-    };
-    
-    add_action('wp_body_open', $get_gtm_script_tag, -10000);
-  }
-
   protected static function get_pallet_shipping_notes($order) {
     $bank_account_number = Config::COMPANY_BANK_ACCOUNT;
     $randTelNumber = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)][1];
@@ -268,25 +261,24 @@ class Utils {
     [$family_categories, $brand_categories] = static::get_family_categories();
     // What comes next is a nested if, which is the ugliest thing I know but it was just fast and makes the job done...
     if (!empty($family_categories) || !empty($brand_categories)) {
-      $data_store    = \WC_Data_Store::load( 'product' );
       $args['related_products'] = [];
 
       if (!empty($family_categories)) {
-        $args['related_products_family'] = array_map( 
-            'wc_get_product', 
-            $data_store->get_related_products( $family_categories, [], [], 8, $product_id )
-          );
-        $related_products = wc_products_array_orderby( $args['related_products_family'], $args['orderby'], $args['order'] );
-        $args['related_products'] = array_merge($args['related_products'], $related_products);
+        $related_products_family = array_map( 
+          'wc_get_product', 
+          self::get_products_by_cat_ids( $family_categories, [$product_id] )
+        );
+        // $related_products = wc_products_array_orderby( $args['related_products_family'], $args['orderby'], $args['order'] );
+        $args['related_products'] = array_merge($args['related_products'], $related_products_family);
       }
       
       if (!empty($brand_categories)) {
-        $args['related_products_brand'] = array_map( 
+        $related_products_brand = array_map( 
           'wc_get_product', 
-          $data_store->get_related_products( $brand_categories, [], [], 20, $product_id )
+          self::get_products_by_cat_ids( $brand_categories, [$product_id] )
         );
-        $related_products = wc_products_array_orderby( $args['related_products_brand'], $args['orderby'], $args['order'] );
-        $args['related_products'] = array_merge($args['related_products'], $related_products);
+        // $related_products = wc_products_array_orderby( $args['related_products_brand'], $args['orderby'], $args['order'] );
+        $args['related_products'] = array_merge($args['related_products'], $related_products_brand);
       }
     } else {
       $args = wp_parse_args( $args, $defaults );
@@ -313,6 +305,9 @@ class Utils {
     
     ?>
       <div class="related related-products-wrapper product-section">
+        <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+          Ez is tetszhet			
+        </h3>
         <?php 
         get_flatsome_repeater_start( $repeater );
 
