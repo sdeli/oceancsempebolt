@@ -29,6 +29,6 @@ add_action( 'woocommerce_email_before_order_table', function($order, $sent_to_ad
 
 
 ProductCategoryPage::init();
-AllPages::displayCustomElements();
+AllPages::init();
 ProductPage::init();
 Purchase::init();

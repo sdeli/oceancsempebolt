@@ -76,4 +76,6 @@ class Config
 
   const BURKOLATOK_CATEG_SLUG = 'burkolatok';
   const SHOP_PAGE_SLIDER_CATEGORY = 'legszebb-termekek';
+
+  const UKRAINE_WAR_MESSAGE = '<p>A <strong>fehér agyag</strong>, mely a csempe gyártás alapanyaga, Európában szinte csak a háborús <strong>Ukrajnában</strong> fellelhető, valamint a <strong>csempét gázzal égetik ki</strong>, majd kamionon, <strong>benzinnel/dízellel szállítják</strong>, melyek a jelenlegi gazdasági körülmények miatt <strong>napról napra drágulnak</strong>. Ezért az <strong>árak tájékoztató jellegűek</strong>. <i>A pontos árért kérjük hívjanak, megértésüket köszönjük.</i></p>';
 }
