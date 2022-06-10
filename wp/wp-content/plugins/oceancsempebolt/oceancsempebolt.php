@@ -14,7 +14,7 @@ define( 'OCEANCSEMPEBOLT_PATH', plugin_dir_path( __FILE__ ) );
 require_once(OCEANCSEMPEBOLT_PATH . 'vendor/autoload.php');
 
 if (!defined('WP_ENVIRONMENT_TYPE')) {
-  define('WP_ENVIRONMENT_TYPE', Config::ENVIRONMENT_TYPE_LOCAL);
+  define('WP_ENVIRONMENT_TYPE', Config::ENVIRONMENT_TYPE_PROD);
 }
 
 require_once(OCEANCSEMPEBOLT_PATH . '/front/enqueue.php');
