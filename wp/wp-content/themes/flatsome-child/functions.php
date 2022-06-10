@@ -13,14 +13,20 @@ add_action('wp_footer','echoFakeSliderInteractionJs');
 function echoFakeSliderInteractionJs(){
   ?>
     <script title="unlazy-footer"> 
-        window.addEventListener('DOMContentLoaded', (event) => {
-          var touchstartX = 0;
-          var touchendX = 0;
-
-          var fakeSliderGesuredZone = document.querySelector('.design-slider__fake-slider-img');
-
+        window.addEventListener('DOMContentLoaded', () => {
+          let fakeSliderGesuredZone = document.querySelector('.design-slider__fake-slider-img');
           let fakeNextArrow = document.querySelector('.fake-arrow-next');
           let fakePrevArrow = document.querySelector('.fake-arrow-prev');
+
+          let hasFakeSliderOnPage = fakeSliderGesuredZone && fakeNextArrow && fakePrevArrow;
+          if (hasFakeSliderOnPage) {
+            fakeSliderInteractions(fakeSliderGesuredZone, fakeNextArrow, fakePrevArrow)
+          }
+        });
+
+        function fakeSliderInteractions(fakeSliderGesuredZone, fakeNextArrow, fakePrevArrow) {
+          var touchstartX = 0;
+          var touchendX = 0;
 
           fakeNextArrow.addEventListener('click', () => {
             slideSliderWhenLoaded(true);
@@ -36,56 +42,56 @@ function echoFakeSliderInteractionJs(){
             
           fakeSliderGesuredZone.addEventListener('touchend', function(event) {
             touchendX = event.pageX;
-            handleSwipe();
+            handleSwipe(touchstartX, touchendX);
           }, false);
+        }
 
-          function handleSwipe() {
-            const swipedLeft = touchendX < touchstartX;
-            if (swipedLeft) {
-              slideSliderWhenLoaded(true);
-              return;
-            }
-            
-            const swipedRight = touchendX > touchstartX;
-            if (swipedRight) {
-              slideSliderWhenLoaded(false);
-              return;
-            }
+        function handleSwipe(touchstartX, touchendX) {
+          const swipedLeft = touchendX < touchstartX;
+          if (swipedLeft) {
+            slideSliderWhenLoaded(true);
+            return;
           }
-
-          function slideSliderWhenLoaded(next) {
-            let sliderLoader =  document.querySelector('.slider-loader');
-            sliderLoader.style.display = 'block';
-            var isSliderLoadedInterval = setInterval(function () {
-              const designSlider = document.querySelector(
-                '.design-slider__real-slider [data-ssid]'
-              );
-
-              if (designSlider) {
-                clearInterval(isSliderLoadedInterval);
-                const designSliderId = `#n2-ss-${designSlider.getAttribute("data-ssid")}`;
-                setTimeout(() => {
-                  moveSlider(next, designSliderId, sliderLoader)
-                }, 300);
-              }
-            }, 200);
+          
+          const swipedRight = touchendX > touchstartX;
+          if (swipedRight) {
+            slideSliderWhenLoaded(false);
+            return;
           }
+        }
 
-          function moveSlider(next, designSliderId, sliderLoader) {
-            _N2.r(designSliderId, function(){
-              var slider = _N2[designSliderId];
-              if (next) {
-                slider.next();
-              } else {
-                slider.previous();
-              }
-              sliderLoader.style.opacity = 0;
+        function slideSliderWhenLoaded(next) {
+          let sliderLoader =  document.querySelector('.slider-loader');
+          sliderLoader.style.display = 'block';
+          var isSliderLoadedInterval = setInterval(function () {
+            const designSlider = document.querySelector(
+              '.design-slider__real-slider [data-ssid]'
+            );
+
+            if (designSlider) {
+              clearInterval(isSliderLoadedInterval);
+              const designSliderId = `#n2-ss-${designSlider.getAttribute("data-ssid")}`;
               setTimeout(() => {
-                sliderLoader.style.display = 'none';
-              }, 1000)
-            });
-          }
-        })
+                moveSlider(next, designSliderId, sliderLoader)
+              }, 300);
+            }
+          }, 200);
+        }
+
+        function moveSlider(next, designSliderId, sliderLoader) {
+          _N2.r(designSliderId, function(){
+            var slider = _N2[designSliderId];
+            if (next) {
+              slider.next();
+            } else {
+              slider.previous();
+            }
+            sliderLoader.style.opacity = 0;
+            setTimeout(() => {
+              sliderLoader.style.display = 'none';
+            }, 1000)
+          });
+        }
     </script>
   <?php 
 }

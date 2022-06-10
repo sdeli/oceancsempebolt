@@ -7,6 +7,12 @@ Version: 3.0
 */
 
 /*************** ADD CUSTOM CSS HERE.   ***************/
+/* sidebar when clicked hamburger - overlay behind sidebar - overlay turned black and hidden whole background */
+.mfp-bg.off-canvas.off-canvas-left.main-menu-overlay.mfp-ready {
+  opacity: 0 !important;
+}
+/* END sidebar when clicked hamburger - overlay behind sidebar - overlay turned black and hidden whole background */
+
 .color-alert-yellow {
   color: #ffbd3d;
 }
