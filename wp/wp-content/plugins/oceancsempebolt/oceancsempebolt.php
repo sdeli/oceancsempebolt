@@ -23,6 +23,10 @@ add_action( 'wp_enqueue_scripts', 'ocs_enqueue' );
 
 add_action( 'init', function() { Utils::add_design_post_type(); });
 
+add_filter( 'body_class', function( $classes ) {
+  return array_merge( $classes, array( 'ocs' ) );
+} );
+
 add_action( 'woocommerce_email_before_order_table', function($order, $sent_to_admin) { 
   Utils::email_instructions($order, $sent_to_admin); 
 }, 9, 3 ); 

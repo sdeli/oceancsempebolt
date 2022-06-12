@@ -21,9 +21,7 @@ class ProductCategoryPage
           <?php if (!is_null($smartSliderId)) self::echoSmartSlider($smartSliderId) ?>
           
           <div class="sort-disclaimer">
-            <p
-              class="filter-btn"
-              data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="">
+            <p onclick="openHamburgerMenuForCategories()">
               <strong class="open-mobile-menu-text">Rendezés,</strong> 
               <strong>Kategóriák</strong> és 
               <strong>Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></strong> 
