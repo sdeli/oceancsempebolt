@@ -15,3 +15,4 @@ mysql/*
 assets/*
 .vscode/launch.json
 wp/wp-content/plugins/oceancsempebolt/vendor
+wp/wp-content/plugins/oceancsempebolt/node_modules/

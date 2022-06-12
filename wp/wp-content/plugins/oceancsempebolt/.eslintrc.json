@@ -1,0 +1,19 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "google"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+      "semi": [1, "always"],
+      "allow-single-line": 0,
+      "space-before-function-paren": 0,
+      "require-jsdoc": 0,
+      "max-len": "off"
+    }
+}

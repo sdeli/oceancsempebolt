@@ -1,113 +1,100 @@
 if (!$) {
-  var $ = jQuery;
+  // eslint-disable-next-line no-unused-vars
+  const $ = jQuery;
 }
 
-const CHECKED_SELECTOR = "--checked";
-const COLOR_FILTER_ICONS_SELECTOR = "filter-form__szin";
+const CHECKED_SELECTOR = '--checked';
+const COLOR_FILTER_ICONS_SELECTOR = 'filter-form__szin';
 const MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR =
-  ".nav-sidebar .menu-item-object-page";
-const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = ".mobile-sidebar-categories";
-const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = ".mobile-sidebar-switch-btns";
-const CLICKABLE_SELECTOR = "--clickable";
+  '.nav-sidebar .menu-item-object-page';
+const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = '.mobile-sidebar-categories';
+const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = '.mobile-sidebar-switch-btns';
+const CLICKABLE_SELECTOR = '--clickable';
 const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '[data-open="#main-menu"]';
-const PARALLAX_HEADER_SELECTOR = ".identity-header__background";
-const HAMBURGER_BTN_SELECTOR = '[aria-controls="main-menu"]';
-const FILTER_BTN_SELECTOR = ".filter-btn";
-const MAIN_SHOP_PAGE_SLUG = "shop";
-const DESKTOP_MENU_TRIGGER_CLASS = "desktop-hamburger-btn";
-const PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR = "#menu-item-4854";
+const PARALLAX_HEADER_SELECTOR = '.identity-header__background';
 const GOOGLE_MAPS_CONATINER_SELECTOR =
-  ".lazy-load-google-maps-until-user-interaction";
-const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = `#ocean-promo-video-container`;
+  '.lazy-load-google-maps-until-user-interaction';
+const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = '#ocean-promo-video-container';
 const CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR = `#contec-bull-promo-video-1-container`;
 const CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR = `#contec-bull-promo-video-2-container`;
-const TABBER_CONTAINER_SELECTOR = ".tabber-container";
-const FIRST_SLIDER_TITLE_LINK_SELECTOR = "[data-first] .slider-title a.n2-ow";
+const FIRST_SLIDER_TITLE_LINK_SELECTOR = '[data-first] .slider-title a.n2-ow';
 const ACTIVE_SLIDER_TITLE_LINK_SELECTOR =
-  ".n2-ss-slide-active .slider-title a.n2-ow";
-const SMART_SLIDER_SELECTOR = "[data-ssid]";
-const SMART_SLIDER_ARROWS_SELECTOR = ".nextend-arrow";
-const POINTER_ICON_CLASS_NAME = "icon-pointer";
-const POINTER_ICON_SELECTOR = "." + POINTER_ICON_CLASS_NAME;
-const PLACEHOLDER_CATEGORY_SELECTOR = [".cat-item-3724"];
-const BATH_TUB_SLIDER_SELECTOR = ['[data-ssid="82"]'];
-const BATH_TUB_SLIDER_HOMEPAGE_CONTAINER = ".home-page-kadak-slider-container";
-const BATH_TUB_SLIDER_TEXT_SELECTOR = ".bath-tub-slider-text";
+  '.n2-ss-slide-active .slider-title a.n2-ow';
+const POINTER_ICON_CLASS_NAME = 'icon-pointer';
+const POINTER_ICON_SELECTOR = '.' + POINTER_ICON_CLASS_NAME;
+const BATH_TUB_SLIDER_HOMEPAGE_CONTAINER = '.home-page-kadak-slider-container';
+const BATH_TUB_SLIDER_TEXT_SELECTOR = '.bath-tub-slider-text';
 const TILES_SLIDER_HOMEPAGE_CONTAINER =
-  ".home-page-burkolatok-slider-container";
-const TILES_SLIDER_TEXT_SELECTOR = ".tiles-slider-text";
-const TILE_PRODUCT_CARDS_CONTAINER = ".home-tiles-container";
-const MOBILE_MENU_BAR_SELECTOR = ".header-wrapper";
-const STICKY_MOBILE_MENU_BAR_CLASS_NAME = "stuck";
-const STICKY_MOBILE_MENU_BAR_SELECTOR = "." + STICKY_MOBILE_MENU_BAR_CLASS_NAME;
-const MOBILE_MENU_BAR_ARROW_SELECTOR = ".mobile-menu-arrow-up-down-box__arrow";
-const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = "nav-invisible";
-const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = "--rotated";
+  '.home-page-burkolatok-slider-container';
+const TILES_SLIDER_TEXT_SELECTOR = '.tiles-slider-text';
+const MOBILE_MENU_BAR_SELECTOR = '.header-wrapper';
+const STICKY_MOBILE_MENU_BAR_CLASS_NAME = 'stuck';
+const MOBILE_MENU_BAR_ARROW_SELECTOR = '.mobile-menu-arrow-up-down-box__arrow';
+const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = 'nav-invisible';
+const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
 const DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR =
-  ".design-slider__slider-code-in-text";
-const DESIGN_SLIDER_FAKE_IMG_SELECTOR = ".design-slider__fake-slider-img";
-const DESIGN_SLIDER_CONTAINER_SELECTOR = ".design-slider__real-slider";
-const DESIGN_SLIDER_LOADER_SELECTOR = ".n2-padding ss3-loader";
-const BIG_PHONE_CALL_ICON_SELECTOR = ".big-phone-call-icon";
-const BIG_PHONE_CALL_ICON_SALES_AGENT_NAME_SELECTOR = ".icon-box-text strong";
-const GOOGLE_MAPS_THIN_IMAGE_SELECTOR = ".google-maps-thin-image";
-const PHONE_CALL_NUMBER_LINK = ".phone-call-number-link";
-const OCEAN_PHONE_CALL_LINK_CLASS = "ocean-phone-call";
-const CATEGORY_GRID_BANNER_SELECTOR = ".category-grid-banner";
+  '.design-slider__slider-code-in-text';
+const DESIGN_SLIDER_FAKE_IMG_SELECTOR = '.design-slider__fake-slider-img';
+const DESIGN_SLIDER_CONTAINER_SELECTOR = '.design-slider__real-slider';
+const DESIGN_SLIDER_LOADER_SELECTOR = '.n2-padding ss3-loader';
+const BIG_PHONE_CALL_ICON_SELECTOR = '.big-phone-call-icon';
+const PHONE_CALL_NUMBER_LINK = '.phone-call-number-link';
+const OCEAN_PHONE_CALL_LINK_CLASS = 'ocean-phone-call';
+const CATEGORY_GRID_BANNER_SELECTOR = '.category-grid-banner';
 
-const GTM_SLIDER_INTERACTION_TRIGGER_NAME = "interacted with slider";
-const GTM_VIEW_CART_EVENT_NAME = "view_cart";
-const GTM_MACHINE_RENT_EVENT_NAME = "ga - machine rent call";
-const GTM_CALL_EVENT_NAME = "ga - call";
-const GTM_SALES_AGENT_NAME_VARIABLE = "salesAgentsName";
-const GTM_HTML_ELEMENT_VARIABLE = "htmlElement";
+const GTM_SLIDER_INTERACTION_TRIGGER_NAME = 'interacted with slider';
+const GTM_VIEW_CART_EVENT_NAME = 'view_cart';
+const GTM_MACHINE_RENT_EVENT_NAME = 'ga - machine rent call';
+const GTM_CALL_EVENT_NAME = 'ga - call';
+const GTM_SALES_AGENT_NAME_VARIABLE = 'salesAgentsName';
+const GTM_HTML_ELEMENT_VARIABLE = 'htmlElement';
 
 const IS_SLIDER_LOADED_INTERVAL_TIMER = 200;
 const SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT = 1000;
-const CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR = ".contact-us-inline-infos";
-const RANDOM_PHONE_BTNS_SELECTOR = ".random-phone-number-btn";
-const RANDOM_PHONE_BTN_CTA_CLASS = "default-text--";
-const ACTIVE_ITEM_SELECTOR = ".active";
+const CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR = '.contact-us-inline-infos';
+const RANDOM_PHONE_BTNS_SELECTOR = '.random-phone-number-btn';
+const RANDOM_PHONE_BTN_CTA_CLASS = 'default-text--';
+const ACTIVE_ITEM_SELECTOR = '.active';
 
 const CATEGORIES_WITH_FILTERS_DATA = [
   {
-    sidebarFilterClass: ".cat-item-2221",
-    slug: "burkolatok",
+    sidebarFilterClass: '.cat-item-2221',
+    slug: 'burkolatok',
   },
   {
-    sidebarFilterClass: ".cat-item-644",
-    slug: "furdoszoba-kiegeszitok",
+    sidebarFilterClass: '.cat-item-644',
+    slug: 'furdoszoba-kiegeszitok',
   },
   {
-    sidebarFilterClass: ".cat-item-2232",
-    slug: "csaptelepek",
+    sidebarFilterClass: '.cat-item-2232',
+    slug: 'csaptelepek',
   },
   {
-    sidebarFilterClass: ".cat-item-2234",
-    slug: "kadak",
+    sidebarFilterClass: '.cat-item-2234',
+    slug: 'kadak',
   },
   {
-    sidebarFilterClass: ".cat-item-2245",
-    slug: "mosogatok",
+    sidebarFilterClass: '.cat-item-2245',
+    slug: 'mosogatok',
   },
   {
-    sidebarFilterClass: ".cat-item-2246",
-    slug: "szaniterek",
+    sidebarFilterClass: '.cat-item-2246',
+    slug: 'szaniterek',
   },
   {
-    sidebarFilterClass: ".cat-item-1258",
-    slug: "zuhanyfal",
+    sidebarFilterClass: '.cat-item-1258',
+    slug: 'zuhanyfal',
   },
   {
-    sidebarFilterClass: ".cat-item-2250",
-    slug: "zuhanykabinok",
+    sidebarFilterClass: '.cat-item-2250',
+    slug: 'zuhanykabinok',
   },
   {
-    sidebarFilterClass: ".cat-item-2251",
-    slug: "zuhanytalcak",
+    sidebarFilterClass: '.cat-item-2251',
+    slug: 'zuhanytalcak',
   },
 ];
-const CATEGORIES_SIDEBAR_HEADER_HTML = `<div id="shop-sidebar-switch-btns" class="mobile-sidebar-switch-btns"><h3 class="mobile-sidebar-switch-btns__btn --header" title="shop-menu-switch-btn">Kategóriák</h3></div>`;
+
 const UNNEEDED_FILTERS = `
 [aria-label="01 safari"], [aria-label="02 black"], [aria-label="03 gray"], [aria-label="06 white"], 
 [aria-label="07 sand"], [aria-label="10 steel metal"], [aria-label="12 black metal"], 
@@ -128,284 +115,269 @@ const UNNEEDED_FILTERS = `
 [aria-label="rózsaszín"], [aria-label="sárga"]
 `;
 const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>`;
-const GOOGLE_MAPS_THIN_IFRAME_CLASS = "google-maps-thin-iframe";
-const GOOGLE_MAPS_THIN_IFRAME_HTML = `<iframe class="${GOOGLE_MAPS_THIN_IFRAME_CLASS}" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2695.1075531929037!2d19.169408815890215!3d47.507296602825434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4741c492289b176f%3A0x26d8f58d84c3afa9!2zw5NjZcOhbiBGw7xyZMWRc3pvYmEgc3phbG9u!5e0!3m2!1sen!2shu!4v1636496472824!5m2!1sen!2shu" width="100%" height="200" style="border:0;" allowfullscreen=""></iframe>`;
 const OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML = `<iframe src="https://www.youtube.com/embed/HieK5jUu8Jc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/w3AUeYOrx2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HRd9bETXuRI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const POINTER_ICON_HTML = `<span class="${POINTER_ICON_CLASS_NAME} slider-pointer-icon"></span>`;
 const MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML =
   '<div class="mobile-menu-arrow-up-down-box"><i class="icon-angle-up mobile-menu-arrow-up-down-box__arrow"></i></div>';
-const CONTACT_US_INLINE_INFOS_HTML = `n hozzánk bátran</strong>: 
-    <i class="icon-phone" style="color: black;"></i> 
-    <a href="tel:06-30-397-4150" style="cursor: pointer; color: #4e657b">06 30 397 4150 - Szabó István</a><br>
-    <a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975" style="cursor: pointer; color: #4e657b" target="_blank">
-      Térkép a bolthoz
-    <i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>
-    </a>
-  `;
 
 const PARALLAX_HEADER_SMALL_TABLET_Y_POSITION = -440;
 const PARALLAX_HEADER_LARGE_TABLET_Y_POSITION = -428;
 const PARALLAX_SPEED = 0.2;
 const SMALL_TABLET_WIDTH = 849;
-const MOBILE_MAX_WIDTH = 499;
-const DESIGN_SLIDER_MOBILE_HEIGHT = 238;
 
-const CONTACTS_PAGE_PATH = "/kapcsolat/";
-const SALOON_PAGE_PATH = "/szalon/";
-const DISCOUNTS_DISCLAIMER_PAGE_PATH = "/akciok/";
-const CART_PAGE_PATH = "/cart/";
-const MACHINE_RENT_PAGE_PATH = "/gep-kolcsonzes/";
+const CONTACTS_PAGE_PATH = '/kapcsolat/';
+const DISCOUNTS_DISCLAIMER_PAGE_PATH = '/akciok/';
+const CART_PAGE_PATH = '/cart/';
+const MACHINE_RENT_PAGE_PATH = '/gep-kolcsonzes/';
 
 const CONTACT_INFOS = [
   {
-    tel: "06 70 942 5095",
-    name: "Pinti István",
+    tel: '06 70 942 5095',
+    name: 'Pinti István',
   },
   {
-    tel: "06 30 397 4150",
-    name: "Szabó István",
+    tel: '06 30 397 4150',
+    name: 'Szabó István',
   },
   {
-    tel: "06 70 601 4600",
-    name: "Illés László",
+    tel: '06 70 601 4600',
+    name: 'Illés László',
   },
 ];
 
-const FOOTER_CALL_LINK_NAME = "footer-call-link";
-const UX_BUILDER_CALL_ICON_BOX_NAME = "ux-builder-call-icon-box";
-const INLINE_CALL_LINK_NAME = "inline-call-link";
-const CALL_BUTTON_NAME = "button";
+const FOOTER_CALL_LINK_NAME = 'footer-call-link';
+const UX_BUILDER_CALL_ICON_BOX_NAME = 'ux-builder-call-icon-box';
+const INLINE_CALL_LINK_NAME = 'inline-call-link';
+const CALL_BUTTON_NAME = 'button';
 
-const IS_CONTACT_INFO_INLINE_DATA_ATTR = "data-inline";
+const IS_CONTACT_INFO_INLINE_DATA_ATTR = 'data-inline';
 
-const SERVICE_PAGE_ID = "20391";
-const SALES_AGENTS_NAME_ATTRIBUTE = "data-sales-agents-name";
+const SERVICE_PAGE_ID = '20391';
+const SALES_AGENTS_NAME_ATTRIBUTE = 'data-sales-agents-name';
 
-let isMenuSwitchFinised = true;
 window.addEventListener(
-  "DOMContentLoaded",
-  async function () {
-    mobileSidebarSwitchMenus();
-    filterItemsOnClick();
-    moveFiltersToCategSidebar();
-    sidebarFilterLinksOnClick();
+    'DOMContentLoaded',
+    async function () {
+      mobileSidebarSwitchMenus();
+      filterItemsOnClick();
+      moveFiltersToCategSidebar();
+      sidebarFilterLinksOnClick();
 
-    setTimeout(() => {
-      slideUpAndDownMobileMenuBar();
-    }, 0);
+      setTimeout(() => {
+        slideUpAndDownMobileMenuBar();
+      }, 0);
 
-    const isHomePage = document.querySelector(".home");
-    if (isHomePage) {
-      adjustProductImageHeightOnRectangle();
-      scrollToDesginTabber();
-      scrollToContacts();
-      loadElementOnUserInteractionAndInViewport(
-        GOOGLE_MAPS_IFRAME_HTML,
-        GOOGLE_MAPS_CONATINER_SELECTOR
-      );
-      loadElementOnUserInteractionAndInViewport(
-        OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML,
-        OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR
-      );
-      const tilesSliderHtml = $(TILES_SLIDER_TEXT_SELECTOR).text();
-      loadElementOnUserInteractionAndInViewport(
-        tilesSliderHtml,
-        TILES_SLIDER_HOMEPAGE_CONTAINER
-      );
-      const bathtubSliderHtml = $(BATH_TUB_SLIDER_TEXT_SELECTOR).text();
-      loadElementOnUserInteractionAndInViewport(
-        bathtubSliderHtml,
-        BATH_TUB_SLIDER_HOMEPAGE_CONTAINER
-      );
-    }
+      const isHomePage = document.querySelector('.home');
+      if (isHomePage) {
+        adjustProductImageHeightOnRectangle();
+        scrollToDesginTabber();
+        scrollToContacts();
+        loadElementOnUserInteractionAndInViewport(
+            GOOGLE_MAPS_IFRAME_HTML,
+            GOOGLE_MAPS_CONATINER_SELECTOR,
+        );
+        loadElementOnUserInteractionAndInViewport(
+            OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML,
+            OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR,
+        );
+        const tilesSliderHtml = $(TILES_SLIDER_TEXT_SELECTOR).text();
+        loadElementOnUserInteractionAndInViewport(
+            tilesSliderHtml,
+            TILES_SLIDER_HOMEPAGE_CONTAINER,
+        );
+        const bathtubSliderHtml = $(BATH_TUB_SLIDER_TEXT_SELECTOR).text();
+        loadElementOnUserInteractionAndInViewport(
+            bathtubSliderHtml,
+            BATH_TUB_SLIDER_HOMEPAGE_CONTAINER,
+        );
+      }
 
-    const isContactPage = window.location.pathname === CONTACTS_PAGE_PATH;
-    if (isContactPage) {
-      loadElementOnUserInteractionAndInViewport(
-        GOOGLE_MAPS_IFRAME_HTML,
-        GOOGLE_MAPS_CONATINER_SELECTOR
-      );
-      loadElementOnUserInteractionAndInViewport(
-        OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML,
-        OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR
-      );
-    }
+      const isContactPage = window.location.pathname === CONTACTS_PAGE_PATH;
+      if (isContactPage) {
+        loadElementOnUserInteractionAndInViewport(
+            GOOGLE_MAPS_IFRAME_HTML,
+            GOOGLE_MAPS_CONATINER_SELECTOR,
+        );
+        loadElementOnUserInteractionAndInViewport(
+            OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML,
+            OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR,
+        );
+      }
 
-    const isDiscountsDisclaimerPage =
+      const isDiscountsDisclaimerPage =
       window.location.pathname === DISCOUNTS_DISCLAIMER_PAGE_PATH;
-    if (isDiscountsDisclaimerPage) {
-      loadElementOnUserInteractionAndInViewport(
-        GOOGLE_MAPS_IFRAME_HTML,
-        GOOGLE_MAPS_CONATINER_SELECTOR
-      );
-    }
-
-    if (isShopOrCategPage()) {
-      swapDesignPlaceholderToSlider();
-      addToCartBtnsOnClick();
-      parallaxShopHeader();
-
-      const isSubCategoryPage = $("h1.shop-page-title").text() !== "Shop";
-      if (isSubCategoryPage) {
-        openCurrentCategoryInSidebar();
+      if (isDiscountsDisclaimerPage) {
+        loadElementOnUserInteractionAndInViewport(
+            GOOGLE_MAPS_IFRAME_HTML,
+            GOOGLE_MAPS_CONATINER_SELECTOR,
+        );
       }
 
-      const isMainShopPage = $("h1.shop-page-title").text() === "Shop";
-      if (isMainShopPage) removeUnneededFiltersFromMainShopPage();
+      if (isShopOrCategPage()) {
+        swapDesignPlaceholderToSlider();
+        addToCartBtnsOnClick();
+        parallaxShopHeader();
 
-      const productCategId = window.location.pathname.replace(/\//g, "");
-      const isSidebarSubCateogry = CATEGORIES_WITH_FILTERS_DATA.find(
-        (filterData) => filterData.slug === productCategId
-      );
-      if (isSidebarSubCateogry) {
-        addAttributeFilterIconsToCurrentCategory();
+        const isSubCategoryPage = $('h1.shop-page-title').text() !== 'Shop';
+        if (isSubCategoryPage) {
+          openCurrentCategoryInSidebar();
+        }
+
+        const isMainShopPage = $('h1.shop-page-title').text() === 'Shop';
+        if (isMainShopPage) removeUnneededFiltersFromMainShopPage();
+
+        const productCategId = window.location.pathname.replace(/\//g, '');
+        const isSidebarSubCateogry = CATEGORIES_WITH_FILTERS_DATA.find(
+            (filterData) => filterData.slug === productCategId,
+        );
+        if (isSidebarSubCateogry) {
+          addAttributeFilterIconsToCurrentCategory();
+        }
       }
-    }
-    const hasProductCards = !!document.querySelectorAll(".product-small.box");
-    if (hasProductCards) {
-      resizeProductCardTitlesForElliplsis();
-      addBasketIconToAddBtns();
-      adjustProductImageHeightOnRectangle();
-    }
-
-    const isProductPage = !!document.querySelector(".single-product");
-    if (isProductPage) {
-      clickVariationSwatchIfOneOptionLeft();
-
-      const breadCrumbs = document.querySelector(
-        ".woocommerce-breadcrumb.breadcrumbs"
-      );
-      const categoriesOfProduct = $(".product_meta .posted_in").text();
-      const isTilePorductPage =
-        categoriesOfProduct.includes("Burkolatok") &&
-        !categoriesOfProduct.includes("dekor csempe") &&
-        !categoriesOfProduct.includes("lisztello");
-      if (isTilePorductPage) {
-        squareMeterCounter();
-        setTileUnit();
-        swapBoxAndSquarMetersPrice();
+      const hasProductCards = !!document.querySelectorAll('.product-small.box');
+      if (hasProductCards) {
+        resizeProductCardTitlesForElliplsis();
+        addBasketIconToAddBtns();
+        adjustProductImageHeightOnRectangle();
       }
-    }
 
-    const isServicePage = document.querySelector(`.page-id-${SERVICE_PAGE_ID}`);
-    if (isServicePage) {
-      loadElementOnUserInteractionAndInViewport(
-        GOOGLE_MAPS_IFRAME_HTML,
-        GOOGLE_MAPS_CONATINER_SELECTOR
+      const isProductPage = !!document.querySelector('.single-product');
+      if (isProductPage) {
+        clickVariationSwatchIfOneOptionLeft();
+
+        const categoriesOfProduct = $('.product_meta .posted_in').text();
+        const isTilePorductPage =
+        categoriesOfProduct.includes('Burkolatok') &&
+        !categoriesOfProduct.includes('dekor csempe') &&
+        !categoriesOfProduct.includes('lisztello');
+        if (isTilePorductPage) {
+          squareMeterCounter();
+          setTileUnit();
+          swapBoxAndSquarMetersPrice();
+        }
+      }
+
+      const isServicePage = document.querySelector(`.page-id-${SERVICE_PAGE_ID}`);
+      if (isServicePage) {
+        loadElementOnUserInteractionAndInViewport(
+            GOOGLE_MAPS_IFRAME_HTML,
+            GOOGLE_MAPS_CONATINER_SELECTOR,
+        );
+      }
+
+      const bigPhoneCallIcons = document.querySelectorAll(
+          BIG_PHONE_CALL_ICON_SELECTOR,
       );
-    }
+      const hasPhoneCallIconsOnPage = !!bigPhoneCallIcons.length;
+      if (hasPhoneCallIconsOnPage) {
+        initiateCallOnPhoneCallIconClick(bigPhoneCallIcons);
+      }
 
-    const bigPhoneCallIcons = document.querySelectorAll(
-      BIG_PHONE_CALL_ICON_SELECTOR
-    );
-    const hasPhoneCallIconsOnPage = !!bigPhoneCallIcons.length;
-    if (hasPhoneCallIconsOnPage)
-      initiateCallOnPhoneCallIconClick(bigPhoneCallIcons);
+      const isCartPage = window.location.pathname === CART_PAGE_PATH;
+      if (isCartPage) sendViewCartEvent();
 
-    const isCartPage = window.location.pathname === CART_PAGE_PATH;
-    if (isCartPage) sendViewCartEvent();
+      const inlineContactInfoElems = document.querySelectorAll(
+          CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR,
+      );
+      const hasInlineContactInfosOnPage = !!inlineContactInfoElems.length;
+      if (hasInlineContactInfosOnPage) {
+        displayInlineContactInfos(inlineContactInfoElems);
+      }
 
-    const inlineContactInfoElems = document.querySelectorAll(
-      CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR
-    );
-    const hasInlineContactInfosOnPage = !!inlineContactInfoElems.length;
-    if (hasInlineContactInfosOnPage)
-      displayInlineContactInfos(inlineContactInfoElems);
+      const randomPhoneNumberBtns = document.querySelectorAll(
+          RANDOM_PHONE_BTNS_SELECTOR,
+      );
+      const hasRandomPhoneNumberBtns = !!inlineContactInfoElems.length;
+      if (hasRandomPhoneNumberBtns) {
+        fillContactInfoIntoPhoneNumberBtns(randomPhoneNumberBtns);
+      }
 
-    const randomPhoneNumberBtns = document.querySelectorAll(
-      RANDOM_PHONE_BTNS_SELECTOR
-    );
-    const hasRandomPhoneNumberBtns = !!inlineContactInfoElems.length;
-    if (hasRandomPhoneNumberBtns)
-      fillContactInfoIntoPhoneNumberBtns(randomPhoneNumberBtns);
-
-    const isMachineRentPage =
+      const isMachineRentPage =
       window.location.pathname === MACHINE_RENT_PAGE_PATH;
-    if (isMachineRentPage) {
-      loadElementOnUserInteractionAndInViewport(
-        CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML,
-        CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR
-      );
-      loadElementOnUserInteractionAndInViewport(
-        CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML,
-        CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR
-      );
-    }
+      if (isMachineRentPage) {
+        loadElementOnUserInteractionAndInViewport(
+            CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML,
+            CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR,
+        );
+        loadElementOnUserInteractionAndInViewport(
+            CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML,
+            CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR,
+        );
+      }
 
-    const callBtnsOnPage = $(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
-    if (callBtnsOnPage.length) {
-      gtmPhoneCallEvents(callBtnsOnPage);
-    }
+      const callBtnsOnPage = $(`.${OCEAN_PHONE_CALL_LINK_CLASS}`);
+      if (callBtnsOnPage.length) {
+        gtmPhoneCallEvents(callBtnsOnPage);
+      }
 
-    const categoryBanners = $(CATEGORY_GRID_BANNER_SELECTOR);
-    // has category selector html elem on page
-    if (categoryBanners.length) {
-      hasCategoryBanner(categoryBanners);
-    }
-  },
-  false
+      const categoryBanners = $(CATEGORY_GRID_BANNER_SELECTOR);
+      // has category selector html elem on page
+      if (categoryBanners.length) {
+        hasCategoryBanner(categoryBanners);
+      }
+    },
+    false,
 );
 
 function scrollToDesginTabber() {
   const win = $(window);
-  const scrollToDesignTabberBtns = $(".scroll-to-design-tabber");
+  const scrollToDesignTabberBtns = $('.scroll-to-design-tabber');
   scrollToDesignTabberBtns.click(() => {
-    win.scrollTo(".design-tabber", 1000);
+    win.scrollTo('.design-tabber', 1000);
   });
 }
 
 function scrollToContacts() {
   const win = $(window);
-  const scrollToDesignTabberBtns = $(".scroll-to-contacts");
+  const scrollToDesignTabberBtns = $('.scroll-to-contacts');
   scrollToDesignTabberBtns.click(() => {
-    win.scrollTo(".contact", 1000);
+    win.scrollTo('.contact', 1000);
   });
 }
 
 function isShopOrCategPage() {
   return (
-    !!document.querySelector(".woocommerce.archive") ||
-    !!document.querySelector(".woocommerce-shop")
+    !!document.querySelector('.woocommerce.archive') ||
+    !!document.querySelector('.woocommerce-shop')
   );
 }
 
 function openCurrentCategoryInSidebar() {
   setTimeout(() => {
     document
-      .querySelector(".product-categories li.active")
-      .setAttribute("aria-expanded", true);
+        .querySelector('.product-categories li.active')
+        .setAttribute('aria-expanded', true);
   }, 0);
 }
 
 function addAttributeFilterIconsToCurrentCategory() {
   const allFilterItems = Array.from(
-    document.querySelectorAll(".filter-form li")
+      document.querySelectorAll('.filter-form li'),
   );
-  const productCategId = window.location.pathname.replace(/\//g, "");
+  const productCategId = window.location.pathname.replace(/\//g, '');
 
-  const { filters } = getQueryParams();
   sidebarFilterHtml = `<li id="${productCategId}" class=\"sidebar-filter --col-md-display-none cat-item cat-item-1458\"><ul>`;
 
   allFilterItems.map((filterItem, i) => {
     const isColorFilterIcon =
       filterItem.parentElement.parentElement.parentElement.className.includes(
-        COLOR_FILTER_ICONS_SELECTOR
+          COLOR_FILTER_ICONS_SELECTOR,
       );
     if (isColorFilterIcon) {
       sidebarFilterHtml += getFilterIconHtml(productCategId, filterItem);
     } else {
       sidebarFilterHtml += getFilterIconHtml(
-        productCategId,
-        filterItem,
-        isColorFilterIcon
+          productCategId,
+          filterItem,
+          isColorFilterIcon,
       );
     }
   });
 
-  sidebarFilterHtml += "</ul></li>";
-  const { sidebarFilterClass: currentCategorySidebarClass } =
+  sidebarFilterHtml += '</ul></li>';
+  const {sidebarFilterClass: currentCategorySidebarClass} =
     getCategoryData(productCategId);
   const currCategory = $(`${currentCategorySidebarClass} > ul`);
   const currentCategSidebarFilters = $(sidebarFilterHtml);
@@ -416,96 +388,80 @@ function getFilterIconHtml(productCategId, filterItem, isCircleShape = true) {
   const filterId = filterItem.children[0].value;
   const href = `javascript:activateColorFilter('${productCategId}', ${filterId})`;
   const displayName =
-    filterItem.children[1].getAttribute("aria-label") ||
+    filterItem.children[1].getAttribute('aria-label') ||
     filterItem.children[1].innerText;
-  const isCheckedClass = filterItem.className.includes("checked")
-    ? CHECKED_SELECTOR
-    : "";
-  let filterIconHtml = "";
+  const isCheckedClass = filterItem.className.includes('checked') ?
+    CHECKED_SELECTOR :
+    '';
+  let filterIconHtml = '';
 
   if (isCircleShape) {
     filterIconHtml =
       `<li class=\"sidebar-filter__circle ${isCheckedClass} sidebar__filter-${filterId}" title="${displayName.trim()}">` +
       `<a href=\"${href}\">${displayName}</a>` +
       // + `<label>${displayName}</label>`
-      "</li>";
+      '</li>';
   } else {
     filterIconHtml =
       `<li class=\"sidebar-filter__tag ${isCheckedClass} sidebar__filter-${filterId}"\">` +
       `<a href=\"${href}\">${displayName}</a>` +
-      "</li>";
+      '</li>';
   }
 
   return filterIconHtml;
 }
 
-function getTagIcon(productCategId, filterItem) {
-  const filterId = filterItem.children[0].value;
-  const displayName =
-    filterItem.children[1].getAttribute("aria-label") ||
-    filterItem.children[1].innerText;
-  const href = `javascript:activateColorFilter('${productCategId}', ${filterId})`;
-  const isCheckedClass = filterItem.className.includes("checked")
-    ? CHECKED_SELECTOR
-    : "";
-
-  return (
-    "" +
-    `<li class=\"sidebar-filter__tag ${isCheckedClass} sidebar__filter-${filterId}"\">` +
-    `<a href=\"${href}\"></a>` +
-    "</li>"
-  );
-}
-
 function filterItemsOnClick() {
   const allFilterItems = Array.from(
-    document.querySelectorAll(".filter-form li label")
+      document.querySelectorAll('.filter-form li label'),
   );
   allFilterItems.forEach((filterItem) => {
-    filterItem.addEventListener("click", function (e) {
-      filterItem.parentElement.classList.toggle("checked");
+    filterItem.addEventListener('click', function (e) {
+      filterItem.parentElement.classList.toggle('checked');
       activateLoader();
     });
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function activateColorFilter(productCategId, colorFilterId) {
   const clickedSidebarCircle = document.querySelector(
-    `#${productCategId} .sidebar__filter-${colorFilterId}`
+      `#${productCategId} .sidebar__filter-${colorFilterId}`,
   );
-  clickedSidebarCircle.classList.toggle("--checked");
+  clickedSidebarCircle.classList.toggle('--checked');
   document
-    .querySelector(`input[value="${colorFilterId}"]`)
-    .parentElement.children[1].click();
+      .querySelector(`input[value="${colorFilterId}"]`)
+      .parentElement.children[1].click();
   activateLoader();
 }
 
 function activateLoader() {
-  document.querySelector(".loader").style.display = "block";
+  document.querySelector('.loader').style.display = 'block';
 }
 
+// eslint-disable-next-line no-unused-vars
 function activateAttributeFilter(productCategId, attributeFilterId) {
   const clickedSidebarAttribute = document.querySelector(
-    `#${productCategId} .sidebar__filter-${attributeFilterId}`
+      `#${productCategId} .sidebar__filter-${attributeFilterId}`,
   );
-  clickedSidebarAttribute.classList.toggle("--checked");
+  clickedSidebarAttribute.classList.toggle('--checked');
 
   const tagFilterIcon = document.querySelector(
-    `li [value="${attributeFilterId}"]`
+      `li [value="${attributeFilterId}"]`,
   );
-  tagFilterIcon.classList.toggle("--checked");
+  tagFilterIcon.classList.toggle('--checked');
   tagFilterIcon.parentElement.children[1].click();
 }
 
 function moveFiltersToCategSidebar() {
   CATEGORIES_WITH_FILTERS_DATA.forEach((categorieData) => {
     const currCategory = document.querySelector(
-      `${categorieData.sidebarFilterClass} ul`
+        `${categorieData.sidebarFilterClass} ul`,
     );
     if (!currCategory) return;
 
     const currCategsFilterElem = document.querySelector(
-      `.sidebar-filter--${categorieData.slug}`
+        `.sidebar-filter--${categorieData.slug}`,
     );
     if (!currCategsFilterElem) return;
     currCategory.appendChild(currCategsFilterElem);
@@ -514,31 +470,26 @@ function moveFiltersToCategSidebar() {
 
 function sidebarFilterLinksOnClick() {
   const sidebarFilterLinks = Array.from(
-    document.querySelectorAll(".sidebar-filter__link")
+      document.querySelectorAll('.sidebar-filter__link'),
   );
 
   sidebarFilterLinks.forEach((filterLink) => {
-    filterLink.addEventListener("click", function () {
-      this.classList.toggle("--checked");
+    filterLink.addEventListener('click', function () {
+      this.classList.toggle('--checked');
       activateLoader();
     });
   });
 }
 
-function getQueryParams() {
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  return Object.fromEntries(urlSearchParams.entries());
-}
-
 function getCategoryData(currentCategory) {
   return CATEGORIES_WITH_FILTERS_DATA.find(
-    (categoryData) => categoryData.slug === currentCategory
+      (categoryData) => categoryData.slug === currentCategory,
   );
 }
 
 function addBasketIconToAddBtns() {
   const basketIconHtml = '<i class="icon-shopping-basket"></i>';
-  const addToCartBtns = $("#main .add-to-cart-button a");
+  const addToCartBtns = $('#main .add-to-cart-button a');
 
   addToCartBtns.each(function () {
     $(this).append($(basketIconHtml));
@@ -546,10 +497,10 @@ function addBasketIconToAddBtns() {
 }
 
 function adjustProductImageHeightOnRectangle() {
-  const productImageContainerClass = ".product-small .box-image";
+  const productImageContainerClass = '.product-small .box-image';
 
   const nonSquareImageBoxes = $(productImageContainerClass).filter(function (
-    i
+      i,
   ) {
     const imageBoxWidth = parseInt($(this).width(), 10);
     const imageBoxHeight = parseInt($(this).height(), 10);
@@ -559,8 +510,6 @@ function adjustProductImageHeightOnRectangle() {
   nonSquareImageBoxes.each(function () {
     const imageBox = $(this);
     imageBox.height(imageBox.width());
-    const image = imageBox.find("img").eq(0);
-    const fuck = image.addClass("non-square");
   });
 
   $(window).resize(function () {
@@ -571,73 +520,38 @@ function adjustProductImageHeightOnRectangle() {
   });
 }
 
-function adjustBackToTopBtnVisibility() {
-  const isOverFooterClass = "is-over-footer";
-  const footerClass = "footer";
-  const backToTopBtnClass = ".back-to-top";
-  const backToTopBtn = $(backToTopBtnClass);
-  const footer$ = $(footerClass);
-  const document$ = $(document);
-
-  const adjust = () => {
-    const wasOverFooter = backToTopBtn.hasClass(isOverFooterClass);
-
-    const currentScrollTop = document$.scrollTop();
-    const { top: btnTop } = backToTopBtn.position();
-    const btnHeight = backToTopBtn.height();
-    const { top: footerTop } = footer$.position();
-
-    const backToTopBtnBottomPos = currentScrollTop + btnTop + btnHeight * 0.7;
-    const isOverFooter =
-      currentScrollTop + btnTop + btnHeight * 0.7 > footerTop;
-
-    const justCrossedFooterFromTop = isOverFooter && !wasOverFooter;
-    if (justCrossedFooterFromTop) {
-      backToTopBtn.addClass(isOverFooterClass);
-    }
-
-    const justLeftFooterToTop = wasOverFooter && !isOverFooter;
-    if (justLeftFooterToTop) {
-      backToTopBtn.removeClass(isOverFooterClass);
-    }
-  };
-
-  adjust();
-  $(window).scroll(adjust);
-}
-
 function addToCartBtnsOnClick() {
-  const addToCartButtonsClass = ".add_to_cart_button";
-  const addedToCartButtonClass = ".added_to_cart";
+  const addToCartButtonsClass = '.add_to_cart_button';
+  const addedToCartButtonClass = '.added_to_cart';
 
   const addToCartBtns = $(addToCartButtonsClass);
   addToCartBtns.click(function () {
     const clickedAddToCartBtn = $(this);
 
-    var addToCartBtnInDom = setInterval(function () {
+    const addToCartBtnInDom = setInterval(function () {
       if ($(addedToCartButtonClass).length) {
         clearInterval(addToCartBtnInDom);
         const newAddedToCartBtn = clickedAddToCartBtn.siblings(
-          addedToCartButtonClass
+            addedToCartButtonClass,
         );
-        newAddedToCartBtn.text("Kosárhoz");
+        newAddedToCartBtn.text('Kosárhoz');
       }
     }, 100);
   });
 }
 
 function resizeProductCardTitlesForElliplsis() {
-  var productCardTitlesClass =
-    ".product-small.box .title-wrapper .product-title a";
-  var productTitleContainerCss = ".product-small.box .name.product-title";
-  var productCardTitles = $(productCardTitlesClass);
+  const productCardTitlesClass =
+    '.product-small.box .title-wrapper .product-title a';
+  const productTitleContainerCss = '.product-small.box .name.product-title';
+  const productCardTitles = $(productCardTitlesClass);
 
-  var currentMaxWidth = $(productTitleContainerCss).width();
-  productCardTitles.css("max-width", currentMaxWidth);
+  const currentMaxWidth = $(productTitleContainerCss).width();
+  productCardTitles.css('max-width', currentMaxWidth);
 
   $(window).resize(() => {
-    var currentMaxWidth = $(productTitleContainerCss).width();
-    productCardTitles.css("max-width", currentMaxWidth);
+    const currentMaxWidth = $(productTitleContainerCss).width();
+    productCardTitles.css('max-width', currentMaxWidth);
   });
 }
 
@@ -658,10 +572,10 @@ function mobileSidebarSwitchMenus() {
 
     const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
     const mobileSidebarCategories = $(
-      MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR
+        MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR,
     );
 
-    const areCategoriesVisible = mobileSidebarCategories.is(":visible");
+    const areCategoriesVisible = mobileSidebarCategories.is(':visible');
     if (areCategoriesVisible) {
       mobileSidebarCategories.fadeOut(200, () => menuItems.fadeIn(200));
     } else {
@@ -670,6 +584,7 @@ function mobileSidebarSwitchMenus() {
   });
 }
 
+// eslint-disable-next-line no-unused-vars
 function openHamburgerMenuForCategories() {
   const hamburgerIcon = $(MOBILE_MENU_HAMBURGER_ICON_SELECTOR);
   const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
@@ -698,7 +613,7 @@ function openHamburgerMenuForCategories() {
 
 function clickVariationSwatchIfOneOptionLeft() {
   let clickedByJquery = false;
-  const allVariationSwatchGoups = $(".button-variable-wrapper");
+  const allVariationSwatchGoups = $('.button-variable-wrapper');
   allVariationSwatchGoups.children().click(function () {
     if (clickedByJquery) {
       clickedByJquery = false;
@@ -709,11 +624,11 @@ function clickVariationSwatchIfOneOptionLeft() {
       allVariationSwatchGoups.each(function () {
         const variationSwatchGroup = $(this);
         const freeToChooseSwatches = variationSwatchGroup.children(
-          ":not(.disabled):not(.selected)"
+            ':not(.disabled):not(.selected)',
         );
 
         const isNoSwatchAlreadySelected =
-          !variationSwatchGroup.children(".selected").length;
+          !variationSwatchGroup.children('.selected').length;
         const hasJustOneToChoose = freeToChooseSwatches.length === 1;
         if (hasJustOneToChoose && isNoSwatchAlreadySelected) {
           clickedByJquery = true;
@@ -728,17 +643,17 @@ function parallaxShopHeader() {
   const parallaxShopHeader = $(PARALLAX_HEADER_SELECTOR);
   let baseBackgroundPosition = PARALLAX_HEADER_SMALL_TABLET_Y_POSITION;
   if (window.innerWidth >= SMALL_TABLET_WIDTH) {
-    parallaxShopHeader.css("top", baseBackgroundPosition + "px");
+    parallaxShopHeader.css('top', baseBackgroundPosition + 'px');
     baseBackgroundPosition = PARALLAX_HEADER_LARGE_TABLET_Y_POSITION;
   }
 
   const jqueryWindow = $(window);
 
   jqueryWindow.scroll(function () {
-    var wScrollPosition = jqueryWindow.scrollTop();
-    let backgroundYPosition =
-      baseBackgroundPosition + wScrollPosition * PARALLAX_SPEED + "px";
-    parallaxShopHeader.css("top", backgroundYPosition);
+    const wScrollPosition = jqueryWindow.scrollTop();
+    const backgroundYPosition =
+      baseBackgroundPosition + wScrollPosition * PARALLAX_SPEED + 'px';
+    parallaxShopHeader.css('top', backgroundYPosition);
   });
 }
 
@@ -748,8 +663,8 @@ function removeUnneededFiltersFromMainShopPage() {
 }
 
 function loadElementOnUserInteractionAndInViewport(
-  elementHtml,
-  elementContainerSelector
+    elementHtml,
+    elementContainerSelector,
 ) {
   const elemContainer = $(elementContainerSelector);
   let shouldLoadElem = isElemVisible(elementContainerSelector);
@@ -760,7 +675,7 @@ function loadElementOnUserInteractionAndInViewport(
   }
 
   shouldLoadElem = true;
-  $(window).one("scroll", function () {
+  $(window).one('scroll', function () {
     if (!shouldLoadElem) return;
     shouldLoadElem = false;
     const htmlElem = $(elementHtml);
@@ -768,7 +683,7 @@ function loadElementOnUserInteractionAndInViewport(
     isGoolgeMapsLoaded = true;
   });
 
-  $(window).one("mousemove", function () {
+  $(window).one('mousemove', function () {
     if (!shouldLoadElem) return;
     shouldLoadElem = false;
     const htmlElem = $(elementHtml);
@@ -800,7 +715,7 @@ function swapDesignPlaceholderToSlider() {
   const waitUntilSliderIsLoaded = () => {
     return new Promise((resolve) => {
       let i = 0;
-      var isSliderLoadedInterval = setInterval(function () {
+      const isSliderLoadedInterval = setInterval(function () {
         const isSliderLoaded = $(FIRST_SLIDER_TITLE_LINK_SELECTOR).length;
         if (isSliderLoaded) {
           clearInterval(isSliderLoadedInterval);
@@ -834,25 +749,25 @@ function swapDesignPlaceholderToSlider() {
     await waitUntilSliderIsLoaded();
     gtmSliderEventTriggerSetup();
 
-    designSlider.css({ "z-index": 10 });
+    designSlider.css({'z-index': 10});
     const sliderFakeImg = $(DESIGN_SLIDER_FAKE_IMG_SELECTOR);
-    sliderFakeImg.css({ "z-index": -10 });
+    sliderFakeImg.css({'z-index': -10});
 
     setTimeout(() => {
-      designSlider.css({ position: "relative" });
-      sliderFakeImg.css({ position: "absolute" });
+      designSlider.css({position: 'relative'});
+      sliderFakeImg.css({position: 'absolute'});
       sliderFakeImg.fadeOut(2000, () => sliderFakeImg.remove());
     }, 200);
   };
 
   setTimeout(() => {
-    $(window).one("mousemove", () => {
+    $(window).one('mousemove', () => {
       _swapDesignPlaceholderToSlider();
     });
-    $(window).one("scroll", () => {
+    $(window).one('scroll', () => {
       _swapDesignPlaceholderToSlider();
     });
-    $(window).one("click", () => {
+    $(window).one('click', () => {
       _swapDesignPlaceholderToSlider();
     });
   }, 0);
@@ -862,49 +777,17 @@ function swapDesignPlaceholderToSlider() {
   }, SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT);
 }
 
-function addPointerIconToSliderTitleOnSlideFinish() {
-  const designSliderId = $(
-    `${DESIGN_SLIDER_CONTAINER_SELECTOR} [data-ssid]`
-  ).attr("data-ssid");
-  const designSliderSelector = `#n2-ss-${designSliderId}`;
-
-  var slider = _N2[designSliderSelector];
-  slider.sliderElement.addEventListener("mainAnimationComplete", function (e) {
-    const sliderTitleLink = $(ACTIVE_SLIDER_TITLE_LINK_SELECTOR);
-    const hasPointerIconAlready = !!sliderTitleLink.children(
-      POINTER_ICON_SELECTOR
-    ).length;
-    if (hasPointerIconAlready) return;
-    const pointerIcon = $(POINTER_ICON_HTML);
-    pointerIcon.hide();
-    sliderTitleLink.append(pointerIcon);
-    pointerIcon.fadeIn(500);
-  });
-}
-
-function addPointerIconToSliderTitle() {
-  const addPointerIntoSliderTitleInterval = setInterval(function () {
-    const sliderTitleLink = $(FIRST_SLIDER_TITLE_LINK_SELECTOR);
-    if (!sliderTitleLink.length) return;
-    clearInterval(addPointerIntoSliderTitleInterval);
-    const pointerIcon = $(POINTER_ICON_HTML);
-    pointerIcon.hide();
-    sliderTitleLink.append(pointerIcon);
-    pointerIcon.fadeIn(1000);
-  }, 200);
-}
-
 function squareMeterCounter() {
   let amountInABox;
-  $(".woocommerce-product-attributes-item__value").each(function () {
+  $('.woocommerce-product-attributes-item__value').each(function () {
     const item = $(this);
     try {
       const showsAmountInABox = item
-        .children()
-        .eq(0)
-        .children(0)
-        .attr("href")
-        .includes("dobozban-levo-mennyiseg");
+          .children()
+          .eq(0)
+          .children(0)
+          .attr('href')
+          .includes('dobozban-levo-mennyiseg');
       if (showsAmountInABox) {
         amountInABox = parseFloat(item.children().eq(0).children(0).text());
       }
@@ -912,18 +795,18 @@ function squareMeterCounter() {
   });
 
   if (!amountInABox) return;
-  var boxCountInput = $('[name="quantity"]');
+  const boxCountInput = $('[name="quantity"]');
 
   const currentBoxAmount = parseInt(boxCountInput.val());
   const message = `<p class="amount-in-box-message"><strong>${currentBoxAmount} doboz</strong> (${
     currentBoxAmount * amountInABox
   } négyzetméter)</p>`;
-  const addToCartSection = $(".sticky-add-to-cart");
+  const addToCartSection = $('.sticky-add-to-cart');
   addToCartSection.append(message);
 
   $('input[value="-"]').click(function () {
     setTimeout(() => {
-      $(".amount-in-box-message").remove();
+      $('.amount-in-box-message').remove();
       const currentBoxAmount = parseInt(boxCountInput.val());
       const message = `<p class="amount-in-box-message"><strong>${currentBoxAmount} doboz</strong> (${
         currentBoxAmount * amountInABox
@@ -933,7 +816,7 @@ function squareMeterCounter() {
   });
   $('input[value="+"]').click(function () {
     setTimeout(() => {
-      $(".amount-in-box-message").remove();
+      $('.amount-in-box-message').remove();
       const currentBoxAmount = parseInt(boxCountInput.val());
       const message = `<p class="amount-in-box-message"><strong>${currentBoxAmount} doboz</strong> (${
         currentBoxAmount * amountInABox
@@ -951,7 +834,7 @@ async function slideUpAndDownMobileMenuBar() {
 
   const toggleMobileMenuSlideUpDownArrow = () => {
     const isMobileMenuSticky = mobileMenuBar.hasClass(
-      STICKY_MOBILE_MENU_BAR_CLASS_NAME
+        STICKY_MOBILE_MENU_BAR_CLASS_NAME,
     );
     const shouldRevealArrow = isMobileMenuSticky && !ishideAndShowArrowVisible;
     if (shouldRevealArrow) {
@@ -983,7 +866,7 @@ async function slideUpAndDownMobileMenuBar() {
     isInAnimation = true;
     mobileMenuBar.toggleClass(MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME);
     hideAndShowMobileMenuArrow.toggleClass(
-      MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR
+        MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR,
     );
     setTimeout(() => {
       isInAnimation = false;
@@ -993,7 +876,7 @@ async function slideUpAndDownMobileMenuBar() {
 
 function getMobileMenuBar() {
   return new Promise((resolve) => {
-    let getMobileMenuBarInterval = setInterval(function () {
+    const getMobileMenuBarInterval = setInterval(function () {
       const mobileMenuBar = $(MOBILE_MENU_BAR_SELECTOR);
       if (mobileMenuBar.length) {
         clearInterval(getMobileMenuBarInterval);
@@ -1008,25 +891,25 @@ function checkIsOnMobileView() {
 }
 
 function swapBoxAndSquarMetersPrice() {
-  const pricesContainer = $(".product-main .price.product-page-price").eq(0);
+  const pricesContainer = $('.product-main .price.product-page-price').eq(0);
   pricesContainer
-    .children()
-    .last()
-    .css({ display: "block", "margin-bottom": "5px" });
-  pricesContainer.children().last().removeClass("mcmp_recalc_price_row");
-  pricesContainer.children().first().addClass("mcmp_recalc_price_row");
+      .children()
+      .last()
+      .css({'display': 'block', 'margin-bottom': '5px'});
+  pricesContainer.children().last().removeClass('mcmp_recalc_price_row');
+  pricesContainer.children().first().addClass('mcmp_recalc_price_row');
   pricesContainer
-    .children()
-    .first()
-    .insertAfter(pricesContainer.children().last());
+      .children()
+      .first()
+      .insertAfter(pricesContainer.children().last());
 }
 
 function setTileUnit() {
-  $(".product-page-price .woocommerce-Price-amount")
-    .eq(0)
-    .children()
-    .children()
-    .text("Ft / Doboz");
+  $('.product-page-price .woocommerce-Price-amount')
+      .eq(0)
+      .children()
+      .children()
+      .text('Ft / Doboz');
 }
 
 function initiateCallOnPhoneCallIconClick(bigPhoneCallIcons) {
@@ -1037,37 +920,37 @@ function initiateCallOnPhoneCallIconClick(bigPhoneCallIcons) {
   });
 
   bigPhoneCallIcons
-    .siblings()
-    .find(PHONE_CALL_NUMBER_LINK)
-    .click(function () {
-      const salesAgentName = $(this).parent().siblings().find("h3").text();
-      const callEventOpts = {
-        event: GTM_CALL_EVENT_NAME,
-      };
-      callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = UX_BUILDER_CALL_ICON_BOX_NAME;
-      callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = salesAgentName;
-      dataLayer.push(callEventOpts);
-    });
+      .siblings()
+      .find(PHONE_CALL_NUMBER_LINK)
+      .click(function () {
+        const salesAgentName = $(this).parent().siblings().find('h3').text();
+        const callEventOpts = {
+          event: GTM_CALL_EVENT_NAME,
+        };
+        callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = UX_BUILDER_CALL_ICON_BOX_NAME;
+        callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = salesAgentName;
+        dataLayer.push(callEventOpts);
+      });
 }
 
 function gtmSliderEventTriggerSetup() {
   const designSliderId = $(
-    `${DESIGN_SLIDER_CONTAINER_SELECTOR} [data-ssid]`
-  ).attr("data-ssid");
+      `${DESIGN_SLIDER_CONTAINER_SELECTOR} [data-ssid]`,
+  ).attr('data-ssid');
   const designSliderSelector = `#n2-ss-${designSliderId}`;
   _N2.r(designSliderSelector, function () {
-    var slider = _N2[designSliderSelector];
+    const slider = _N2[designSliderSelector];
     slider.sliderElement.addEventListener(
-      "mainAnimationComplete",
-      function (e) {
-        dataLayer.push({ event: GTM_SLIDER_INTERACTION_TRIGGER_NAME });
-      }
+        'mainAnimationComplete',
+        function (e) {
+          dataLayer.push({event: GTM_SLIDER_INTERACTION_TRIGGER_NAME});
+        },
     );
   });
 }
 
 function sendViewCartEvent() {
-  dataLayer.push({ event: GTM_VIEW_CART_EVENT_NAME });
+  dataLayer.push({event: GTM_VIEW_CART_EVENT_NAME});
 }
 
 function displayInlineContactInfos(inlineContactInfoElems) {
@@ -1077,7 +960,7 @@ function displayInlineContactInfos(inlineContactInfoElems) {
   <strong style="color:#686868;">Kérdésével forduljon hozzánk bátran</strong>: 
   <i class="icon-phone" style="color: black;"></i> 
   <a class="${OCEAN_PHONE_CALL_LINK_CLASS}" href="tel:${tel}" style="cursor: pointer; color: #4e657b">${tel} - ${name}</a>
-  ${isInline ? " - " : "<br>"}
+  ${isInline ? ' - ' : '<br>'}
   <a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975" style="cursor: pointer; color: #4e657b" target="_blank">
     Térkép a bolthoz
   <i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>
@@ -1087,9 +970,9 @@ function displayInlineContactInfos(inlineContactInfoElems) {
   inlineContactInfoElems = [...inlineContactInfoElems];
   inlineContactInfoElems.forEach((elem) => {
     inlineContactInfoElem = $(elem);
-    const { tel, name } = getRandomContactInfo();
+    const {tel, name} = getRandomContactInfo();
     const isInline = inlineContactInfoElem.attr(
-      IS_CONTACT_INFO_INLINE_DATA_ATTR
+        IS_CONTACT_INFO_INLINE_DATA_ATTR,
     );
     const html = getContactInfoHtml(tel, name, isInline);
     inlineContactInfoElem.append(html);
@@ -1100,21 +983,22 @@ function fillContactInfoIntoPhoneNumberBtns(randomPhoneNumberBtnElems) {
   const phoneNumberBtns = [...randomPhoneNumberBtnElems];
   phoneNumberBtns.forEach((elem) => {
     const phoneNumberBtn = $(elem);
-    const { tel, name } = getRandomContactInfo();
-    phoneNumberBtn.attr("href", `tel:${tel}`);
+    const {tel, name} = getRandomContactInfo();
+    phoneNumberBtn.attr('href', `tel:${tel}`);
     phoneNumberBtn.attr(SALES_AGENTS_NAME_ATTRIBUTE, name);
 
     const callToActionArr = phoneNumberBtn
-      .attr("class")
-      .match(`${RANDOM_PHONE_BTN_CTA_CLASS}[^\\s]*`);
-    let callToActionMessage = "";
-    if (callToActionArr)
+        .attr('class')
+        .match(`${RANDOM_PHONE_BTN_CTA_CLASS}[^\\s]*`);
+    let callToActionMessage = '';
+    if (callToActionArr) {
       callToActionMessage = callToActionArr[0]
-        .replace(RANDOM_PHONE_BTN_CTA_CLASS, "")
-        .replace("-", " ");
-    const btnInnerText = callToActionMessage
-      ? `${callToActionMessage} - ${tel}`
-      : `${callToActionMessage} - ${name}`;
+          .replace(RANDOM_PHONE_BTN_CTA_CLASS, '')
+          .replace('-', ' ');
+    }
+    const btnInnerText = callToActionMessage ?
+      `${callToActionMessage} - ${tel}` :
+      `${callToActionMessage} - ${name}`;
     phoneNumberBtn.text(btnInnerText);
   });
 }
@@ -1124,7 +1008,7 @@ function getRandomContactInfo() {
 }
 
 function gtmPhoneCallEvents(callBtnsOnPageJqueryObject) {
-  callBtnsOnPageJqueryObject.on("click", function () {
+  callBtnsOnPageJqueryObject.on('click', function () {
     callBtn = $(this);
     const callEventOpts = {
       event: GTM_CALL_EVENT_NAME,
@@ -1132,20 +1016,21 @@ function gtmPhoneCallEvents(callBtnsOnPageJqueryObject) {
 
     const isMachineRentPage =
       window.location.pathname === MACHINE_RENT_PAGE_PATH;
-    const hasButtonShape = callBtn.hasClass("button");
+    const hasButtonShape = callBtn.hasClass('button');
     if (hasButtonShape) {
       callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = CALL_BUTTON_NAME;
       callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = callBtn.attr(
-        SALES_AGENTS_NAME_ATTRIBUTE
+          SALES_AGENTS_NAME_ATTRIBUTE,
       );
       dataLayer.push(callEventOpts);
-      if (isMachineRentPage)
-        dataLayer.push({ event: GTM_MACHINE_RENT_EVENT_NAME });
+      if (isMachineRentPage) {
+        dataLayer.push({event: GTM_MACHINE_RENT_EVENT_NAME});
+      }
       return;
     }
 
     const isFooterPhoneCallLink =
-      callBtn.parent().attr("itemprop") === "telephone";
+      callBtn.parent().attr('itemprop') === 'telephone';
     if (isFooterPhoneCallLink) {
       callEventOpts[GTM_HTML_ELEMENT_VARIABLE] = FOOTER_CALL_LINK_NAME;
     } else {
@@ -1155,15 +1040,16 @@ function gtmPhoneCallEvents(callBtnsOnPageJqueryObject) {
     const salesAgentName = callBtn.text().match(/[A-z].*/)[0];
     callEventOpts[GTM_SALES_AGENT_NAME_VARIABLE] = salesAgentName;
     dataLayer.push(callEventOpts);
-    if (isMachineRentPage)
-      dataLayer.push({ event: GTM_MACHINE_RENT_EVENT_NAME });
+    if (isMachineRentPage) {
+      dataLayer.push({event: GTM_MACHINE_RENT_EVENT_NAME});
+    }
   });
 }
 
 function hasCategoryBanner(categoryBanners) {
-  categoryBanners.on("click", function () {
+  categoryBanners.on('click', function () {
     const categoryBanner = $(this);
-    const nextPagesLink = categoryBanner.find("a").attr("href");
-    window.open(nextPagesLink, "_blank");
+    const nextPagesLink = categoryBanner.find('a').attr('href');
+    window.open(nextPagesLink, '_blank');
   });
 }
