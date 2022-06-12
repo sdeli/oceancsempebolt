@@ -4,18 +4,12 @@ if (!$) {
 
 const CHECKED_SELECTOR = "--checked";
 const COLOR_FILTER_ICONS_SELECTOR = "filter-form__szin";
-const SHOP_SIDEBAR_SWITCH_BTNS_SELECTOR = "#shop-sidebar-switch-btns";
-const MOBILE_SIDEBAR_CONTAINER_SELECTOR = ".mfp-content";
-const SHOP_SIDEBAR_MENU_SELECTOR = "#shop-sidebar";
-const SHOP_SIDEBAR_MENU_SHELTER_SELECTOR = ".col.large-3.hide-for-medium";
-const MAIN_SIDEBAR_MENU_SELECTOR = "#main-menu";
-const MAIN_MENU_SWITCH_TITLE = "main-menu-switch-btn";
-const SHOP_MENU_SWITCH_TITLE = "shop-menu-switch-btn";
+const MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR =
+  ".nav-sidebar .menu-item-object-page";
+const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = ".mobile-sidebar-categories";
+const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = ".mobile-sidebar-switch-btns";
 const CLICKABLE_SELECTOR = "--clickable";
-const CLONE_MENU_SELECTOR = "--clone";
-const MOBILE_SIDEBAR_CANCEL_OVERLAY =
-  ".mfp-container.mfp-s-ready.mfp-inline-holder";
-const MOBILE_SIDEBAR_CANCEL_BTN = ".mfp-close";
+const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '[data-open="#main-menu"]';
 const PARALLAX_HEADER_SELECTOR = ".identity-header__background";
 const HAMBURGER_BTN_SELECTOR = '[aria-controls="main-menu"]';
 const FILTER_BTN_SELECTOR = ".filter-btn";
@@ -73,6 +67,7 @@ const SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT = 1000;
 const CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR = ".contact-us-inline-infos";
 const RANDOM_PHONE_BTNS_SELECTOR = ".random-phone-number-btn";
 const RANDOM_PHONE_BTN_CTA_CLASS = "default-text--";
+const ACTIVE_ITEM_SELECTOR = ".active";
 
 const CATEGORIES_WITH_FILTERS_DATA = [
   {
@@ -112,7 +107,7 @@ const CATEGORIES_WITH_FILTERS_DATA = [
     slug: "zuhanytalcak",
   },
 ];
-const CATEGORIES_SIDEBAR_HEADER_HTML = `<div id="shop-sidebar-switch-btns" class="main-menu__filter-btns"><h3 class="main-menu__filter-btns__btn --header" title="shop-menu-switch-btn">Kategóriák</h3></div>`;
+const CATEGORIES_SIDEBAR_HEADER_HTML = `<div id="shop-sidebar-switch-btns" class="mobile-sidebar-switch-btns"><h3 class="mobile-sidebar-switch-btns__btn --header" title="shop-menu-switch-btn">Kategóriák</h3></div>`;
 const UNNEEDED_FILTERS = `
 [aria-label="01 safari"], [aria-label="02 black"], [aria-label="03 gray"], [aria-label="06 white"], 
 [aria-label="07 sand"], [aria-label="10 steel metal"], [aria-label="12 black metal"], 
@@ -192,13 +187,11 @@ let isMenuSwitchFinised = true;
 window.addEventListener(
   "DOMContentLoaded",
   async function () {
-    openSidebar();
+    mobileSidebarSwitchMenus();
     filterItemsOnClick();
     moveFiltersToCategSidebar();
     sidebarFilterLinksOnClick();
-    $(PRODUCT_CATEGORIES_MENU_BAR_BTN_SELECTOR).click(() =>
-      clickDesktopHamburgerToOpenSidebar()
-    );
+
     setTimeout(() => {
       slideUpAndDownMobileMenuBar();
     }, 0);
@@ -648,218 +641,59 @@ function resizeProductCardTitlesForElliplsis() {
   });
 }
 
-function clickHamburgerToOpenMobileSidebar() {
-  const hamburgerBtn = $(HAMBURGER_BTN_SELECTOR);
-  hamburgerBtn.click();
-}
+function mobileSidebarSwitchMenus() {
+  const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR).children();
 
-function clickDesktopHamburgerToOpenSidebar() {
-  const desktopSidebarMenuTrigger = $("." + DESKTOP_MENU_TRIGGER_CLASS);
-  desktopSidebarMenuTrigger.click();
-}
+  switchBtns.click(function () {
+    const switchBtn = $(this);
 
-function openSidebar() {
-  const hamburgerBtn = $(HAMBURGER_BTN_SELECTOR);
-  const filterMenuBtn = $(FILTER_BTN_SELECTOR);
+    const isBtnActive = switchBtn.hasClass(ACTIVE_ITEM_SELECTOR);
+    if (isBtnActive) return;
 
-  hamburgerBtn.click(function () {
-    setTimeout(() => {
-      const isDesktopProductCategsBtnClicked = $(this).hasClass(
-        DESKTOP_MENU_TRIGGER_CLASS
-      );
-      if (isDesktopProductCategsBtnClicked) {
-        createShopMenu(null, isDesktopProductCategsBtnClicked);
-      } else {
-        insertShopMenuSwitchBtnsIntoMobileSidebar();
-      }
-    }, 0);
-  });
+    switchBtn.addClass(ACTIVE_ITEM_SELECTOR);
+    switchBtn.toggleClass(CLICKABLE_SELECTOR);
 
-  filterMenuBtn.click(() => {
-    setTimeout(() => {
-      createShopMenu(null, false);
-    }, 0);
-  });
-}
+    switchBtn.siblings().eq(0).removeClass(ACTIVE_ITEM_SELECTOR);
+    switchBtn.siblings().eq(0).toggleClass(CLICKABLE_SELECTOR);
 
-function createShopMenu(e, isDesktopMenu = false) {
-  if (e) e.stopPropagation();
-  if (!isMenuSwitchFinised) return;
-
-  const isOnShopMenuAlready = !!$(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
-  ).length;
-  if (isOnShopMenuAlready) return;
-  isMenuSwitchFinised = false;
-
-  const mobileSidebarContainer = $(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  const mainMenu = $(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
-  );
-  const shopMenu = $(SHOP_SIDEBAR_MENU_SELECTOR);
-  const shopMenuBtn = $(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
-  const mainMenuBtn = $(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
-
-  if (isDesktopMenu) {
-    insertDesktopSidebarHeader();
-  } else {
-    insertMainMenuSwitchBtnsIntoMobileSidebar();
-  }
-
-  mainMenu.appendTo("body");
-  mainMenu.show();
-  shopMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  isMenuSwitchFinised = true;
-}
-
-function insertShopMenuSwitchBtnsIntoMobileSidebar() {
-  const shopSideBarSwitchBtns = getMobileMenuSwitchIcons(true);
-  const hasMainMenuInSidebar = !!$(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
-  ).length;
-  shopSideBarSwitchBtns.prependTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-
-  if (!hasMainMenuInSidebar) {
-    const mainMenu = $(MAIN_SIDEBAR_MENU_SELECTOR);
-    mainMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  }
-  preventCloseOnMenuClick();
-  resetSidebarContentOnClose();
-}
-
-function insertMainMenuSwitchBtnsIntoMobileSidebar() {
-  const shopSideBarSwitchBtns = getMobileMenuSwitchIcons(false);
-  const hasShopMenuInSidebar = !!$(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
-  ).length;
-  shopSideBarSwitchBtns.prependTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-
-  if (!hasShopMenuInSidebar) {
-    const shopMenu = $(SHOP_SIDEBAR_MENU_SELECTOR);
-    shopMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  }
-  preventCloseOnMenuClick();
-  resetSidebarContentOnClose();
-}
-
-function insertDesktopSidebarHeader() {
-  const categoriesSidebarHeader = $(CATEGORIES_SIDEBAR_HEADER_HTML);
-  categoriesSidebarHeader.prependTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-
-  const hasMainMenuInSidebar = !!$(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
-  ).length;
-  if (!hasMainMenuInSidebar) {
-    const mainMenu = $(MAIN_SIDEBAR_MENU_SELECTOR);
-    mainMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  }
-  preventCloseOnMenuClick();
-  resetSidebarContentOnClose();
-}
-
-function switchToMainMenu(e) {
-  e.stopPropagation();
-  if (!isMenuSwitchFinised) return;
-
-  const isOnMainMenuAlready = !!$(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
-  ).length;
-  if (isOnMainMenuAlready) return;
-  isMenuSwitchFinised = false;
-
-  const mainMenu = $(MAIN_SIDEBAR_MENU_SELECTOR);
-  const mobileSidebarContainer = $(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  const shopMenu = $(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
-  );
-  const shopMenuBtn = $(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
-  const mainMenuBtn = $(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
-
-  shopMenu.fadeOut(() => {
-    shopMenu.appendTo(SHOP_SIDEBAR_MENU_SHELTER_SELECTOR);
-    shopMenu.show();
-
-    mainMenu
-      .removeClass("mfp-hide")
-      .appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-    isMenuSwitchFinised = true;
-  });
-
-  shopMenuBtn.toggleClass(CLICKABLE_SELECTOR);
-  mainMenuBtn.toggleClass(CLICKABLE_SELECTOR);
-}
-
-function switchToShopMenu(e) {
-  if (e) e.stopPropagation();
-  if (!isMenuSwitchFinised) return;
-
-  const isOnShopMenuAlready = !!$(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
-  ).length;
-  if (isOnShopMenuAlready) return;
-  isMenuSwitchFinised = false;
-
-  const mobileSidebarContainer = $(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-  const mainMenu = $(
-    `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
-  );
-  const shopMenu = $(SHOP_SIDEBAR_MENU_SELECTOR);
-  const shopMenuBtn = $(`[title="${SHOP_MENU_SWITCH_TITLE}"]`);
-  const mainMenuBtn = $(`[title="${MAIN_MENU_SWITCH_TITLE}"]`);
-
-  mainMenu.fadeOut(() => {
-    mainMenu.appendTo("body");
-    mainMenu.show();
-    shopMenu.appendTo(MOBILE_SIDEBAR_CONTAINER_SELECTOR);
-    isMenuSwitchFinised = true;
-  });
-
-  shopMenuBtn.toggleClass(CLICKABLE_SELECTOR);
-  mainMenuBtn.toggleClass(CLICKABLE_SELECTOR);
-}
-
-function getMobileMenuSwitchIcons(isForMainMenu = true) {
-  const mobileMenuSwitchBtnHtml =
-    "" +
-    '<div id="shop-sidebar-switch-btns" class="main-menu__filter-btns">' +
-    `<a class="main-menu__filter-btns__btn ${
-      isForMainMenu ? "" : CLICKABLE_SELECTOR
-    }" title="${MAIN_MENU_SWITCH_TITLE}" onclick="switchToMainMenu(event)">Menü</a>` +
-    `<a class="main-menu__filter-btns__btn ${
-      isForMainMenu ? CLICKABLE_SELECTOR : ""
-    }" title="${SHOP_MENU_SWITCH_TITLE}" onclick="switchToShopMenu(event)">Kategóriák</a>` +
-    "</div>";
-
-  return $(mobileMenuSwitchBtnHtml);
-}
-
-function resetSidebarContentOnClose() {
-  const cancelingElements = $(
-    `${MOBILE_SIDEBAR_CANCEL_BTN}, ${MOBILE_SIDEBAR_CANCEL_OVERLAY}`
-  );
-  cancelingElements.click(() => {
-    const mainMenuInSidebar = $(
-      `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${MAIN_SIDEBAR_MENU_SELECTOR}`
+    const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
+    const mobileSidebarCategories = $(
+      MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR
     );
-    if (mainMenuInSidebar.length) {
-      mainMenuInSidebar.appendTo("body");
-    }
 
-    const shopMenuInSidebar = $(
-      `${MOBILE_SIDEBAR_CONTAINER_SELECTOR} ${SHOP_SIDEBAR_MENU_SELECTOR}`
-    );
-    if (shopMenuInSidebar.length) {
-      shopMenuInSidebar.appendTo(SHOP_SIDEBAR_MENU_SHELTER_SELECTOR);
+    const areCategoriesVisible = mobileSidebarCategories.is(":visible");
+    if (areCategoriesVisible) {
+      mobileSidebarCategories.fadeOut(200, () => menuItems.fadeIn(200));
+    } else {
+      menuItems.fadeOut(200, () => mobileSidebarCategories.fadeIn(200));
     }
-
-    cancelingElements.unbind("click");
   });
 }
 
-function preventCloseOnMenuClick() {
-  $(MOBILE_SIDEBAR_CONTAINER_SELECTOR).click((e) => {
-    e.stopPropagation();
-  });
+function openHamburgerMenuForCategories() {
+  const hamburgerIcon = $(MOBILE_MENU_HAMBURGER_ICON_SELECTOR);
+  const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
+  cateogiresBtn = switchBtns.children().eq(1);
+
+  const isCategoriesBtnActive = cateogiresBtn.hasClass(ACTIVE_ITEM_SELECTOR);
+  if (isCategoriesBtnActive) {
+    hamburgerIcon.click();
+    return;
+  }
+
+  cateogiresBtn.addClass(ACTIVE_ITEM_SELECTOR);
+  cateogiresBtn.removeClass(CLICKABLE_SELECTOR);
+
+  const menuBtn = switchBtns.children().eq(0);
+  menuBtn.addClass(CLICKABLE_SELECTOR);
+  menuBtn.removeClass(ACTIVE_ITEM_SELECTOR);
+
+  const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
+  const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
+
+  menuItems.hide();
+  mobileSidebarCategories.show();
+  hamburgerIcon.click();
 }
 
 function clickVariationSwatchIfOneOptionLeft() {
@@ -952,6 +786,9 @@ function isElemVisible(selector) {
 }
 
 function swapDesignPlaceholderToSlider() {
+  const isSliderOnPage = !!$(DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR).length;
+  if (!isSliderOnPage) return;
+
   let isSliderSet = false;
   const loadSlider = () => {
     const designSlider = $($(DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR).text());
@@ -970,7 +807,7 @@ function swapDesignPlaceholderToSlider() {
           resolve(true);
         }
 
-        console.log($(DESIGN_SLIDER_LOADER_SELECTOR));
+        // console.log($(DESIGN_SLIDER_LOADER_SELECTOR));
         // its awful I know => in some cases smart slider doesnt start to load while being hidden, so in that case we just allow it display
         // and so it triggers loading. It takes a second to load images that is seen by the user this what we wanted to avoid.
         const sliderIsMaybeLoaded =

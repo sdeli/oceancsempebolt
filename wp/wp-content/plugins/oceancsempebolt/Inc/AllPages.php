@@ -5,6 +5,8 @@ use \Inc\Config;
 class AllPages 
 {
   static function displayCustomElements() {
+    self::modifyFlatsomeMobileSidebar();
+
     add_action('flatsome_before_footer', function () {
       if(is_front_page()){
         self::echoFrontPageSliders(); 
@@ -17,6 +19,32 @@ class AllPages
       self::echoLoader();
       self::echoDesktopHamburgerBtn();
       self::echoSidebarFilters();
+    });
+  }
+
+  // This function makes in the mobile sidebar possible to switch between categories and main menu
+  // It adds "menu" and the "categories" buttons to it and the categories sidebar widget as well
+  protected static function modifyFlatsomeMobileSidebar() {
+    $options = get_theme_mods();
+    
+    $no_menu_and_categories_btns_enabled = ! in_array('menu-and-categories-btn', $options['mobile_sidebar']);
+  
+    if($no_menu_and_categories_btns_enabled) set_theme_mod('mobile_sidebar', ['search-form', 'menu-and-categories-btns', 'nav']);
+    
+    add_action( 'flatsome_header_elements', function($value) {
+      if ($value === 'menu-and-categories-btns') :
+      ?>
+        <div id="mobile-sidebar-switch-btns" class="mobile-sidebar-switch-btns">
+          <a class="mobile-sidebar-switch-btns__btn active">Menü</a>
+          <a class="mobile-sidebar-switch-btns__btn  --clickable">Kategóriák</a>
+        </div>        
+      <?php endif;
+    });
+
+    add_action( 'flatsome_after_sidebar_menu_elements', function() {
+      echo '<div class="mobile-sidebar-categories">';
+        dynamic_sidebar('shop-sidebar');
+      echo '</div>';
     });
   }
   
