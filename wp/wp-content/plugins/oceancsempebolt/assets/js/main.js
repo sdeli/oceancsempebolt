@@ -13,7 +13,6 @@ const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = '.mobile-sidebar-switch-btns';
 const CLICKABLE_CLASS = '--clickable';
 const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '#header [data-open="#main-menu"]';
 const FAKE_HAMBURGER_ICON_SELECTOR = '#fake-hamburger-icon[data-open="#main-menu"]';
-const PARALLAX_HEADER_SELECTOR = '.identity-header__background';
 const GOOGLE_MAPS_CONATINER_SELECTOR =
   '.lazy-load-google-maps-until-user-interaction';
 const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = '#ocean-promo-video-container';
@@ -28,7 +27,7 @@ const TILES_SLIDER_TEXT_SELECTOR = '.tiles-slider-text';
 const MOBILE_MENU_BAR_SELECTOR = '.header-wrapper';
 const STICKY_MOBILE_MENU_BAR_CLASS_NAME = 'stuck';
 const MOBILE_MENU_BAR_ARROW_SELECTOR = '.mobile-menu-arrow-up-down-box__arrow';
-const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = 'nav-invisible';
+const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = '--invisible';
 const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
 const DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR =
   '.design-slider__slider-code-in-text';
@@ -663,24 +662,6 @@ function clickVariationSwatchIfOneOptionLeft() {
   });
 }
 
-function parallaxShopHeader() {
-  const parallaxShopHeader = $(PARALLAX_HEADER_SELECTOR);
-  let baseBackgroundPosition = PARALLAX_HEADER_SMALL_TABLET_Y_POSITION;
-  if (window.innerWidth >= SMALL_TABLET_WIDTH) {
-    parallaxShopHeader.css('top', baseBackgroundPosition + 'px');
-    baseBackgroundPosition = PARALLAX_HEADER_LARGE_TABLET_Y_POSITION;
-  }
-
-  const jqueryWindow = $(window);
-
-  jqueryWindow.scroll(function () {
-    const wScrollPosition = jqueryWindow.scrollTop();
-    const backgroundYPosition =
-      baseBackgroundPosition + wScrollPosition * PARALLAX_SPEED + 'px';
-    parallaxShopHeader.css('top', backgroundYPosition);
-  });
-}
-
 function removeUnneededFiltersFromMainShopPage() {
   const unneededFilters = $(UNNEEDED_FILTERS);
   unneededFilters.parent().remove();
@@ -860,6 +841,7 @@ async function slideUpAndDownMobileMenuBar() {
     const isMobileMenuSticky = mobileMenuBar.hasClass(
         STICKY_MOBILE_MENU_BAR_CLASS_NAME,
     );
+
     const shouldRevealArrow = isMobileMenuSticky && !ishideAndShowArrowVisible;
     if (shouldRevealArrow) {
       arrowUpDownBox.show();

@@ -26,6 +26,68 @@ Version: 3.0
 }
 /* END Main Menu - Termékkategoriak btn - not visible in prod listings and in mobile sidebar */
 
+/* mobile navbar adjustments */
+.mobile-menu-arrow-up-down-box {
+  display: none;
+}
+
+.stuck .mobile-menu-arrow-up-down-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  width: 40px;
+  background: white;
+  position: absolute;
+  right: 0px;
+  bottom: -24px;
+  z-index: 1000;
+  opacity: 0.8;
+  border-radius: 0 0 0 2px;
+}
+
+.mobile-menu-arrow-up-down-box__arrow {
+  color: #777777;
+  font-size: 30px;
+  transform: rotate(0deg);
+  transition: transform 0.5s;
+}
+
+.ocs .stuck {
+  transition: top 0.5s ease-in-out;
+}
+
+.ocs .stuck.--invisible {
+  top: -66px !important;
+}
+
+
+.--rotated {
+  transform: rotate(180deg);
+}
+
+@media only screen and (max-width: 849px) {
+  #top-bar {
+    display: none;
+  }
+
+  #logo {
+    width: 155px
+  }
+
+  #masthead {
+    height: 65px;
+  }
+}
+
+@media only screen and (min-width: 849px) {
+  .stuck .mobile-menu-arrow-up-down-box {
+    display: none;
+  }
+}
+/* END mobile navbar adjustments */
+
 .color-alert-yellow {
   color: #ffbd3d;
 }
@@ -1326,42 +1388,6 @@ animation: lineLoader 1.3s ease-in-out infinite;
   line-height: 1;
 }
 
-.mobile-menu-arrow-up-down-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: 25px;
-  width: 40px;
-  background: white;
-  position: absolute;
-  right: 0px;
-  bottom: -24px;
-  z-index: 1000;
-  opacity: 0.8;
-  border-radius: 0 0 0 2px;
-}
-
-.mobile-menu-arrow-up-down-box__arrow {
-  color: #777777;
-  font-size: 30px;
-  transform: rotate(0deg);
-  transition: transform 0.5s;
-}
-
-.stuck {
-  transition: top 0.5s ease-in-out;
-}
-
-.nav-invisible {
-  top: -66px;
-}
-
-
-.--rotated {
-  transform: rotate(180deg);
-}
-
 .big-phone-call-icon {
   cursor: pointer;
 }
@@ -1590,6 +1616,21 @@ animation: lineLoader 1.3s ease-in-out infinite;
   }
   .col-full-screen-on-mobile {
     padding: 0 0 15px;
+  }
+
+  /* mobile navbar adjustments */
+  .ocs #logo {
+    width: 155px
+  }
+
+  .ocs .header-main {
+    height: 65px;
+  }
+  /* END mobile navbar adjustments */
+
+  .design-slider {
+    margin-right: -15px;
+    margin-left: -15px;
   }
 }
 
