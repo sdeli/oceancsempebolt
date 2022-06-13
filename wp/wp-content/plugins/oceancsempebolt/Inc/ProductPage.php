@@ -90,9 +90,9 @@ class ProductPage
       'tax_query'             => array(
         array(
             'taxonomy'      => 'pa_nepszeruseg',
-            'field' => 'term_id',
-            'terms'         => '6656',
-            'operator'      => 'IN'
+            'field' => 'slug',
+            'operator'      => 'IN',
+            'terms'         => 'magas',
         ),
       )
     );
