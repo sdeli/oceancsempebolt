@@ -19,6 +19,13 @@ Version: 3.0
 }
 /* END flatsome mobile sidebar - removing unnecessary whitespace */
  
+/* Main Menu - Termékkategoriak btn - not visible in prod listings and in mobile sidebar */
+.archive.woocommerce .menu-item-4854,
+.nav-sidebar .menu-item-4854 {
+  display: none;
+}
+/* END Main Menu - Termékkategoriak btn - not visible in prod listings and in mobile sidebar */
+
 .color-alert-yellow {
   color: #ffbd3d;
 }
@@ -1534,12 +1541,6 @@ animation: lineLoader 1.3s ease-in-out infinite;
 
   .design-slider__fake-slider-img {
     height: 35vw;
-  }
-}
-
-@media only screen and (max-width: 849px) {
-  .menu-item-4854 {
-    display: none !important;
   }
 }
 

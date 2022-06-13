@@ -1,6 +1,7 @@
 if (!$) {
   // eslint-disable-next-line no-unused-vars
-  const $ = jQuery;
+  // eslint-disable-next-line no-var
+  var $ = jQuery;
 }
 
 const CHECKED_SELECTOR = '--checked';
@@ -9,7 +10,7 @@ const MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR =
   '.nav-sidebar .menu-item-object-page';
 const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = '.mobile-sidebar-categories';
 const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = '.mobile-sidebar-switch-btns';
-const CLICKABLE_SELECTOR = '--clickable';
+const CLICKABLE_CLASS = '--clickable';
 const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '[data-open="#main-menu"]';
 const PARALLAX_HEADER_SELECTOR = '.identity-header__background';
 const GOOGLE_MAPS_CONATINER_SELECTOR =
@@ -18,10 +19,6 @@ const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = '#ocean-promo-video-containe
 const CONTEC_BULL_PROMO_VIDEO_1_CONTAINER_SELECTOR = `#contec-bull-promo-video-1-container`;
 const CONTEC_BULL_PROMO_VIDEO_2_CONTAINER_SELECTOR = `#contec-bull-promo-video-2-container`;
 const FIRST_SLIDER_TITLE_LINK_SELECTOR = '[data-first] .slider-title a.n2-ow';
-const ACTIVE_SLIDER_TITLE_LINK_SELECTOR =
-  '.n2-ss-slide-active .slider-title a.n2-ow';
-const POINTER_ICON_CLASS_NAME = 'icon-pointer';
-const POINTER_ICON_SELECTOR = '.' + POINTER_ICON_CLASS_NAME;
 const BATH_TUB_SLIDER_HOMEPAGE_CONTAINER = '.home-page-kadak-slider-container';
 const BATH_TUB_SLIDER_TEXT_SELECTOR = '.bath-tub-slider-text';
 const TILES_SLIDER_HOMEPAGE_CONTAINER =
@@ -54,7 +51,8 @@ const SWAP_PLACEHOLDER_TO_DESIGN_SLIDER_TIMEOUT = 1000;
 const CONTACT_US_INLINE_INFOS_CONTAINER_SELECTOR = '.contact-us-inline-infos';
 const RANDOM_PHONE_BTNS_SELECTOR = '.random-phone-number-btn';
 const RANDOM_PHONE_BTN_CTA_CLASS = 'default-text--';
-const ACTIVE_ITEM_SELECTOR = '.active';
+const ACTIVE_ITEM_CLASS = 'active';
+const PRODUCT_CATEGORIES_MAIN_MENU_BTN_SELECTOR = '.menu-item-4854';
 
 const CATEGORIES_WITH_FILTERS_DATA = [
   {
@@ -118,7 +116,6 @@ const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?
 const OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML = `<iframe src="https://www.youtube.com/embed/HieK5jUu8Jc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/w3AUeYOrx2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HRd9bETXuRI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-const POINTER_ICON_HTML = `<span class="${POINTER_ICON_CLASS_NAME} slider-pointer-icon"></span>`;
 const MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML =
   '<div class="mobile-menu-arrow-up-down-box"><i class="icon-angle-up mobile-menu-arrow-up-down-box__arrow"></i></div>';
 
@@ -313,9 +310,13 @@ window.addEventListener(
       }
 
       const categoryBanners = $(CATEGORY_GRID_BANNER_SELECTOR);
-      // has category selector html elem on page
       if (categoryBanners.length) {
         hasCategoryBanner(categoryBanners);
+      }
+
+      const productCateogiresMainMenuBtn = $(PRODUCT_CATEGORIES_MAIN_MENU_BTN_SELECTOR);
+      if (productCateogiresMainMenuBtn) {
+        productCateogiresMainMenuBtn.click(openHamburgerMenuForCategories);
       }
     },
     false,
@@ -560,15 +561,15 @@ function mobileSidebarSwitchMenus() {
 
   switchBtns.click(function () {
     const switchBtn = $(this);
+    const isBtnActive = switchBtn.hasClass(ACTIVE_ITEM_CLASS);
 
-    const isBtnActive = switchBtn.hasClass(ACTIVE_ITEM_SELECTOR);
     if (isBtnActive) return;
 
-    switchBtn.addClass(ACTIVE_ITEM_SELECTOR);
-    switchBtn.toggleClass(CLICKABLE_SELECTOR);
+    switchBtn.addClass(ACTIVE_ITEM_CLASS);
+    switchBtn.toggleClass(CLICKABLE_CLASS);
 
-    switchBtn.siblings().eq(0).removeClass(ACTIVE_ITEM_SELECTOR);
-    switchBtn.siblings().eq(0).toggleClass(CLICKABLE_SELECTOR);
+    switchBtn.siblings().eq(0).removeClass(ACTIVE_ITEM_CLASS);
+    switchBtn.siblings().eq(0).toggleClass(CLICKABLE_CLASS);
 
     const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
     const mobileSidebarCategories = $(
@@ -590,18 +591,18 @@ function openHamburgerMenuForCategories() {
   const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
   cateogiresBtn = switchBtns.children().eq(1);
 
-  const isCategoriesBtnActive = cateogiresBtn.hasClass(ACTIVE_ITEM_SELECTOR);
+  const isCategoriesBtnActive = cateogiresBtn.hasClass(ACTIVE_ITEM_CLASS);
   if (isCategoriesBtnActive) {
     hamburgerIcon.click();
     return;
   }
 
-  cateogiresBtn.addClass(ACTIVE_ITEM_SELECTOR);
-  cateogiresBtn.removeClass(CLICKABLE_SELECTOR);
+  cateogiresBtn.addClass(ACTIVE_ITEM_CLASS);
+  cateogiresBtn.removeClass(CLICKABLE_CLASS);
 
   const menuBtn = switchBtns.children().eq(0);
-  menuBtn.addClass(CLICKABLE_SELECTOR);
-  menuBtn.removeClass(ACTIVE_ITEM_SELECTOR);
+  menuBtn.addClass(CLICKABLE_CLASS);
+  menuBtn.removeClass(ACTIVE_ITEM_CLASS);
 
   const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
   const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
