@@ -11,7 +11,8 @@ const MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR =
 const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = '.mobile-sidebar-categories';
 const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = '.mobile-sidebar-switch-btns';
 const CLICKABLE_CLASS = '--clickable';
-const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '[data-open="#main-menu"]';
+const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '#header [data-open="#main-menu"]';
+const FAKE_HAMBURGER_ICON_SELECTOR = '#fake-hamburger-icon[data-open="#main-menu"]';
 const PARALLAX_HEADER_SELECTOR = '.identity-header__background';
 const GOOGLE_MAPS_CONATINER_SELECTOR =
   '.lazy-load-google-maps-until-user-interaction';
@@ -157,6 +158,7 @@ const SALES_AGENTS_NAME_ATTRIBUTE = 'data-sales-agents-name';
 window.addEventListener(
     'DOMContentLoaded',
     async function () {
+      hamburberMenuOpensMobileSidbar();
       mobileSidebarSwitchMenus();
       filterItemsOnClick();
       moveFiltersToCategSidebar();
@@ -316,7 +318,9 @@ window.addEventListener(
 
       const productCateogiresMainMenuBtn = $(PRODUCT_CATEGORIES_MAIN_MENU_BTN_SELECTOR);
       if (productCateogiresMainMenuBtn) {
-        productCateogiresMainMenuBtn.click(openHamburgerMenuForCategories);
+        productCateogiresMainMenuBtn.click(() => {
+          openHamburgerMenuForCategories();
+        });
       }
     },
     false,
@@ -587,15 +591,12 @@ function mobileSidebarSwitchMenus() {
 
 // eslint-disable-next-line no-unused-vars
 function openHamburgerMenuForCategories() {
-  const hamburgerIcon = $(MOBILE_MENU_HAMBURGER_ICON_SELECTOR);
+  $(FAKE_HAMBURGER_ICON_SELECTOR).click();
   const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
   cateogiresBtn = switchBtns.children().eq(1);
 
   const isCategoriesBtnActive = cateogiresBtn.hasClass(ACTIVE_ITEM_CLASS);
-  if (isCategoriesBtnActive) {
-    hamburgerIcon.click();
-    return;
-  }
+  if (isCategoriesBtnActive) return;
 
   cateogiresBtn.addClass(ACTIVE_ITEM_CLASS);
   cateogiresBtn.removeClass(CLICKABLE_CLASS);
@@ -606,10 +607,32 @@ function openHamburgerMenuForCategories() {
 
   const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
   const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
+  menuItems.hide(0);
+  mobileSidebarCategories.show(0);
+}
 
-  menuItems.hide();
-  mobileSidebarCategories.show();
-  hamburgerIcon.click();
+function hamburberMenuOpensMobileSidbar() {
+  const hamburber = $(MOBILE_MENU_HAMBURGER_ICON_SELECTOR);
+  const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
+  const menuBtn = switchBtns.children().eq(0);
+  const categoriesBtn = switchBtns.children().eq(1);
+
+  const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
+  const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
+
+
+  hamburber.click(() => {
+    const menuBtnActive = menuBtn.hasClass(ACTIVE_ITEM_CLASS);
+    if (menuBtnActive) return;
+    menuBtn.addClass(ACTIVE_ITEM_CLASS);
+    menuBtn.removeClass(CLICKABLE_CLASS);
+
+    categoriesBtn.addClass(CLICKABLE_CLASS);
+    categoriesBtn.removeClass(ACTIVE_ITEM_CLASS);
+
+    mobileSidebarCategories.hide(0);
+    menuItems.show(0);
+  });
 }
 
 function clickVariationSwatchIfOneOptionLeft() {
