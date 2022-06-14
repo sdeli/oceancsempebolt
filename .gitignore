@@ -8,6 +8,7 @@ wp/wp-content/themes/flatsome-child/vendor
 !wp/wp-content/plugins
 wp/wp-content/plugins/*
 !wp/wp-content/plugins/oceancsempebolt
+!wp/wp-content/Shared
 .DS_Store
 mysql/*
 !mysql/.gitkeep
@@ -15,4 +16,4 @@ mysql/*
 assets/*
 .vscode/launch.json
 wp/wp-content/plugins/oceancsempebolt/vendor
-wp/wp-content/plugins/oceancsempebolt/node_modules/
+node_modules/

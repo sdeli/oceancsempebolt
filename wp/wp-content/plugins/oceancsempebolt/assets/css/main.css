@@ -7,6 +7,24 @@ Version: 3.0
 */
 
 /*************** ADD CUSTOM CSS HERE.   ***************/
+
+/* top identity color bar - secondary menu li items */
+.header:not(.transparent) .top-bar-nav .menu-item a {
+  color: white;
+  font-weight: 600;
+}
+
+.ocs .header:not(.transparent) .top-bar-nav .menu-item a:hover {
+  color: black;
+}
+/* END top identity color bar - secondary menu li items */
+
+/* desktop, tablet navbar / on magnifier hover - product search form container */
+.nav .nav-dropdown {
+  width: 650px
+}
+/* END desktop, tablet navbar / on magnifier hover - product search form container */
+
 /* sidebar when clicked hamburger - overlay behind sidebar - overlay turned black and hidden whole background */
 .mfp-bg.off-canvas.off-canvas-left.main-menu-overlay.mfp-ready {
   opacity: 0 !important;
@@ -38,29 +56,31 @@ Version: 3.0
   align-items: center;
   height: 25px;
   width: 40px;
-  background: white;
+  background-color: rgba(255,255,255,0.9);
   position: absolute;
   right: 0px;
   bottom: -24px;
   z-index: 1000;
-  opacity: 0.8;
   border-radius: 0 0 0 2px;
 }
 
 .mobile-menu-arrow-up-down-box__arrow {
-  color: #777777;
+  color: black;
   font-size: 30px;
   transform: rotate(0deg);
   transition: transform 0.5s;
+  cursor: pointer;
 }
 
+/* mobile - [element name] - ?[what is modified] */
 .ocs .stuck {
   transition: top 0.5s ease-in-out;
 }
 
-.ocs .stuck.--invisible {
-  top: -66px !important;
+.stuck .header-main {
+  height: 64px !important;
 }
+/* END mobile - [element name] - ?[what is modified] */
 
 
 .--rotated {
@@ -294,12 +314,6 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.5 !important;
 }
 /* Smart Slider END */
-
-/* Wp Rocket */
-/* .video-fit {
-  padding-top: unset !important;
-} */
-/* Wp Rocket END */
 
 /* Plugin hacking END */
 #woocommerce-product-search-field-0 {
@@ -840,8 +854,10 @@ a.add_to_cart_button.button.primary {
   border: 3px solid white;
 }
 
+/* Product listing pages - filter tags under the smart slider */
 .filter-form {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  padding-top: 10px;
 }
 
 .filter-form div {
@@ -1049,6 +1065,7 @@ span.filter-form__szin__label {
   text-align: center;
   line-height: 15px;
 }
+/* END Product listing pages - filter tags under the smart slider */
 
 .site-block-overlay {
    display: none;
@@ -1289,45 +1306,66 @@ animation: lineLoader 1.3s ease-in-out infinite;
   margin-bottom: 1.3em;
 }
 
+/* Product listing pages - main column starting with smart slider under category name */
+.archive.woocommerce .category-page-row {
+  padding-top: 0;
+}
+/* END Product listing pages - main column starting with smart slider under category name */
+
 #shop-sidebar .widget_product_categories {
   margin-bottom: 0.5em;
 }
 
-.identity-header {
-  height: 100px;
-  overflow: hidden;
+/* product listing pages / directly below the top nav bar - category name bar */
+.category-name-bar {
   position: relative;
+  height: 45px;
+  padding: 0 16px;
+  max-width: 1270px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.identity-header__background {
-  width: 100%;
-  position: relative;
-  background-color: #f7f7f7;
-  height: 900px;
-  top: -440px;
+.category-name-bar.--visible-on-scroll {
+  display: none;
 }
 
-.identity-header__title {
-  z-index: 2;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+.stuck .category-name-bar.--visible-on-scroll {
+  display: block;
+  z-index: 10;
+  height: 47px;
 }
 
-.identity-header__title h1 {
-  text-shadow: 0px 3px 2px #9b9b9b;
-  font-family: 'Dancing Script', cursive;
-  color: #383838;
-  font-size: 3em;
+.category-name-bar h1 {
+  text-shadow: 0px 1px 1px #9b9b9b;
+  font-size: 1.6875rem;
   margin-bottom: 0;
   font-weight: 200;
+  color: black;
   text-align: center;
+  display: inline;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
 }
 
+.category-name-bar a {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.category-name-bar i {
+  font-size: 1.9rem;
+}
+/* END product listing pages / directly below the top nav bar - category name bar */
+
+/* product listing pages - "rendezes kategoriak es szurok" */
 .sort-disclaimer {
   cursor: pointer;
+  border-top: 1px solid #e5e4e4;
+  padding-top: 5px;
 }
 
 .sort-disclaimer p {
@@ -1338,17 +1376,10 @@ animation: lineLoader 1.3s ease-in-out infinite;
   text-shadow: 1px 1px 1px #dddddd;
   color: black;
 }
+/* END product listing pages - "rendezes kategoriak es szurok" */
 
 .open-mobile-menu-text {
   cursor: pointer;
-}
-
-.woocommerce-page:not(.single-product) .header-wrapper:not(.stuck) {
-  box-shadow: 0px 4px 4px rgb(66 65 65 / 50%);;
-}
-
-.woocommerce-page:not(.single-product) #main {
-  box-shadow: 0px -3px 9px rgb(78 77 77 / 50%);
 }
 
 .search-form-categories {
@@ -1421,25 +1452,16 @@ animation: lineLoader 1.3s ease-in-out infinite;
   text-transform: capitalize;
 }
 
-.google-maps-thin-container {
-  height: 200px;
-}
-
-.google-maps-thin-image {
-  position: relative;
-  height: 200px;
-  background: url(/wp-content/uploads/2022/04/google-maps-scaled-768w.webp) no-repeat center;
-  z-index: 1;
-}
-
+/* product listing pages / under top nav bar - design image slider carousel */
 .design-slider {
   position: relative;
+  box-shadow: 1px 1px 2px rgb(78 77 77 / 50%);
 }
 
 .design-slider__fake-slider-img {
   z-index: 10;
   width: 100%;
-  height: 46vw;
+  height: 48.5vw;
   overflow: hidden;
 }
 
@@ -1477,6 +1499,7 @@ animation: lineLoader 1.3s ease-in-out infinite;
 .slider-fake-arrow.right {
   right: 8%;
 }
+/* END product listing pages / under top nav bar - design image slider carousel */
 
 /* all pages - when opening hamburger menu or kateogires menu the product categ listing */
 .mobile-sidebar-categories {
@@ -1577,13 +1600,21 @@ animation: lineLoader 1.3s ease-in-out infinite;
 }
 
 @media only screen and (min-width: 550px) {
-  .identity-header__background {
-    background-image: url('/wp-content/uploads/2021/10/WHITE-LUXOR-BUMPY-MAINZU.jpg');
-  }
   .slider-pointer-icon {
     height: 32px;
     width: 32px;
   }
+  /* product listing pages / directly below the top nav bar - category name bar */
+  .category-name-bar {
+    height: 55px;
+  }
+
+  .category-name-bar h1 {
+    font-size: 1.9rem;
+  }
+  /* END product listing pages / directly below the top nav bar - category name bar */
+
+
 }
 
 @media only screen and (max-width: 549px) {
@@ -1620,11 +1651,7 @@ animation: lineLoader 1.3s ease-in-out infinite;
 
   /* mobile navbar adjustments */
   .ocs #logo {
-    width: 155px
-  }
-
-  .ocs .header-main {
-    height: 65px;
+    width: 140px
   }
   /* END mobile navbar adjustments */
 

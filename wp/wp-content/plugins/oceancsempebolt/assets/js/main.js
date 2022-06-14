@@ -24,8 +24,7 @@ const BATH_TUB_SLIDER_TEXT_SELECTOR = '.bath-tub-slider-text';
 const TILES_SLIDER_HOMEPAGE_CONTAINER =
   '.home-page-burkolatok-slider-container';
 const TILES_SLIDER_TEXT_SELECTOR = '.tiles-slider-text';
-const MOBILE_MENU_BAR_SELECTOR = '.header-wrapper';
-const STICKY_MOBILE_MENU_BAR_CLASS_NAME = 'stuck';
+const STICKY_NAV_BAR_SELECTOR = '.header-wrapper';
 const MOBILE_MENU_BAR_ARROW_SELECTOR = '.mobile-menu-arrow-up-down-box__arrow';
 const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = '--invisible';
 const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
@@ -116,12 +115,7 @@ const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?
 const OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML = `<iframe src="https://www.youtube.com/embed/HieK5jUu8Jc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/w3AUeYOrx2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HRd9bETXuRI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-const MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML =
-  '<div class="mobile-menu-arrow-up-down-box"><i class="icon-angle-up mobile-menu-arrow-up-down-box__arrow"></i></div>';
 
-const PARALLAX_HEADER_SMALL_TABLET_Y_POSITION = -440;
-const PARALLAX_HEADER_LARGE_TABLET_Y_POSITION = -428;
-const PARALLAX_SPEED = 0.2;
 const SMALL_TABLET_WIDTH = 849;
 
 const CONTACTS_PAGE_PATH = '/kapcsolat/';
@@ -162,10 +156,7 @@ window.addEventListener(
       filterItemsOnClick();
       moveFiltersToCategSidebar();
       sidebarFilterLinksOnClick();
-
-      setTimeout(() => {
-        slideUpAndDownMobileMenuBar();
-      }, 0);
+      slideUpAndDownMobileMenuBar();
 
       const isHomePage = document.querySelector('.home');
       if (isHomePage) {
@@ -216,14 +207,14 @@ window.addEventListener(
       if (isShopOrCategPage()) {
         swapDesignPlaceholderToSlider();
         addToCartBtnsOnClick();
-        parallaxShopHeader();
+
 
         const isSubCategoryPage = $('h1.shop-page-title').text() !== 'Shop';
         if (isSubCategoryPage) {
           openCurrentCategoryInSidebar();
         }
 
-        const isMainShopPage = $('h1.shop-page-title').text() === 'Shop';
+        const isMainShopPage = window.location.pathname.includes('shop');
         if (isMainShopPage) removeUnneededFiltersFromMainShopPage();
 
         const productCategId = window.location.pathname.replace(/\//g, '');
@@ -663,6 +654,7 @@ function clickVariationSwatchIfOneOptionLeft() {
 }
 
 function removeUnneededFiltersFromMainShopPage() {
+  console.log('sannya');
   const unneededFilters = $(UNNEEDED_FILTERS);
   unneededFilters.parent().remove();
 }
@@ -832,68 +824,27 @@ function squareMeterCounter() {
 }
 
 async function slideUpAndDownMobileMenuBar() {
-  let mobileMenuBar = $(MOBILE_MENU_BAR_SELECTOR);
-  const arrowUpDownBox = $(MOBILE_MENU_UP_DOWN_ARROW_BOX_HTML);
+  const menuBar = $(STICKY_NAV_BAR_SELECTOR);
+  const topWhenHidden = (menuBar.height() - 5) * -1 + 'px';
+  const classDefinition = `<style>
+    .stuck.${MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME} {
+      top: ${topWhenHidden};
+    }
+  </style>`;
+
+  $('body').append($(classDefinition));
+  const arrowUpDownBox = $(MOBILE_MENU_BAR_ARROW_SELECTOR);
   let isInAnimation = false;
-  let ishideAndShowArrowVisible = true;
 
-  const toggleMobileMenuSlideUpDownArrow = () => {
-    const isMobileMenuSticky = mobileMenuBar.hasClass(
-        STICKY_MOBILE_MENU_BAR_CLASS_NAME,
-    );
-
-    const shouldRevealArrow = isMobileMenuSticky && !ishideAndShowArrowVisible;
-    if (shouldRevealArrow) {
-      arrowUpDownBox.show();
-      ishideAndShowArrowVisible = true;
-      return;
-    }
-    const shouldHideArrow = !isMobileMenuSticky && ishideAndShowArrowVisible;
-    if (shouldHideArrow) {
-      arrowUpDownBox.hide();
-      ishideAndShowArrowVisible = false;
-    }
-  };
-
-  if (!mobileMenuBar.length) {
-    mobileMenuBar = await getMobileMenuBar();
-  }
-
-  mobileMenuBar.append(arrowUpDownBox);
-  toggleMobileMenuSlideUpDownArrow();
-  $(window).scroll(function () {
-    if (!checkIsOnMobileView()) return;
-    toggleMobileMenuSlideUpDownArrow();
-  });
-
-  const hideAndShowMobileMenuArrow = $(MOBILE_MENU_BAR_ARROW_SELECTOR);
   arrowUpDownBox.click(function (e) {
     if (isInAnimation) return;
     isInAnimation = true;
-    mobileMenuBar.toggleClass(MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME);
-    hideAndShowMobileMenuArrow.toggleClass(
-        MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR,
-    );
+    menuBar.toggleClass(MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME);
+    arrowUpDownBox.toggleClass(MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR);
     setTimeout(() => {
       isInAnimation = false;
     }, 500);
   });
-}
-
-function getMobileMenuBar() {
-  return new Promise((resolve) => {
-    const getMobileMenuBarInterval = setInterval(function () {
-      const mobileMenuBar = $(MOBILE_MENU_BAR_SELECTOR);
-      if (mobileMenuBar.length) {
-        clearInterval(getMobileMenuBarInterval);
-        resolve(mobileMenuBar);
-      }
-    }, 200);
-  });
-}
-
-function checkIsOnMobileView() {
-  return window.innerWidth < SMALL_TABLET_WIDTH;
 }
 
 function swapBoxAndSquarMetersPrice() {

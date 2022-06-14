@@ -1,6 +1,6 @@
 <?php
-namespace Inc;
-use \Inc\Config;
+namespace Shared;
+use \Shared\Config;
 
 class Utils {
   const C = 'constant';
