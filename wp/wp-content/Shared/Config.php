@@ -58,7 +58,10 @@ class Config
 
   const PALLET_SHIPPING_CLASS_ID = 2410;
   const PALLET_SHIPPING_CLASS_NAME = "Raklapos házhozszállítás";
+  const PALLET_SHIPPING_WOO_ID = "flat_rate:7";
   const BOX_SHIPPING_CLASS_NAME = "Dobozos házhozszállítás";
+  const BOX_SHIPPING_WOO_ID = "flat_rate:2";
+  const PERSONAL_PICKUP_WOO_ID = "free_shipping:8";
 
   const TEL_NUMBERS = [
     ["06 70 942 5095", "06-70-942-5095", "Pinti István"],

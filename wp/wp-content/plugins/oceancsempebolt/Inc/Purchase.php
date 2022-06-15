@@ -24,16 +24,32 @@ class Purchase
   }
 
   static private function removeInvalidShippingMethods() {
-    $has_pallet_product_in_cart = self::has_palet_product_in_cart();
-    
     $available_methods = WC()->shipping()->packages[0]['rates'];
-    $available_methods = array_filter($available_methods, function($method) use ($has_pallet_product_in_cart) {
-      if ($has_pallet_product_in_cart) {
-        return $method->label !== Config::BOX_SHIPPING_CLASS_NAME;
-      } else {
-        return $method->label !== Config::PALLET_SHIPPING_CLASS_NAME;
+    $has_pallet_product_in_cart = self::has_palet_product_in_cart();
+    if ($has_pallet_product_in_cart) {
+      unset($available_methods[Config::BOX_SHIPPING_WOO_ID]);
+    } else {
+      unset($available_methods[Config::PALLET_SHIPPING_WOO_ID]);
+    }
+    
+    $productsInCart = WC()->shipping()->packages[0]['contents'];
+    $has_bomb_cosmetics_soap_in_cart = false;
+    foreach ( $productsInCart as $product ) {
+      $is_bomb_cosmetics_product = has_term( 'bomb-cosmetics', 'product_cat', $product['data']->get_id());
+      if ($is_bomb_cosmetics_product) {
+        $has_bomb_cosmetics_soap_in_cart = true;
+        break;
       }
-    }, ARRAY_FILTER_USE_BOTH);
+    }
+    
+    if ($has_bomb_cosmetics_soap_in_cart) {
+      // There is a supplier called 'Bomb Cosmetics' which ships by post to us and it is expensive if customer
+      // wants to pick it up in the shop, it is better if bomb directly ships to the customer 
+      $cart_total_too_low = floatval(WC()->cart->get_cart_contents_total()) < 15000;
+      if ($cart_total_too_low) {
+        unset($available_methods[Config::PERSONAL_PICKUP_WOO_ID]);
+      }
+    }
 
     WC()->shipping()->packages[0]['rates'] = $available_methods;
   }
