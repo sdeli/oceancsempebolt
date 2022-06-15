@@ -7,11 +7,12 @@
 Plugin Name: oceancsempebolt
 */
 namespace Inc;
-
+use Shared\Utils;
+use Shared\Config;
 
 define( 'OCEANCSEMPEBOLT_PATH', plugin_dir_path( __FILE__ ) );
 
-require_once(OCEANCSEMPEBOLT_PATH . 'vendor/autoload.php');
+require_once(realpath(OCEANCSEMPEBOLT_PATH . '../../vendor/autoload.php'));
 
 if (!defined('WP_ENVIRONMENT_TYPE')) {
   define('WP_ENVIRONMENT_TYPE', Config::ENVIRONMENT_TYPE_PROD);

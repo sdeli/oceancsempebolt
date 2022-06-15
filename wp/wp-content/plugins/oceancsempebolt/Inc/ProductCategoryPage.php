@@ -1,6 +1,7 @@
 <?php
 namespace Inc;
-use \Inc\Config;
+use Shared\Config;
+use Shared\Utils;
 
 class ProductCategoryPage 
 {
@@ -69,11 +70,11 @@ class ProductCategoryPage
           </div>
 
           <div>
-            <?= \Inc\Config::CHANGING_PRICES_MESSAGE ?>
+            <?= \Shared\Config::CHANGING_PRICES_MESSAGE ?>
           </div>
 
           <?php
-              $catalog = \Inc\Utils::get_pdf_catalog_data_for_category();
+              $catalog = \Shared\Utils::get_pdf_catalog_data_for_category();
               if ($catalog) {
           ?>
             <a 

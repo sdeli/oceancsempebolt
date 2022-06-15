@@ -1,5 +1,7 @@
 <?php
 namespace Inc;
+use Shared\Utils;
+use Shared\Config;
 
 class Purchase 
 {
@@ -63,7 +65,6 @@ class Purchase
 
     return $gateways;
   }
-
 
   static private function get_payment_and_shipment_notes() {
     $notes = "<h4>Köszönjük megrendelésed, hamarosan kapni fogsz tőlünk egy megerősítő emailt a megrendelésedről, melyet kérünk olvass el.</h4>";

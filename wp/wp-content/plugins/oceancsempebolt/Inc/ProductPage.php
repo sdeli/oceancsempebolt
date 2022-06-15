@@ -1,5 +1,7 @@
 <?php
 namespace Inc;
+use \Shared\Utils;
+use \Shared\Config;
 
 class ProductPage 
 {

@@ -15,5 +15,10 @@
       "space-before-function-paren": 0,
       "require-jsdoc": 0,
       "max-len": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files":["./wp/wp-content/plugins/oceancsempebolt/**/*.js"]
+      }
+    ]
 }

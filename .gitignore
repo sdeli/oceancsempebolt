@@ -16,4 +16,4 @@ mysql/*
 assets/*
 .vscode/launch.json
 wp/wp-content/plugins/oceancsempebolt/vendor
-node_modules/
+node_modules

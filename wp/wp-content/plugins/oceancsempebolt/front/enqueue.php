@@ -1,16 +1,16 @@
 <?php
-// namespace Inc;
+// namespace Shared;
 
-$ver = \Inc\Utils::is_local() ? time() : false;
+$ver = \Shared\Utils::is_local() ? time() : false;
 
 function ocs_enqueue()
 {
   global $ver;
-  wp_register_style('ocs_main_stylesheet', plugins_url(\Inc\Config::PLUGIN_NAME . '/assets/css/main.css'), [], $ver);
+  wp_register_style('ocs_main_stylesheet', plugins_url(\Shared\Config::PLUGIN_NAME . '/assets/css/main.css'), [], $ver);
   wp_enqueue_style('ocs_main_stylesheet');
   
 
-  wp_register_script('ocs_main_js', plugins_url(\Inc\Config::PLUGIN_NAME . '/assets/js/main.js'), ['jquery'], $ver);
+  wp_register_script('ocs_main_js', plugins_url(\Shared\Config::PLUGIN_NAME . '/assets/js/main.js'), ['jquery'], $ver);
   wp_enqueue_script('ocs_main_js', null, ['jquery'], false, true);
 }
 

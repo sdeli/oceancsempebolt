@@ -1,6 +1,6 @@
 <?php
 namespace Inc;
-use \Inc\Config;
+use Shared\Utils;
 
 class AllPages 
 {
