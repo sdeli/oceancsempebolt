@@ -5,6 +5,8 @@ use Shared\Utils;
 
 class ProductCategoryPage 
 {
+  const BE_ROCKET_FILTERS_NAME = 'ocs_berocket_filters_html';
+
   static function init() {
     self::customizeJumbotron();
     self::addMobileNavbarCustomizations();
@@ -12,6 +14,7 @@ class ProductCategoryPage
     add_action('woocommerce_before_main_content', function() {
       if (is_shop() || is_product_category()) {
         self::echoCustomElements();
+        self::echoFilterModal();
       }
     });
   }
@@ -34,6 +37,7 @@ class ProductCategoryPage
           <a href="<?php echo Utils::getPreviousSite() ?>"><i class="icon-angle-left" style="color:black;"></i></a>
         <?php endif ?>
         <h1><?php echo ucwords(woocommerce_page_title(false)); ?></h1>
+        <span class="category-name-bar__filter-btn">Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></span>
       </div>
     <?php
   }
@@ -57,7 +61,7 @@ class ProductCategoryPage
         
           <?php if (!is_null($categorySpecificFilterId)) { ?>
             <div class="filter-form">
-              <?php self::echoBerocketFilters($categorySpecificFilterId); ?>
+              <?php self::getBerocketFilters($categorySpecificFilterId); ?>
             </div>
           <?php } ?>
           
@@ -92,7 +96,7 @@ class ProductCategoryPage
     <?php
   }
 
-  protected static function echoBerocketFilters(int $categorySpecificFilterId) {
+  protected static function getBerocketFilters(int $categorySpecificFilterId) {
     $berocket_filters_html = do_shortcode("[br_filters_group group_id=${categorySpecificFilterId}]");
     $doc = new \DOMDocument();
     $doc->loadHTML(mb_convert_encoding($berocket_filters_html, 'HTML-ENTITIES', 'UTF-8'));
@@ -104,8 +108,8 @@ class ProductCategoryPage
         $color_icon_container->firstChild->textContent = $color;
       }
     }
-
-    echo $doc->saveHTML();
+    $GLOBALS[self::BE_ROCKET_FILTERS_NAME] = $doc->saveHTML();
+    return $doc->saveHTML();
   }
 
   protected static function getSmartSliderIdByRoom(int $default) {
@@ -186,6 +190,25 @@ class ProductCategoryPage
         </div>
     </div>
     <?php 
+  }
+
+  protected static function echoFilterModal() {
+    add_action('wp_footer', function() {
+      ?>
+        <div class="filter-modal">
+          <div class="filter-modal__wrapper">
+            <div class="filter-modal__head">
+              <h3>Szűrők</h3>
+              <span class="close-btn close-right"></span>
+              </span>
+            </div>
+            <?php echo $GLOBALS[self::BE_ROCKET_FILTERS_NAME]; ?>
+          </div>
+          <div class="filter-modal__background"></div>
+        </div>
+        <div class="invisble_overlay"></div>
+      <?php 
+    });
   }
 
   protected static function echoSliderLoader() {

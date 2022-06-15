@@ -26,7 +26,7 @@ const TILES_SLIDER_HOMEPAGE_CONTAINER =
 const TILES_SLIDER_TEXT_SELECTOR = '.tiles-slider-text';
 const STICKY_NAV_BAR_SELECTOR = '.header-wrapper';
 const MOBILE_MENU_BAR_ARROW_SELECTOR = '.mobile-menu-arrow-up-down-box__arrow';
-const MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME = '--invisible';
+const INVISIBLE_CLASS_NAME = '--invisible';
 const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
 const DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR =
   '.design-slider__slider-code-in-text';
@@ -53,6 +53,10 @@ const RANDOM_PHONE_BTN_CTA_CLASS = 'default-text--';
 const ACTIVE_ITEM_CLASS = 'active';
 const PRODUCT_CATEGORIES_MAIN_MENU_BTN_SELECTOR = '.menu-item-4854';
 
+const FILTER_MODAL_SELECTOR = '.filter-modal';
+const FILTER_MODAL_CLOSE_BTN = '.filter-modal .close-btn';
+const BE_ROCKET_FILTER_SECTION_SELECTOR = '.filter-modal .berocket_single_filter_widget';
+const FILTER_AND_SORTING_BTN_SELECTOR = '.category-name-bar__filter-btn';
 const CATEGORIES_WITH_FILTERS_DATA = [
   {
     sidebarFilterClass: '.cat-item-2221',
@@ -115,8 +119,6 @@ const GOOGLE_MAPS_IFRAME_HTML = `<iframe src="https://www.google.com/maps/embed?
 const OCEAN_CSEMPE_PROMO_VIDEO_IFRAME_HTML = `<iframe src="https://www.youtube.com/embed/HieK5jUu8Jc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_1_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/w3AUeYOrx2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
 const CONTEC_BULL_PROMO_VIDEO_2_IFRAME_HTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/HRd9bETXuRI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-
-const SMALL_TABLET_WIDTH = 849;
 
 const CONTACTS_PAGE_PATH = '/kapcsolat/';
 const DISCOUNTS_DISCLAIMER_PAGE_PATH = '/akciok/';
@@ -207,7 +209,7 @@ window.addEventListener(
       if (isShopOrCategPage()) {
         swapDesignPlaceholderToSlider();
         addToCartBtnsOnClick();
-
+        filterModal();
 
         const isSubCategoryPage = $('h1.shop-page-title').text() !== 'Shop';
         if (isSubCategoryPage) {
@@ -825,9 +827,12 @@ function squareMeterCounter() {
 
 async function slideUpAndDownMobileMenuBar() {
   const menuBar = $(STICKY_NAV_BAR_SELECTOR);
-  const topWhenHidden = (menuBar.height() - 5) * -1 + 'px';
+  const aboutYouBar = $('.category-name-bar:not(.--visible-on-scroll)');
+  console.log(menuBar);
+  console.log(menuBar.height());
+  const topWhenHidden = (menuBar.height() + aboutYouBar.height() - 5) * -1 + 'px';
   const classDefinition = `<style>
-    .stuck.${MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME} {
+    .stuck.${INVISIBLE_CLASS_NAME} {
       top: ${topWhenHidden};
     }
   </style>`;
@@ -839,7 +844,7 @@ async function slideUpAndDownMobileMenuBar() {
   arrowUpDownBox.click(function (e) {
     if (isInAnimation) return;
     isInAnimation = true;
-    menuBar.toggleClass(MOBILE_MENU_BAR_INVISIBLE_CLASS_NAME);
+    menuBar.toggleClass(INVISIBLE_CLASS_NAME);
     arrowUpDownBox.toggleClass(MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR);
     setTimeout(() => {
       isInAnimation = false;
@@ -1009,4 +1014,42 @@ function hasCategoryBanner(categoryBanners) {
     const nextPagesLink = categoryBanner.find('a').attr('href');
     window.open(nextPagesLink, '_blank');
   });
+}
+
+function filterModal() {
+  const filterModal = $(FILTER_MODAL_SELECTOR);
+  const togglers = $(`${FILTER_MODAL_CLOSE_BTN}, ${FILTER_AND_SORTING_BTN_SELECTOR}, .invisble_overlay`);
+  const filterSections = $(BE_ROCKET_FILTER_SECTION_SELECTOR);
+  const overlay = $('.invisble_overlay');
+
+  filterSections.each(function() {
+    const currentFilterSection = $(this);
+    const filtersType = currentFilterSection.eq(0).find('[data-taxonomy]').attr('data-taxonomy').replace('pa_', '').replace('product_tag', 'cimkék').replace('szin', 'szín');
+    const title = $(`<h4 class="filter-modal__section_title">${filtersType}</h4>`);
+    title.insertBefore(currentFilterSection);
+  });
+
+  togglers.click(function (e) {
+    if (isInAnimation) return;
+    isInAnimation = true;
+    filterModal.toggleClass(INVISIBLE_CLASS_NAME);
+    overlay.toggleClass('--blocking');
+    setTimeout(() => {
+      isInAnimation = false;
+    }, 500);
+  });
+
+  const bottomWhenHidden = (filterModal.height() + 50) * -1 + 'px';
+  const classDefinition = `<style>
+  .filter-modal.${INVISIBLE_CLASS_NAME} {
+    bottom: ${bottomWhenHidden};
+  }
+  </style>`;
+  $('body').append($(classDefinition));
+
+  let isInAnimation = false;
+  filterModal.addClass(INVISIBLE_CLASS_NAME);
+  setTimeout(() => {
+    filterModal.css('display', 'block');
+  }, 500);
 }
