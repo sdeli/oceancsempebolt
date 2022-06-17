@@ -100,12 +100,6 @@ Version: 3.0
     height: 65px;
   }
 }
-
-@media only screen and (min-width: 849px) {
-  .stuck .mobile-menu-arrow-up-down-box {
-    display: none;
-  }
-}
 /* END mobile navbar adjustments */
 
 .color-alert-yellow {
@@ -1492,6 +1486,7 @@ animation: lineLoader 1.3s ease-in-out infinite;
   right: 16px;
   font-size: 18px;
   cursor: pointer;
+  color: black;
 }
 /* END product listing pages / directly below the top nav bar - category name bar */
 

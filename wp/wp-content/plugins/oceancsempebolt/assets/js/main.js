@@ -656,7 +656,6 @@ function clickVariationSwatchIfOneOptionLeft() {
 }
 
 function removeUnneededFiltersFromMainShopPage() {
-  console.log('sannya');
   const unneededFilters = $(UNNEEDED_FILTERS);
   unneededFilters.parent().remove();
 }
@@ -827,13 +826,10 @@ function squareMeterCounter() {
 
 async function slideUpAndDownMobileMenuBar() {
   const menuBar = $(STICKY_NAV_BAR_SELECTOR);
-  const aboutYouBar = $('.category-name-bar:not(.--visible-on-scroll)');
-  console.log(menuBar);
-  console.log(menuBar.height());
-  const topWhenHidden = (menuBar.height() + aboutYouBar.height() - 5) * -1 + 'px';
+
   const classDefinition = `<style>
     .stuck.${INVISIBLE_CLASS_NAME} {
-      top: ${topWhenHidden};
+      top: -110px;
     }
   </style>`;
 
@@ -1024,7 +1020,12 @@ function filterModal() {
 
   filterSections.each(function() {
     const currentFilterSection = $(this);
-    const filtersType = currentFilterSection.eq(0).find('[data-taxonomy]').attr('data-taxonomy').replace('pa_', '').replace('product_tag', 'cimkék').replace('szin', 'szín');
+    const filtersType = currentFilterSection.eq(0).find('[data-taxonomy]').attr('data-taxonomy')
+        .replace('pa_', '')
+        .replace('product_tag', 'cimkék')
+        .replace('szin', 'szín')
+        .replace('orientacio', 'orientáció');
+
     const title = $(`<h4 class="filter-modal__section_title">${filtersType}</h4>`);
     title.insertBefore(currentFilterSection);
   });
