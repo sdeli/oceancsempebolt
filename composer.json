@@ -24,13 +24,14 @@
       "attach:wp": "docker exec -it wp /bin/bash"
     },
     "config": { 
-        "vendor-dir": "wp/wp-content/vendor" 
+        "vendor-dir": "html/wp-content/vendor" 
     },
     "autoload": {
       "psr-4": {
-      "Shared\\" : "/var/www/html/wp-content/Shared",
-      "Inc\\" : "/var/www/html/wp-content/plugins/oceancsempebolt/Inc"
-      }
+        "Shared\\" : "/var/www/html/wp-content/Shared",
+        "Inc\\" : "/var/www/html/wp-content/plugins/oceancsempebolt/Inc"
+      },
+      "classmap": ["html/wp-content/plugins/oceancsempebolt/classes"]
     },
     "require-dev": {
       "digitalnature/php-ref": "^1.3"
