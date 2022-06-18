@@ -8,7 +8,7 @@ class ProductPage
   static function init() {
     add_filter( 'woocommerce_short_description', function($post_post_excerpt) {
       if (is_product()) {
-        return self::addShortDescriptionBefore($post_post_excerpt);
+        return self::extendShortDescription($post_post_excerpt);
       }
     });
 
@@ -26,60 +26,43 @@ class ProductPage
       self::echoPopularProducts();
     }, 25);
 
-    add_action( 'woocommerce_breadcrumb_main_term', function($main_term) {
-      global $post;
-
-      $product_categories = wc_get_product_terms(
-				$post->ID,
-				'product_cat',
-				apply_filters(
-					'woocommerce_breadcrumb_product_terms_args',
-					array(
-						'orderby' => 'parent',
-						'order'   => 'DESC',
-					)
-				)
-			);
-
-      $direct_categories = [];
-      foreach ($product_categories as $product_cat) {
-        $is_direct_category = self::is_direct_category($product_cat);
-        if ($is_direct_category) $direct_categories[] = $product_cat;
-      }
-
-      if (empty($direct_categories)) {
-        return $main_term;
-      }
-
-      if (count($direct_categories) === 1) {
-        return $direct_categories[0];
-      }
-
-      foreach ($direct_categories as $product_cat) {
-        $is_referred_from_product_listing_page = strpos($_SERVER['HTTP_REFERER'], $product_cat->slug);
-        if ($is_referred_from_product_listing_page) {
-          return $product_cat;
-        }
-      }
-
-      return $direct_categories[0];
+    add_action( 'woocommerce_breadcrumb_main_term', function(\WP_Term $main_term) {
+      return self::get_main_product_category($main_term);
     });
   }
 
-  static private function addShortDescriptionBefore($post_post_excerpt) {
-      $randTelNumber = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)];
-      $post_post_excerpt = $post_post_excerpt
-          . '<div class="call-us"><i class="map-pin-fill"></i><p style="margin-bottom: 5px;">'
-          . '<strong style="color:#686868;">Kérdésével forduljon hozzánk bátran</strong>:'
-          . '<i class="icon-phone" style="color: black;"></i>'
-          . '<a class="' . Config::OCEAN_PHONE_CALL_LINK_CLASS . '" href="tel:'. $randTelNumber[1] . '" style="cursor: pointer; color: #4e657b">' . $randTelNumber[0] . ' - ' . $randTelNumber[2] . '</a>'
-          . '<a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975"'
-            . 'style="cursor: pointer; color: #4e657b"'
-            . 'target="_blank">'
-            . ' - Térkép a bolthoz'
-            . '<i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>'
-          . '</a></div>';
+  static private function extendShortDescription(string $post_post_excerpt) {
+    $randTelNumber = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)];
+    $brand_and_family = new \OCS_Product_Brand_Categories(wc_get_product());
 
+    if (!is_null($brand_and_family->brand)) {
+      $brand_html = '<div class="ocs-product-brands">';
+      $brand_html .= '<div class="brand" style="margin-bottom: 5px;"><span>Márka: </span><a href="' . get_term_link($brand_and_family->brand) . '" target="_blank">'. $brand_and_family->brand->name .'</a></div>';
+    }
+
+    if (!is_null($brand_and_family->family)) {
+      if (!isset($brand_html)) $brand_html = '<div class="ocs-product-brands">';
+      $brand_html .= '<div class="brand" style="margin-bottom: 5px;"><span>Család: </span><a href="' . get_term_link($brand_and_family->family) . '" target="_blank">'. $brand_and_family->family->name .'</a></div>';
+    }
+
+    if (isset($brand_html)) {
+      $brand_html .= '</div>';
+      $post_post_excerpt .= $brand_html;
+    } 
+
+    $post_post_excerpt = $post_post_excerpt
+    . '<div class="ocs-product-brands"><span></span></div>'
+    . '<div class="call-us"><i class="map-pin-fill"></i><p style="margin-bottom: 5px;">'
+    . '<strong style="color:#686868;">Kérdésével forduljon hozzánk bátran</strong>:'
+    . '<i class="icon-phone" style="color: black;"></i>'
+    . '<a class="' . Config::OCEAN_PHONE_CALL_LINK_CLASS . '" href="tel:'. $randTelNumber[1] . '" style="cursor: pointer; color: #4e657b">' . $randTelNumber[0] . ' - ' . $randTelNumber[2] . '</a>'
+    . '<a href="https://www.google.com/maps/place/%C3%93ce%C3%A1n+F%C3%BCrd%C5%91szoba+szalon/@47.5072966,19.1694088,17z/data=!3m1!4b1!4m5!3m4!1s0x4741c492289b176f:0x26d8f58d84c3afa9!8m2!3d47.507293!4d19.1715975"'
+    . 'style="cursor: pointer; color: #4e657b"'
+    . 'target="_blank">'
+    . ' - Térkép a bolthoz'
+    . '<i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>'
+    . '</a></div>';
+    
     return $post_post_excerpt;
   }
 
@@ -97,7 +80,7 @@ class ProductPage
   static function echoPopularProducts() {
     ?>
       <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
-        Most Népszerű			
+        Feldobják a fürdőszobád			
       </h3>
     <?php 
     
@@ -156,5 +139,44 @@ class ProductPage
 
     $is_direct_categ = empty(get_term_children( $term_id, 'product_cat' ));
     return $is_direct_categ;
+  }
+
+  static private function get_main_product_category(\WP_Term $main_term): \WP_Term {
+    global $post;
+
+    $product_categories = wc_get_product_terms(
+      $post->ID,
+      'product_cat',
+      apply_filters(
+        'woocommerce_breadcrumb_product_terms_args',
+        array(
+          'orderby' => 'parent',
+          'order'   => 'DESC',
+        )
+      )
+    );
+
+    $direct_categories = [];
+    foreach ($product_categories as $product_cat) {
+      $is_direct_category = self::is_direct_category($product_cat);
+      if ($is_direct_category) $direct_categories[] = $product_cat;
+    }
+
+    if (empty($direct_categories)) {
+      return $main_term;
+    }
+
+    if (count($direct_categories) === 1) {
+      return $direct_categories[0];
+    }
+
+    foreach ($direct_categories as $product_cat) {
+      $is_referred_from_product_listing_page = strpos($_SERVER['HTTP_REFERER'], $product_cat->slug);
+      if ($is_referred_from_product_listing_page) {
+        return $product_cat;
+      }
+    }
+
+    return $direct_categories[0];
   }
 }
