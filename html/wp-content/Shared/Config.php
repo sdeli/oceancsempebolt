@@ -52,6 +52,16 @@ class Config
   const COLOR_FORM_MATERIAL_TAGS_FILTER_ID = 14568;
   const FORM_LOCATION_TAGS_FILTER_ID = 12347;
 
+  const FILTER_POP_UP_VERSIONS_IDS = [
+    9152 => 24844,
+    10595 => 24843,
+    11714 => 24841,
+    11960 => 24840,
+    12014 => 24839,
+    12347 => 24838,
+    14568 => 24836,
+  ];
+
   const CHANGING_PRICES_MESSAGE = '<p style="margin-bottom: 0px;">A honlapon szereplő <strong>árak az ukrajnai háborús helyzet miatt</strong> kialakult ellátási zavarokra tekintettel <strong>tájékoztató jellegűek</strong>, nem minősülnek konkrét árajánlattételnek. Amennyiben valamely termékünk megvásárlása iránt érdeklődnek úgy kérjük, hogy a megrendelést megelőzően az árak egyeztetése érdekében társaságunkkal vegyék fel a kapcsolatot, mert csak így tudunk az árakra kötelezettséget vállalni. Megértésüket köszönjük!</p>';
 
   const SIDEBAR_FILTER_LINK_CLASS = 'sidebar-filter__link';

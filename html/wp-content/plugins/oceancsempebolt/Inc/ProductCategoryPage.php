@@ -5,16 +5,15 @@ use Shared\Utils;
 
 class ProductCategoryPage 
 {
-  const BE_ROCKET_FILTERS_NAME = 'ocs_berocket_filters_html';
-
   static function init() {
     self::customizeJumbotron();
     self::addMobileNavbarCustomizations();
 
     add_action('woocommerce_before_main_content', function() {
       if (is_shop() || is_product_category()) {
-        self::echoCustomElements();
-        self::echoFilterModal();
+        [ $smartSliderId, $category_specific_filter_id ] = ProductCategoryPage::getShortcodeIds();
+        self::echoCustomElements($smartSliderId, $category_specific_filter_id);
+        if (!is_null($category_specific_filter_id)) self::echoFilterModal($category_specific_filter_id);
       }
     });
   }
@@ -51,17 +50,15 @@ class ProductCategoryPage
     });
   }
 
-  protected static function echoCustomElements() {
-    [ $smartSliderId, $categorySpecificFilterId ] = ProductCategoryPage::getShortcodeIds();
+  protected static function echoCustomElements($smartSliderId, $category_specific_filter_id) {
     ?>
       <div class="row">
         <div class="col design-col">
-
           <?php if (!is_null($smartSliderId)) self::echoSmartSlider($smartSliderId) ?>
         
-          <?php if (!is_null($categorySpecificFilterId)) { ?>
+          <?php if (!is_null($category_specific_filter_id)) { ?>
             <div class="filter-form">
-              <?php self::getBerocketFilters($categorySpecificFilterId); ?>
+              <?php echo self::getBerocketFilters($category_specific_filter_id); ?>
             </div>
           <?php } ?>
           
@@ -96,19 +93,22 @@ class ProductCategoryPage
     <?php
   }
 
-  protected static function getBerocketFilters(int $categorySpecificFilterId) {
-    $berocket_filters_html = do_shortcode("[br_filters_group group_id=${categorySpecificFilterId}]");
+  protected static function getBerocketFilters(int $category_specific_filter_id, bool $is_popup_version = false) {
+    if ($is_popup_version) {
+      $category_specific_filter_id = Config::FILTER_POP_UP_VERSIONS_IDS[$category_specific_filter_id];
+    }
+    
+    $berocket_filters_html = do_shortcode("[br_filters_group group_id=${category_specific_filter_id}]");
     $doc = new \DOMDocument();
     $doc->loadHTML(mb_convert_encoding($berocket_filters_html, 'HTML-ENTITIES', 'UTF-8'));
     $be_rocket_color_icon_name_containers = $doc->getElementsByTagName('label');
-
     foreach($be_rocket_color_icon_name_containers as $color_icon_container) {
       $color = $color_icon_container->getAttribute('aria-label');
       if ($color) {
         $color_icon_container->firstChild->textContent = $color;
       }
     }
-    $GLOBALS[self::BE_ROCKET_FILTERS_NAME] = $doc->saveHTML();
+
     return $doc->saveHTML();
   }
 
@@ -192,8 +192,8 @@ class ProductCategoryPage
     <?php 
   }
 
-  protected static function echoFilterModal() {
-    add_action('wp_footer', function() {
+  protected static function echoFilterModal($category_specific_filter_id) {
+    add_action('wp_footer', function() use ($category_specific_filter_id) {
       ?>
         <div class="filter-modal">
           <div class="filter-modal__wrapper">
@@ -202,7 +202,7 @@ class ProductCategoryPage
               <span class="close-btn close-right"></span>
               </span>
             </div>
-            <?php echo $GLOBALS[self::BE_ROCKET_FILTERS_NAME]; ?>
+            <?php echo self::getBerocketFilters($category_specific_filter_id, true) ?>
           </div>
           <div class="filter-modal__background"></div>
         </div>
@@ -419,12 +419,12 @@ class ProductCategoryPage
     global $wp_query;
     $cat = $wp_query->get_queried_object();
     [$current_path] = explode("?", $_SERVER['REQUEST_URI']);
-    $categorySpecificFilterId = null;
+    $category_specific_filter_id = null;
     $smartSliderId = null;
     
     if (is_shop()) {
       $smartSliderId = 248;
-      $categorySpecificFilterId = 10595;
+      $category_specific_filter_id = 10595;
     } else {
       if ($cat->slug === "burkolatok") {
         $smartSliderId = 3;
@@ -434,7 +434,7 @@ class ProductCategoryPage
       }
 
       if ( strpos($current_path, "burkolatok")) {
-        $categorySpecificFilterId = 10595;
+        $category_specific_filter_id = 10595;
       }
 
       if ($cat->slug === "markak") {
@@ -743,7 +743,7 @@ class ProductCategoryPage
       }
       
       if ( strpos($current_path, Config::TUBS_SLUG)) {
-        $categorySpecificFilterId = Config::COLOR_ORIENTATION_TAGS_FILTER_ID;
+        $category_specific_filter_id = Config::COLOR_ORIENTATION_TAGS_FILTER_ID;
       }
 
       if ($cat->slug === "kadkiegeszitok") {
@@ -973,7 +973,7 @@ class ProductCategoryPage
 
       if ($cat->slug === Config::TAPS_SLUG) {
         $smartSliderId = 162;
-        $categorySpecificFilterId = Config::COLOR_STYLE_TAGS_HANDLE_FILTER_ID;
+        $category_specific_filter_id = Config::COLOR_STYLE_TAGS_HANDLE_FILTER_ID;
       }
       if ($cat->slug === "asszimetrikus") {
         $smartSliderId = 163;	
@@ -995,7 +995,7 @@ class ProductCategoryPage
       }
       
       if ( strpos($current_path, "mosogatok")) {
-        $categorySpecificFilterId = Config::COLOR_FORM_MATERIAL_TAGS_FILTER_ID;
+        $category_specific_filter_id = Config::COLOR_FORM_MATERIAL_TAGS_FILTER_ID;
       }
 
       if ($cat->slug === "kludi") {
@@ -1162,7 +1162,7 @@ class ProductCategoryPage
       }
 
       if ( strpos($current_path, "csaptelepek")) {
-        $categorySpecificFilterId = 10595;
+        $category_specific_filter_id = 10595;
       }
 
       if ($cat->slug === "konyha-szoba") {
@@ -1189,7 +1189,7 @@ class ProductCategoryPage
       }
       
       if ( strpos($current_path, Config::BATHROOM_AUXILIARY_SLUG)) {
-        $categorySpecificFilterId = Config::COLOR_STYLE_TAGS_HANDLE_FILTER_ID;
+        $category_specific_filter_id = Config::COLOR_STYLE_TAGS_HANDLE_FILTER_ID;
       }
 
 
@@ -1198,7 +1198,7 @@ class ProductCategoryPage
       }
       
       if ( strpos($current_path, Config::SANITARY_SLUG)) {
-        $categorySpecificFilterId = Config::FORM_LOCATION_TAGS_FILTER_ID;
+        $category_specific_filter_id = Config::FORM_LOCATION_TAGS_FILTER_ID;
       }
 
       if ($cat->slug === "bide") {
@@ -1635,6 +1635,6 @@ class ProductCategoryPage
       }
     }
 
-    return [$smartSliderId, $categorySpecificFilterId];
+    return [$smartSliderId, $category_specific_filter_id];
   }
 }

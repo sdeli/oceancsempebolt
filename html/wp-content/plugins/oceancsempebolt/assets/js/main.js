@@ -26,7 +26,6 @@ const TILES_SLIDER_HOMEPAGE_CONTAINER =
 const TILES_SLIDER_TEXT_SELECTOR = '.tiles-slider-text';
 const STICKY_NAV_BAR_SELECTOR = '.header-wrapper';
 const MOBILE_MENU_BAR_ARROW_SELECTOR = '.mobile-menu-arrow-up-down-box__arrow';
-const INVISIBLE_CLASS_NAME = '--invisible';
 const MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR = '--rotated';
 const DESIGN_SLIDER_HTML_IN_TEXT_SELECTOR =
   '.design-slider__slider-code-in-text';
@@ -410,7 +409,7 @@ function getFilterIconHtml(productCategId, filterItem, isCircleShape = true) {
 
 function filterItemsOnClick() {
   const allFilterItems = Array.from(
-      document.querySelectorAll('.filter-form li label'),
+      document.querySelectorAll('.filter-form li label, .filter-modal li label'),
   );
   allFilterItems.forEach((filterItem) => {
     filterItem.addEventListener('click', function (e) {
@@ -827,20 +826,20 @@ function squareMeterCounter() {
 async function slideUpAndDownMobileMenuBar() {
   const menuBar = $(STICKY_NAV_BAR_SELECTOR);
 
-  const classDefinition = `<style>
-    .stuck.${INVISIBLE_CLASS_NAME} {
-      top: -110px;
-    }
-  </style>`;
-
-  $('body').append($(classDefinition));
   const arrowUpDownBox = $(MOBILE_MENU_BAR_ARROW_SELECTOR);
   let isInAnimation = false;
 
   arrowUpDownBox.click(function (e) {
     if (isInAnimation) return;
     isInAnimation = true;
-    menuBar.toggleClass(INVISIBLE_CLASS_NAME);
+    const isMenuBarVisible = menuBar.css('top') === '0px';
+    if (isMenuBarVisible) {
+      const topWhenHidden = (menuBar.height()) * -1 + 'px';
+      menuBar.css('top', topWhenHidden);
+    } else {
+      menuBar.css('top', '0px');
+    }
+
     arrowUpDownBox.toggleClass(MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR);
     setTimeout(() => {
       isInAnimation = false;
@@ -1030,26 +1029,27 @@ function filterModal() {
     title.insertBefore(currentFilterSection);
   });
 
+  let isInAnimation = false;
+
   togglers.click(function (e) {
     if (isInAnimation) return;
     isInAnimation = true;
-    filterModal.toggleClass(INVISIBLE_CLASS_NAME);
+    const isModalVisible = filterModal.css('bottom') === '0px';
+    if (isModalVisible) {
+      const bottomWhenHidden = (filterModal.height()) * -1 + 'px';
+      filterModal.css('bottom', bottomWhenHidden);
+    } else {
+      filterModal.css('bottom', '0px');
+    }
+
     overlay.toggleClass('--blocking');
     setTimeout(() => {
       isInAnimation = false;
     }, 500);
   });
 
-  const bottomWhenHidden = (filterModal.height() + 50) * -1 + 'px';
-  const classDefinition = `<style>
-  .filter-modal.${INVISIBLE_CLASS_NAME} {
-    bottom: ${bottomWhenHidden};
-  }
-  </style>`;
-  $('body').append($(classDefinition));
-
-  let isInAnimation = false;
-  filterModal.addClass(INVISIBLE_CLASS_NAME);
+  const bottomWhenHidden = (filterModal.height()) * -1 + 'px';
+  filterModal.css('bottom', bottomWhenHidden);
   setTimeout(() => {
     filterModal.css('display', 'block');
   }, 500);
