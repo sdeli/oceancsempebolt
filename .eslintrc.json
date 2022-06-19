@@ -18,7 +18,7 @@
     },
     "overrides": [
       {
-        "files":["./wp/wp-content/plugins/oceancsempebolt/**/*.js"]
+        "files":["./html/wp-content/plugins/oceancsempebolt/**/*.js"]
       }
     ]
 }

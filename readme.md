@@ -43,17 +43,6 @@ mv composer.phar /usr/local/bin/composer
 - **Disbale all caching plugins on the oceancsempebolt.hu before exporting the db.**
 - Export the db via phpmyadmin or however you can, as a result you should have a [file-name].sql file.
 - Move the [file-name].sql file to the ./assets folder
-- Exchange the original url to http://localhost in the ./assets/[file-name].sql file by running:
-```sh
-# example: composer replace -- ./assets/client4478dbtynn.sql oceancsempebolt.hu
-composer replace -- ./assets/[file-name].sql oceancsempebolt.hu
-# it will create a backup at first, then will do these kinds of url exchanges:
-# 'oceancsempebolt.hu' to 'localhost'
-# https://oceancsempebolt.hu to http://localhost
-# http://oceancsempebolt.hu to http://localhost
-# http://www.oceancsempebolt.hu to http://localhost
-# https://www.oceancsempebolt.hu to http://localhost
-```
 - you may need to add this line to you [file-name].sql file:
 ```sh
 USE `[MYSQL_DATABASE]`;
@@ -71,23 +60,14 @@ define( 'WP_DEBUG', true );
 ```
 - import the ./assets/[file-name].sql file:
 ```sh
-# find the mysql containers id
-composer ls
-
-# attach/log into the container
-docker exec -it [container id] /bin/bash
-
-# log into mysql
-mysql -u root -p
-# password will be: "password"
-
-# in mysql run the sql file
-source ./assets/[file-name].sql
+# run:
+composer importdb -- password [MYSQL_ROOT_PASSWORD] ./assets/[file-name].sql
 ```
+it will exchange urls to localhost and install wp-cli on the wordpress container
 
 ### 5. Clone is running**
 - At this point the living clone should be reachable at http://localhost and phpmyadmin at http://localhost:8080
-- **you need to import flatsome theme settings** go to admin dashboard/flatsome/backup and import, then backup the settings and import it into the clone
+- **you may need to import flatsome theme settings** go to admin dashboard/flatsome/backup and import, then backup the settings and import it into the clone
 - And you may need to add these lines to wp-config, if website loading is really slow and you see wp-cron in the wordpress logs:
 ```php
 define('DISABLE_WP_CRON', true);
@@ -95,7 +75,17 @@ define('DISABLE_WP_CRON', true);
 - At the beginning a plugin called 'smart slider' will create a lot of chache for images which are getting loaded into a slider and thatswhy first calls on urls will be slow but after it will be fast.
 - In a plugin called "Berocket" you need to save any of the filters, without any change, that it starts to work properly.
 
-### 6. Dev Plugins
+### 6. Disable plugins not needed on local
+```sh
+# attach to the wordpress container
+composer attach:wp
+
+# disable plugins not needed for development
+# example:
+wp plugin deactivate algori-pdf-viewer gtm-ecommerce-woo-pro algori-pdf-viewer autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
+```
+
+### 6. Install Dev Plugins
 You may install some **debug / dev plugins** like:
 - [Query Monitor](https://wordpress.org/plugins/search/query+monitor/)
 - [show hooks](https://wordpress.org/plugins/search/show+hooks/)
