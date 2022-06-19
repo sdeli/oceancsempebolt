@@ -29,6 +29,10 @@ class ProductPage
     add_action( 'woocommerce_breadcrumb_main_term', function(\WP_Term $main_term) {
       return self::get_main_product_category($main_term);
     });
+
+    add_action( 'woocommerce_product_categories_widget_main_term', function(\WP_Term $main_term) {
+      return self::get_main_product_category($main_term);
+    });
   }
 
   static private function extendShortDescription(string $post_post_excerpt) {
