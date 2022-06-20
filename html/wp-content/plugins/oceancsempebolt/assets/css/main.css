@@ -1495,16 +1495,26 @@ animation: lineLoader 1.3s ease-in-out infinite;
   cursor: pointer;
   border-top: 1px solid #e5e4e4;
   padding-top: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.sort-disclaimer p {
-  margin-bottom: 7px;
-}
-
-.sort-disclaimer strong {
-  text-shadow: 1px 1px 1px #dddddd;
+.sort-disclaimer__open-mobile-menu-text {
   color: black;
+  font-size: 17px;
 }
+
+.sort-disclaimer__open-mobile-menu-text .icon-menu {
+  font-size: 20px;
+  color: grey;
+  top: 2px;
+}
+
+.sort-disclaimer__open-mobile-menu-text .icon-equalizer {
+  top: 1px;
+}
+
 /* END product listing pages - "rendezes kategoriak es szurok" */
 
 .open-mobile-menu-text {

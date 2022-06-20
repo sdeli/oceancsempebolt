@@ -12,7 +12,6 @@ const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = '.mobile-sidebar-categories';
 const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = '.mobile-sidebar-switch-btns';
 const CLICKABLE_CLASS = '--clickable';
 const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '#header [data-open="#main-menu"]';
-const FAKE_HAMBURGER_ICON_SELECTOR = '#fake-hamburger-icon[data-open="#main-menu"]';
 const GOOGLE_MAPS_CONATINER_SELECTOR =
   '.lazy-load-google-maps-until-user-interaction';
 const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = '#ocean-promo-video-container';
@@ -53,9 +52,9 @@ const ACTIVE_ITEM_CLASS = 'active';
 const PRODUCT_CATEGORIES_MAIN_MENU_BTN_SELECTOR = '.menu-item-4854';
 
 const FILTER_MODAL_SELECTOR = '.filter-modal';
-const FILTER_MODAL_CLOSE_BTN = '.filter-modal .close-btn';
+const FILTER_MODAL_TOGGLERS_SELECTOR = '.toggle-filter-modal';
 const BE_ROCKET_FILTER_SECTION_SELECTOR = '.filter-modal .berocket_single_filter_widget';
-const FILTER_AND_SORTING_BTN_SELECTOR = '.category-name-bar__filter-btn';
+
 const CATEGORIES_WITH_FILTERS_DATA = [
   {
     sidebarFilterClass: '.cat-item-2221',
@@ -155,7 +154,6 @@ window.addEventListener(
       hamburberMenuOpensMobileSidbar();
       mobileSidebarSwitchMenus();
       filterItemsOnClick();
-      moveFiltersToCategSidebar();
       sidebarFilterLinksOnClick();
       slideUpAndDownMobileMenuBar();
 
@@ -449,21 +447,6 @@ function activateAttributeFilter(productCategId, attributeFilterId) {
   tagFilterIcon.parentElement.children[1].click();
 }
 
-function moveFiltersToCategSidebar() {
-  CATEGORIES_WITH_FILTERS_DATA.forEach((categorieData) => {
-    const currCategory = document.querySelector(
-        `${categorieData.sidebarFilterClass} ul`,
-    );
-    if (!currCategory) return;
-
-    const currCategsFilterElem = document.querySelector(
-        `.sidebar-filter--${categorieData.slug}`,
-    );
-    if (!currCategsFilterElem) return;
-    currCategory.appendChild(currCategsFilterElem);
-  });
-}
-
 function sidebarFilterLinksOnClick() {
   const sidebarFilterLinks = Array.from(
       document.querySelectorAll('.sidebar-filter__link'),
@@ -580,28 +563,6 @@ function mobileSidebarSwitchMenus() {
   });
 }
 
-// eslint-disable-next-line no-unused-vars
-function openHamburgerMenuForCategories() {
-  $(FAKE_HAMBURGER_ICON_SELECTOR).click();
-  const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
-  cateogiresBtn = switchBtns.children().eq(1);
-
-  const isCategoriesBtnActive = cateogiresBtn.hasClass(ACTIVE_ITEM_CLASS);
-  if (isCategoriesBtnActive) return;
-
-  cateogiresBtn.addClass(ACTIVE_ITEM_CLASS);
-  cateogiresBtn.removeClass(CLICKABLE_CLASS);
-
-  const menuBtn = switchBtns.children().eq(0);
-  menuBtn.addClass(CLICKABLE_CLASS);
-  menuBtn.removeClass(ACTIVE_ITEM_CLASS);
-
-  const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
-  const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
-  menuItems.hide(0);
-  mobileSidebarCategories.show(0);
-}
-
 function hamburberMenuOpensMobileSidbar() {
   const hamburber = $(MOBILE_MENU_HAMBURGER_ICON_SELECTOR);
   const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
@@ -611,18 +572,31 @@ function hamburberMenuOpensMobileSidbar() {
   const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
   const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
 
+  const _isShopOrCategPage = isShopOrCategPage();
+  if (_isShopOrCategPage) {
+    menuBtn.addClass(CLICKABLE_CLASS);
+    categoriesBtn.addClass(ACTIVE_ITEM_CLASS);
+    menuItems.hide(0);
+    mobileSidebarCategories.show(0);
+  } else {
+    menuBtn.addClass(ACTIVE_ITEM_CLASS);
+    categoriesBtn.addClass(CLICKABLE_CLASS);
+  }
 
   hamburber.click(() => {
-    const menuBtnActive = menuBtn.hasClass(ACTIVE_ITEM_CLASS);
-    if (menuBtnActive) return;
-    menuBtn.addClass(ACTIVE_ITEM_CLASS);
-    menuBtn.removeClass(CLICKABLE_CLASS);
+    if (_isShopOrCategPage) {
+      const menuBtnActive = menuBtn.hasClass(ACTIVE_ITEM_CLASS);
+      if (menuBtnActive) {
+        menuBtn.addClass(CLICKABLE_CLASS);
+        menuBtn.removeClass(ACTIVE_ITEM_CLASS);
 
-    categoriesBtn.addClass(CLICKABLE_CLASS);
-    categoriesBtn.removeClass(ACTIVE_ITEM_CLASS);
+        categoriesBtn.addClass(ACTIVE_ITEM_CLASS);
+        categoriesBtn.removeClass(CLICKABLE_CLASS);
 
-    mobileSidebarCategories.hide(0);
-    menuItems.show(0);
+        mobileSidebarCategories.show(0);
+        menuItems.hide(0);
+      }
+    }
   });
 }
 
@@ -824,22 +798,32 @@ function squareMeterCounter() {
 }
 
 async function slideUpAndDownMobileMenuBar() {
+  const styleTag = $('<style></style>');
+  $('body').append(styleTag);
+
   const menuBar = $(STICKY_NAV_BAR_SELECTOR);
-
   const arrowUpDownBox = $(MOBILE_MENU_BAR_ARROW_SELECTOR);
-  let isInAnimation = false;
 
+  const upsertInvisibleClass = () => {
+    const topWhenHidden = (menuBar.height() - 3) * -1 + 'px';
+    const invisibLeClassDef = `
+      .stuck.--invisible {
+        top: ${topWhenHidden};
+      }
+    `;
+    styleTag.text(invisibLeClassDef);
+  };
+
+  let isInAnimation = false;
   arrowUpDownBox.click(function (e) {
     if (isInAnimation) return;
     isInAnimation = true;
-    const isMenuBarVisible = menuBar.css('top') === '0px';
-    if (isMenuBarVisible) {
-      const topWhenHidden = (menuBar.height()) * -1 + 'px';
-      menuBar.css('top', topWhenHidden);
-    } else {
-      menuBar.css('top', '0px');
+    const isMenuBarVisible = menuBar.hasClass('--invisible');
+    if (!isMenuBarVisible) {
+      upsertInvisibleClass();
     }
 
+    menuBar.toggleClass('--invisible');
     arrowUpDownBox.toggleClass(MOBILE_MENU_BAR_ARROW_ROTATED_SELECTOR);
     setTimeout(() => {
       isInAnimation = false;
@@ -1013,7 +997,7 @@ function hasCategoryBanner(categoryBanners) {
 
 function filterModal() {
   const filterModal = $(FILTER_MODAL_SELECTOR);
-  const togglers = $(`${FILTER_MODAL_CLOSE_BTN}, ${FILTER_AND_SORTING_BTN_SELECTOR}, .invisble_overlay`);
+  const togglers = $(`${FILTER_MODAL_TOGGLERS_SELECTOR}, .invisble_overlay`);
   const filterSections = $(BE_ROCKET_FILTER_SECTION_SELECTOR);
   const overlay = $('.invisble_overlay');
 

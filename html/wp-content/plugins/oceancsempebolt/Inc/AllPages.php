@@ -18,7 +18,6 @@ class AllPages
       self::echoLoader();
       self::echoDesktopHamburgerBtn();
       self::echoSidebarFilters();
-      self::echoFakehamburgerbtn();
     });
   }
 
@@ -35,8 +34,8 @@ class AllPages
       if ($value === 'menu-and-categories-btns') :
       ?>
         <div id="mobile-sidebar-switch-btns" class="mobile-sidebar-switch-btns">
-          <a class="mobile-sidebar-switch-btns__btn active">Menü</a>
-          <a class="mobile-sidebar-switch-btns__btn  --clickable">Kategóriák</a>
+          <a class="mobile-sidebar-switch-btns__btn">Menü</a>
+          <a class="mobile-sidebar-switch-btns__btn">Kategóriák</a>
         </div>        
       <?php endif;
     });
@@ -101,12 +100,6 @@ class AllPages
           }
         ?>
       </div>
-    <?php
-  }
-
-  protected static function echoFakehamburgerbtn() {
-    ?>
-      <a href="#" id="fake-hamburger-icon" data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="" class="is-small" aria-label="Menu" aria-controls="main-menu" aria-expanded="false" style="display: none;"></a>
     <?php
   }
 }

@@ -36,7 +36,7 @@ class ProductCategoryPage
           <a href="<?php echo Utils::getPreviousSite() ?>"><i class="icon-angle-left" style="color:black;"></i></a>
         <?php endif ?>
         <h1><?php echo ucwords(woocommerce_page_title(false)); ?></h1>
-        <span class="category-name-bar__filter-btn">Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></span>
+        <span class="category-name-bar__filter-btn toggle-filter-modal">Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></span>
       </div>
     <?php
   }
@@ -63,11 +63,8 @@ class ProductCategoryPage
           <?php } ?>
           
           <div class="sort-disclaimer">
-            <p onclick="openHamburgerMenuForCategories()">
-              <strong class="open-mobile-menu-text">Rendezés,</strong> 
-              <strong>Kategóriák</strong> és 
-              <strong>Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></strong> 
-            </p>
+            <span class="sort-disclaimer__open-mobile-menu-text" data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay">Kategóriák <i class="icon-menu"></i></span>
+            <span class="sort-disclaimer__open-mobile-menu-text toggle-filter-modal">Rendezés és Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></span>
           </div>
 
           <div>
@@ -199,7 +196,7 @@ class ProductCategoryPage
           <div class="filter-modal__wrapper">
             <div class="filter-modal__head">
               <h3>Szűrők</h3>
-              <span class="close-btn close-right"></span>
+              <span class="close-btn close-right toggle-filter-modal"></span>
               </span>
             </div>
             <?php echo self::getBerocketFilters($category_specific_filter_id, true) ?>
