@@ -1042,8 +1042,11 @@ function filterModal() {
       label.siblings().attr('checked', 'checked');
       label.parent().addClass('checked');
       label.parent().siblings().removeClass('checked');
-      $('form.filter-form__tags').submit();
       activateLoader();
+      const newOrderBy = $('li.orderings input:checked').val();
+      const url = new URL(window.location.href);
+      url.searchParams.set('orderby', newOrderBy);
+      location.href = url.href;
     });
   }
 

@@ -1250,6 +1250,30 @@ animation: lineLoader 1.3s ease-in-out infinite;
   text-transform: capitalize;
 }
 
+.filter-modal__price_filter {
+  padding: 0 23px;
+}
+
+.filter-modal__price_filter .price_slider_amount{
+  margin-left: -9px;
+}
+
+.filter-modal__price_filter .widget_price_filter .ui-slider .ui-slider-handle {
+  background: #1184EF;
+}
+
+.filter-modal__price_filter .widget_price_filter .ui-slider .ui-slider-range {
+  background: #8dcaff;;
+}
+
+.filter-modal__price_filter .widget_price_filter .price_slider_amount .button {
+  background: #1184EF;
+}
+
+.filter-modal__price_filter .widget_price_filter .price_label {
+  color: black;
+}
+
 .filter-modal .berocket_single_filter_widget {
   margin-bottom: 10px;
 }

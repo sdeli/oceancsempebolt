@@ -16,6 +16,11 @@ class ProductCategoryPage
         if (!is_null($category_specific_filter_id)) self::echoFilterModal($category_specific_filter_id);
       }
     });
+
+    add_action('woocommerce_price_filter_widget_max_amount', function() {
+      $mostExpensiveProduct = Utils::get_most_expensive_product(get_queried_object()->slug);
+      return intval($mostExpensiveProduct->get_price());
+    });
   }
 
   protected static function customizeJumbotron() {
@@ -207,6 +212,12 @@ class ProductCategoryPage
                 <h4 class="filter-modal__section_title">Rendezés</h4>
                 <?php echo self::echoOrderOptions(); ?>
               </div>
+              <div>
+                <h4 class="filter-modal__section_title">Szűrés ár szerint</h4>
+                <div class="filter-modal__price_filter">
+                  <?php the_widget('WC_Widget_Price_Filter', ['title' => '']); ?>
+                </div>
+              </div>
             </div>
           </div>
           <div class="filter-modal__background"></div>
@@ -230,16 +241,16 @@ class ProductCategoryPage
 			)
 		);
     ?>
-      <form class="filter-form__tags" method="get">
+      <div class="filter-form__tags" method="get">
         <ul style="text-align: center;">
           <?php foreach ( $catalog_orderby_options as $id => $name ): ?>
             <li class="orderings <?= $current_order === $id ? "checked" : ''?>">
-              <input type="radio" name="orderby" value="<?php echo esc_attr( $id ); ?>">
+              <input type="radio" name="orderby" value="<?php echo esc_attr( $id ); ?>" <?= $current_order === $id ? 'checked="checked"' : ''?>>
               <label><?php echo esc_html( $name ); ?></label>
             </li>
           <?php endforeach; ?>
         </ul>
-      </form>
+          </div>
     <?php 
     
   }

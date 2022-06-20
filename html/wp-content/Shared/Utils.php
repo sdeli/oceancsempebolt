@@ -21,6 +21,31 @@ class Utils {
     return has_term( Config::BURKOLATOK_CATEG_SLUG, 'product_cat', $product_id);
   }
 
+  static function get_most_expensive_product($category_slug) {
+    $query = array(
+      'limit' => 1,
+      'post_type'=> 'product',
+      'post_status'           => 'publish',
+      'orderby' => 'price',
+      'order' => 'DESC', 
+      'tax_query'             => array(
+        array(
+            'taxonomy'      => 'product_cat',
+            'field' => 'slug',
+            'terms'         => $category_slug,
+            'operator'      => 'IN'
+        ),
+      ) 
+    );
+
+    $the_query = new \WP_Query($query);
+    if ( $the_query->have_posts() ) {
+      return wc_get_product($the_query->post);
+    } else {
+      return false;
+    }
+  }
+
   static function get_products_by_cat_ids(array $cat_ids, array $exclude_ids, int $product_amount = 12) {
     $args = array(
       'post_type'             => 'product',
@@ -76,7 +101,7 @@ class Utils {
     foreach ($result as $row) {
       $currentCategorySlug = $row->category_slug;
       $displayName = $row->attribute_value_name;
-      $lookOnFrontEnd = $row->attribute_slug === 'pa_szin' ? Config::LOOK_COLOR : LOOK_TAG;
+      $lookOnFrontEnd = $row->attribute_slug === 'pa_szin' ? Config::LOOK_COLOR : Config::LOOK_TAG;
       $filterType = preg_replace('/pa_/i', '', $row->attribute_slug);
       $attributeTemplateValues = [
         'id' => $row->attribute_value_id, 
