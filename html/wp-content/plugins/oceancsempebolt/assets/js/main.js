@@ -407,7 +407,7 @@ function getFilterIconHtml(productCategId, filterItem, isCircleShape = true) {
 
 function filterItemsOnClick() {
   const allFilterItems = Array.from(
-      document.querySelectorAll('.filter-form li label, .filter-modal li label'),
+      document.querySelectorAll('.filter-form li label, .filter-modal li:not(.orderings) label'),
   );
   allFilterItems.forEach((filterItem) => {
     filterItem.addEventListener('click', function (e) {
@@ -1013,6 +1013,8 @@ function filterModal() {
     title.insertBefore(currentFilterSection);
   });
 
+  orderingsOptions();
+
   let isInAnimation = false;
 
   togglers.click(function (e) {
@@ -1031,6 +1033,19 @@ function filterModal() {
       isInAnimation = false;
     }, 500);
   });
+
+  function orderingsOptions() {
+    $('li.orderings label').click(function() {
+      label = $(this);
+      const isActive = label.parent().hasClass('checked');
+      if (isActive) return;
+      label.siblings().attr('checked', 'checked');
+      label.parent().addClass('checked');
+      label.parent().siblings().removeClass('checked');
+      $('form.filter-form__tags').submit();
+      activateLoader();
+    });
+  }
 
   const bottomWhenHidden = (filterModal.height()) * -1 + 'px';
   filterModal.css('bottom', bottomWhenHidden);

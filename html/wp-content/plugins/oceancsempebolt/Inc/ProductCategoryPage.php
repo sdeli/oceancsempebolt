@@ -199,13 +199,49 @@ class ProductCategoryPage
               <span class="close-btn close-right toggle-filter-modal"></span>
               </span>
             </div>
-            <?php echo self::getBerocketFilters($category_specific_filter_id, true) ?>
+            <div class="filter-modal__body">
+              <div>
+                <?php echo self::getBerocketFilters($category_specific_filter_id, true); ?>
+              </div>
+              <div>
+                <h4 class="filter-modal__section_title">Rendezés</h4>
+                <?php echo self::echoOrderOptions(); ?>
+              </div>
+            </div>
           </div>
           <div class="filter-modal__background"></div>
         </div>
         <div class="invisble_overlay"></div>
       <?php 
     });
+  }
+
+  protected static function echoOrderOptions() {
+    $default_orderby = wc_get_loop_prop( 'is_search' ) ? 'relevance' : apply_filters( 'woocommerce_default_catalog_orderby', get_option( 'woocommerce_default_catalog_orderby', '' ) );
+    $current_order = isset( $_GET['orderby'] ) ? wc_clean( wp_unslash( $_GET['orderby'] ) ) : $default_orderby;
+
+		$catalog_orderby_options = apply_filters(
+			'woocommerce_catalog_orderby',
+			array(
+				'menu_order' => 'Alapértelmezett rendezés',
+				'date'       => 'Legújabb alapján',
+				'price'      => 'ár szerint növekvő',
+				'price-desc' => 'ár szerint csökkenő',
+			)
+		);
+    ?>
+      <form class="filter-form__tags" method="get">
+        <ul style="text-align: center;">
+          <?php foreach ( $catalog_orderby_options as $id => $name ): ?>
+            <li class="orderings <?= $current_order === $id ? "checked" : ''?>">
+              <input type="radio" name="orderby" value="<?php echo esc_attr( $id ); ?>">
+              <label><?php echo esc_html( $name ); ?></label>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </form>
+    <?php 
+    
   }
 
   protected static function echoSliderLoader() {
