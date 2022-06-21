@@ -72,7 +72,7 @@ Version: 3.0
   cursor: pointer;
 }
 
-/* mobile - [element name] - ?[what is modified] */
+/* mobile navbar - it applies when navbar is sticky */
 .ocs .stuck {
   transition: top 0.5s ease-in-out;
 }
@@ -80,8 +80,14 @@ Version: 3.0
 .stuck .header-main {
   height: 64px !important;
 }
-/* END mobile - [element name] - ?[what is modified] */
+/* END mobile navbar - it applies when navbar is sticky */
 
+/* product listings page / product card / category section - if product has a tag of 'boltban kiallitva' exhibited class will be applied */
+.product.exhibited .product-cat {
+  color: #567ca1;
+  font-weight: bold;
+}
+/* END product listings page / product card / category section - if product has a tag of 'boltban kiallitva' exhibited class will be applied */
 
 .--rotated {
   transform: rotate(180deg);

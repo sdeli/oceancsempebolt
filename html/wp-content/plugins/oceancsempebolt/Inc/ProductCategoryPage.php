@@ -5,6 +5,8 @@ use Shared\Utils;
 
 class ProductCategoryPage 
 {
+  private static $is_exhibited = [];
+
   static function init() {
     self::customizeJumbotron();
     self::addMobileNavbarCustomizations();
@@ -22,6 +24,46 @@ class ProductCategoryPage
       $mostExpensiveProduct = Utils::get_most_expensive_product(get_queried_object()->slug);
       return intval($mostExpensiveProduct->get_price());
     });
+
+    
+    self::highlight_if_product_exhibited_in_shop();
+  }
+  
+  protected static function highlight_if_product_exhibited_in_shop() {
+    add_action('woocommerce_post_class', function($classes) {
+      $is_product_exhibited_in_shop = self::is_product_exhibited_in_shop(get_the_ID());
+      if ($is_product_exhibited_in_shop) {
+        $classes[] = 'exhibited';
+      }
+  
+      return $classes;
+    });
+
+    add_action('flatsome_woocommerce_shop_loop_category', function($category) {
+      $is_product_exhibited_in_shop = self::is_product_exhibited_in_shop(get_the_ID());
+      if ($is_product_exhibited_in_shop) {
+        return 'Boltban kiállítva';
+      }
+  
+      return $category;
+    });
+  }
+
+  protected static function is_product_exhibited_in_shop(int $post_id) {
+    if (isset(self::$is_exhibited[$post_id])) return self::$is_exhibited[$post_id];
+
+    self::$is_exhibited[$post_id] = false;
+    $terms = get_the_terms( $post_id, 'product_tag' );
+
+    foreach($terms as $term) {
+      $is_exhibited_in_shop = $term->slug === Config::EXHIBITED_IN_SHOP_TAG_SLUG;
+      if ($is_exhibited_in_shop) {
+        self::$is_exhibited[$post_id] = true;
+        return self::$is_exhibited[$post_id];
+      }
+    }
+
+    return false;
   }
 
   protected static function customizeJumbotron() {

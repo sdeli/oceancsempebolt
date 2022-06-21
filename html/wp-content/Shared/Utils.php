@@ -111,7 +111,7 @@ class Utils {
         'type' => $filterType
       ];
       
-      if ($attributes_by_categories[$currentCategorySlug]) {
+      if (isset($attributes_by_categories[$currentCategorySlug])) {
         array_push($attributes_by_categories[$currentCategorySlug],$attributeTemplateValues);
       } else {
         $attributes_by_categories[$currentCategorySlug] = [$attributeTemplateValues];
@@ -146,7 +146,7 @@ class Utils {
     });
     
     $tags = array_filter($attrFilterTemplateValuesArr, function($templateValues) {
-      return $templateValues['form'] === LOOK_TAG;
+      return $templateValues['form'] === Config::LOOK_TAG;
     });
     
     return array_merge($colors, $tags);

@@ -45,6 +45,8 @@ class Config
   const SHOWER_CABIN_SLUG = 'zuhanykabinok';
   const SHOWER_TRAY_SLUG = 'zuhanytalcak';
 
+  const EXHIBITED_IN_SHOP_TAG_SLUG = 'boltban-megtekintheto';
+
   const COLOR_ROOM_TAGS_FILTER_ID = 9152;
   const COLOR_STYLE_TAGS_HANDLE_FILTER_ID = 11714;
   const COLOR_STYLE_TAGS_FILTER_ID = 11960;
