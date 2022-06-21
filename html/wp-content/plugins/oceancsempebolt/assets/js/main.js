@@ -12,6 +12,7 @@ const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = '.mobile-sidebar-categories';
 const MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR = '.mobile-sidebar-switch-btns';
 const CLICKABLE_CLASS = '--clickable';
 const MOBILE_MENU_HAMBURGER_ICON_SELECTOR = '#header [data-open="#main-menu"]';
+const FAKE_HAMBURGER_ICON_SELECTOR = '#fake-hamburger-icon[data-open="#main-menu"]';
 const GOOGLE_MAPS_CONATINER_SELECTOR =
   '.lazy-load-google-maps-until-user-interaction';
 const OCEAN_CSEMPE_PROMO_VIDEO_CONTAINER_SELECTOR = '#ocean-promo-video-container';
@@ -306,8 +307,10 @@ window.addEventListener(
       }
 
       const productCateogiresMainMenuBtn = $(PRODUCT_CATEGORIES_MAIN_MENU_BTN_SELECTOR);
+      console.log(productCateogiresMainMenuBtn);
       if (productCateogiresMainMenuBtn) {
         productCateogiresMainMenuBtn.click(() => {
+          console.log('saaany');
           openHamburgerMenuForCategories();
         });
       }
@@ -598,6 +601,28 @@ function hamburberMenuOpensMobileSidbar() {
       }
     }
   });
+}
+
+// eslint-disable-next-line no-unused-vars
+function openHamburgerMenuForCategories() {
+  $(FAKE_HAMBURGER_ICON_SELECTOR).click();
+  const switchBtns = $(MOBILE_SIDEBAR_SWITCH_BTNS_SELECTOR);
+  cateogiresBtn = switchBtns.children().eq(1);
+
+  const isCategoriesBtnActive = cateogiresBtn.hasClass(ACTIVE_ITEM_CLASS);
+  if (isCategoriesBtnActive) return;
+
+  cateogiresBtn.addClass(ACTIVE_ITEM_CLASS);
+  cateogiresBtn.removeClass(CLICKABLE_CLASS);
+
+  const menuBtn = switchBtns.children().eq(0);
+  menuBtn.addClass(CLICKABLE_CLASS);
+  menuBtn.removeClass(ACTIVE_ITEM_CLASS);
+
+  const menuItems = $(MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR);
+  const mobileSidebarCategories = $(MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR);
+  menuItems.hide(0);
+  mobileSidebarCategories.show(0);
 }
 
 function clickVariationSwatchIfOneOptionLeft() {
@@ -1003,6 +1028,7 @@ function filterModal() {
 
   filterSections.each(function() {
     const currentFilterSection = $(this);
+    if (!currentFilterSection.eq(0).find('[data-taxonomy]').length) return;
     const filtersType = currentFilterSection.eq(0).find('[data-taxonomy]').attr('data-taxonomy')
         .replace('pa_', '')
         .replace('product_tag', 'cimkék')
@@ -1018,6 +1044,7 @@ function filterModal() {
   let isInAnimation = false;
 
   togglers.click(function (e) {
+    console.log('asdasd');
     if (isInAnimation) return;
     isInAnimation = true;
     const isModalVisible = filterModal.css('bottom') === '0px';
@@ -1050,9 +1077,11 @@ function filterModal() {
     });
   }
 
-  const bottomWhenHidden = (filterModal.height()) * -1 + 'px';
-  filterModal.css('bottom', bottomWhenHidden);
   setTimeout(() => {
-    filterModal.css('display', 'block');
-  }, 500);
+    const bottomWhenHidden = (filterModal.height()) * -1 + 'px';
+    filterModal.css('bottom', bottomWhenHidden);
+    setTimeout(() => {
+      filterModal.css('display', 'block');
+    }, 500);
+  }, 0);
 }

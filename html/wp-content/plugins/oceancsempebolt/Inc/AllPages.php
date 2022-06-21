@@ -18,6 +18,7 @@ class AllPages
       self::echoLoader();
       self::echoDesktopHamburgerBtn();
       self::echoSidebarFilters();
+      self::echoFakehamburgerbtn();
     });
   }
 
@@ -102,4 +103,11 @@ class AllPages
       </div>
     <?php
   }
+
+  protected static function echoFakehamburgerbtn() {
+    ?>
+      <a href="#" id="fake-hamburger-icon" data-open="#main-menu" data-pos="left" data-bg="main-menu-overlay" data-color="" class="is-small" aria-label="Menu" aria-controls="main-menu" aria-expanded="false" style="display: none;"></a>
+    <?php
+  }
+
 }

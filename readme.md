@@ -82,7 +82,7 @@ composer attach:wp
 
 # disable plugins not needed for development
 # example:
-wp plugin deactivate algori-pdf-viewer gtm-ecommerce-woo-pro algori-pdf-viewer autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
+wp plugin delete algori-pdf-viewer gtm-ecommerce-woo-pro algori-pdf-viewer autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
 ```
 
 ### 6. Install Dev Plugins
@@ -112,6 +112,20 @@ You may install some **debug / dev plugins** like:
     },
   ]
 }
+```
+
+## Deploy
+```json
+"config": { 
+    "vendor-dir": "web/wp-content/vendor" 
+},
+"autoload": {
+  "psr-4": {
+    "Shared\\" : "web/wp-content/Shared",
+    "Inc\\" : "web/wp-content/plugins/oceancsempebolt/Inc"
+  },
+  "classmap": ["web/wp-content/plugins/oceancsempebolt/classes"]
+},
 ```
 
 ## Important Commands

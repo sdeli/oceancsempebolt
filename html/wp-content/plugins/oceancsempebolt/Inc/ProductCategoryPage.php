@@ -17,7 +17,8 @@ class ProductCategoryPage
       }
     });
 
-    add_action('woocommerce_price_filter_widget_max_amount', function() {
+    add_action('woocommerce_price_filter_widget_max_amount', function($max_price) {
+      if (is_shop()) return $max_price;
       $mostExpensiveProduct = Utils::get_most_expensive_product(get_queried_object()->slug);
       return intval($mostExpensiveProduct->get_price());
     });
