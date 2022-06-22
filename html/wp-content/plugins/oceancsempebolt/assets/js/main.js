@@ -225,7 +225,7 @@ window.addEventListener(
           addAttributeFilterIconsToCurrentCategory();
         }
       }
-      const hasProductCards = !!document.querySelectorAll('.product-small.box');
+      const hasProductCards = !!document.querySelectorAll('.product');
       if (hasProductCards) {
         resizeProductCardTitlesForElliplsis();
         addBasketIconToAddBtns();

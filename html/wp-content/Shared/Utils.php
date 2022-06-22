@@ -177,7 +177,8 @@ class Utils {
     $attributeFilterId = $attrFilterTemplateValues['id'];
     $displayName = $attrFilterTemplateValues["displayName"];
     $filterType = $attrFilterTemplateValues["type"];
-    
+    $isCheckedClass = "";
+
     if ($shouldNavigate) {
       $href ="/{$categorySlug}/?filters={$filterType}[{$attributeFilterId}]";
       $isSidebarFilterLinkClass = Config::SIDEBAR_FILTER_LINK_CLASS;
@@ -380,5 +381,91 @@ class Utils {
     }
 
     return [$family_categories, $brand_categories];
+  }
+
+  static function echo_popular_products_in_slider(int $products_count = 24, string $classes) {  
+    $products_query = self::get_popular_products_query($products_count);
+    if( ! $products_query->have_posts() ) return;
+
+    $type             = get_theme_mod( 'related_products', 'slider' );
+    $repeater_classes = array();
+
+    if ( $type == 'hidden' ) return;
+    if ( $type == 'grid' ) $type = 'row';
+
+    if ( get_theme_mod('category_force_image_height' ) ) $repeater_classes[] = 'has-equal-box-heights';
+    if ( get_theme_mod('equalize_product_box' ) ) $repeater_classes[] = 'equalize-box';
+
+    $repeater['type']         = $type;
+    $repeater['columns']      = get_theme_mod( 'related_products_pr_row', 4 );
+    $repeater['columns__md']  = get_theme_mod( 'related_products_pr_row_tablet', 3 );
+    $repeater['columns__sm']  = get_theme_mod( 'related_products_pr_row_mobile', 2 );
+    $repeater['class']        = implode( ' ', $repeater_classes );
+    $repeater['slider_style'] = 'reveal';
+    $repeater['row_spacing']  = 'small';
+    
+    ?>
+      <div class="related related-products-wrapper product-section <?= $classes ?>">
+        <h5 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase ux-builder-padding-top-5 ux-builder-padding-bottom-5">
+          Feldobják a fürdőszobád			
+        </h5>
+        <?php 
+        get_flatsome_repeater_start( $repeater );
+
+        while ( $products_query->have_posts() ) {
+          $products_query->the_post();
+          include(OCEANCSEMPEBOLT_PATH . '/templates/content-tiny-product.php');
+        }
+        
+        get_flatsome_repeater_end( $repeater ); ?>
+      </div>
+    <?php 
+  }
+
+  static function echoPopularProducts() {
+    ?>
+      <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+        Feldobják a fürdőszobád			
+      </h3>
+    <?php 
+    
+    $products_query = self::get_popular_products_query(8);
+    
+    if( $products_query->have_posts() ){
+      ?>
+        <div class="products row row-small large-columns-4 medium-columns-3 small-columns-1 popular-products-loop ux-builder-margin-bottom-15">
+      <?php 
+        while( $products_query->have_posts() ){
+          $products_query->the_post();
+          do_action( 'woocommerce_shop_loop' );
+
+          wc_get_template_part( 'content', 'product' );
+        }
+      ?>
+        </div>
+      <?php 
+      
+    }
+  }
+
+  static function get_popular_products_query(int $product_amount = 12, array $exclude_ids = []): \WP_Query {
+    $args = array(
+      'post_type'             => 'product',
+      'post_status'           => 'publish',
+      'ignore_sticky_posts'   => 1,
+      'orderby'               => 'rand',
+      'posts_per_page'        => $product_amount,
+      'post__not_in' => array( $exclude_ids ),
+      'tax_query'             => array(
+        array(
+            'taxonomy'      => 'pa_nepszeruseg',
+            'field' => 'slug',
+            'operator'      => 'IN',
+            'terms'         => 'magas',
+        ),
+      )
+    );
+
+    return new \WP_Query($args);
   }
 }

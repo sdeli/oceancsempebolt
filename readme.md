@@ -58,6 +58,12 @@ define('WP_HOME','http://localhost');
 define('WP_SITEURL','http://localhost');
 define( 'WP_DEBUG', true );
 ```
+
+- If you have these lines in your wp-config.php then remove them
+```php
+define( 'WP_HOME', 'http://dev.oceancsempebolt.hu' );
+define( 'WP_SITEURL', 'http://dev.oceancsempebolt.hu' );
+```
 - import the ./assets/[file-name].sql file:
 ```sh
 # run:
@@ -82,7 +88,7 @@ composer attach:wp
 
 # disable plugins not needed for development
 # example:
-wp plugin delete algori-pdf-viewer gtm-ecommerce-woo-pro algori-pdf-viewer autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
+wp plugin delete algori-pdf-viewer gtm-ecommerce-woo-pro autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
 ```
 
 ### 6. Install Dev Plugins

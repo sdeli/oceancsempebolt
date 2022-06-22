@@ -25,6 +25,9 @@ class ProductCategoryPage
       return intval($mostExpensiveProduct->get_price());
     });
 
+    add_action( 'woocommerce_after_shop_loop', function() {
+      Utils::echo_popular_products_in_slider(24, 'ux-builder-margin-top-15');
+    }, 11);
     
     self::highlight_if_product_exhibited_in_shop();
   }

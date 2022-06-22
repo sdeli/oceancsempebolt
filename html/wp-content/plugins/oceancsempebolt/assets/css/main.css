@@ -191,6 +191,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0 !important;
 }
 
+.ux-builder-margin-top-15 {
+  margin-top: 15px !important;
+}
+
 .ux-builder-padding-bottom-0 {
   padding-bottom: 0 !important;
 }
