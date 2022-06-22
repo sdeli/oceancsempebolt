@@ -28,27 +28,36 @@ class ProductCategoryPage
     add_action( 'woocommerce_after_shop_loop', function() {
       Utils::echo_popular_products_in_slider(24, 'ux-builder-margin-top-15');
     }, 11);
-    
+
+    self::correct_category_on_product_card();
     self::highlight_if_product_exhibited_in_shop();
   }
   
-  protected static function highlight_if_product_exhibited_in_shop() {
-    add_action('woocommerce_post_class', function($classes) {
-      $is_product_exhibited_in_shop = self::is_product_exhibited_in_shop(get_the_ID());
-      if ($is_product_exhibited_in_shop) {
-        $classes[] = 'exhibited';
+  protected static function correct_category_on_product_card() {
+    add_filter('flatsome_woocommerce_shop_loop_category', function($product_cat) {
+      $main_category = Utils::get_main_product_category();
+      if ($main_category) {
+        $main_category->name = $main_category->name === 'Padlólapok' ? 'padlólap' : $main_category->name;
+        return $main_category->name;
+      } else {
+        return $product_cat;
       }
-  
-      return $classes;
     });
-
-    add_action('flatsome_woocommerce_shop_loop_category', function($category) {
+  }
+  
+  protected static function highlight_if_product_exhibited_in_shop() {
+    add_action('woocommerce_shop_loop_item_title', function() {
+      global $product;
       $is_product_exhibited_in_shop = self::is_product_exhibited_in_shop(get_the_ID());
       if ($is_product_exhibited_in_shop) {
-        return 'Boltban kiállítva';
+        $message = 'Mintalap kérhető';
+      } else {
+        if ( ! Utils::is_tile($product->get_id()) ) return;
+        $message = 'Mintalap kérhető';
       }
-  
-      return $category;
+      ?>
+        <p class="category uppercase is-smaller no-text-overflow product-cat op-7" style="margin-bottom: 5px; margin-top: 5px;"> <?= $message ?></p>
+      <?php 
     });
   }
 
@@ -57,6 +66,7 @@ class ProductCategoryPage
 
     self::$is_exhibited[$post_id] = false;
     $terms = get_the_terms( $post_id, 'product_tag' );
+    if (!$terms) return false;
 
     foreach($terms as $term) {
       $is_exhibited_in_shop = $term->slug === Config::EXHIBITED_IN_SHOP_TAG_SLUG;

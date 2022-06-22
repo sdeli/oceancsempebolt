@@ -46,6 +46,46 @@ class Utils {
     }
   }
 
+  static function get_main_product_category(\WP_Term $main_term = null): \WP_Term {
+    $main_term = is_null($main_term) ? false : $main_term;
+    global $post;
+
+    $product_categories = wc_get_product_terms(
+      $post->ID,
+      'product_cat',
+      apply_filters(
+        'woocommerce_breadcrumb_product_terms_args',
+        array(
+          'orderby' => 'parent',
+          'order'   => 'DESC',
+        )
+      )
+    );
+
+    $direct_categories = [];
+    foreach ($product_categories as $product_cat) {
+      $is_direct_category = self::is_direct_category($product_cat);
+      if ($is_direct_category) $direct_categories[] = $product_cat;
+    }
+
+    if (empty($direct_categories)) {
+      return $main_term;
+    }
+
+    if (count($direct_categories) === 1) {
+      return $direct_categories[0];
+    }
+
+    foreach ($direct_categories as $product_cat) {
+      $is_referred_from_product_listing_page = strpos($_SERVER['HTTP_REFERER'], $product_cat->slug);
+      if ($is_referred_from_product_listing_page) {
+        return $product_cat;
+      }
+    }
+
+    return $direct_categories[0];
+  }
+
   static function get_products_by_cat_ids(array $cat_ids, array $exclude_ids, int $product_amount = 12) {
     $args = array(
       'post_type'             => 'product',
@@ -150,6 +190,23 @@ class Utils {
     });
     
     return array_merge($colors, $tags);
+  }
+
+  private static function is_direct_category($product_cat) {
+    $term_id = $product_cat->term_id;
+    $is_brand_term = $term_id === Config::TILE_BRANDS_PRODUCT_CATEG_ID || $term_id === Config::BRANDS_PRODUCT_CATEG_ID;
+    if ($is_brand_term) return false;
+
+    $term_ancestor_ids = get_ancestors( $term_id, 'product_cat', 'taxonomy' );
+
+    $is_tile_brand_or_family = in_array(Config::TILE_BRANDS_PRODUCT_CATEG_ID, $term_ancestor_ids);
+    if ($is_tile_brand_or_family) return false; 
+
+    $is_brand_or_family = in_array(Config::BRANDS_PRODUCT_CATEG_ID, $term_ancestor_ids);
+    if ($is_brand_or_family) return false;
+
+    $is_direct_categ = empty(get_term_children( $term_id, 'product_cat' ));
+    return $is_direct_categ;
   }
   
   private static function get_color_icon($categorySlug, $attrFilterTemplateValues, $shouldNavigate) {
