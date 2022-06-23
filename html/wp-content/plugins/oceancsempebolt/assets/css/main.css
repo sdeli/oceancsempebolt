@@ -8,6 +8,36 @@ Version: 3.0
 
 /*************** ADD CUSTOM CSS HERE.   ***************/
 
+/* navbar / main menu - tel number */
+.nav li.nav-main-menu-bar-tel-number {
+  display: none;
+}
+
+.nav li.nav-main-menu-bar-tel-number a {
+  font-size: 15px; 
+  padding: 0 10px; 
+  line-height: 2; 
+  border-radius: 16px;
+}
+
+.nav li.nav-main-menu-bar-tel-number i {
+  font-size: 15px; 
+  margin-right: 5px;
+}
+/* END navbar / main menu - tel number */
+
+/* Mobile navbar / prev to cart - round call btn */
+.nav > li > a.nav-right-call-btn {
+  border: 1.5px solid rgba(102,102,102,.85);
+  padding: 2px 5px;
+  border-radius: 16px;
+}
+
+.nav > li > a.nav-right-call-btn > i  {
+  font-size: 18px;
+}
+/* END Mobile navbar / prev to cart - round call btn */
+
 /* top identity color bar - secondary menu li items */
 .header:not(.transparent) .top-bar-nav .menu-item a {
   color: white;
@@ -1116,7 +1146,7 @@ animation: heartBeatGlow 1.3s ease-in-out infinite alternate;
    width: 120px;
    height: 120px;
    margin: auto;
-   box-shadow: 0px 0px 7px #8dcaff, 0px 0px 7px #8dcaff
+   box-shadow: 0px 0px 7px #8dcaff, 0px 0px 7px #8dcaff;
 -webkit-animation: spin 1.3s ease-in-out infinite, boxShadowGlow 1.3s ease-in-out infinite alternate;
 animation: spin 1.3s ease-in-out infinite, boxShadowGlow 1.3s ease-in-out infinite alternate;
 }
@@ -1862,6 +1892,18 @@ animation: lineLoader 1.3s ease-in-out infinite;
     margin-bottom: 10px;
   }
 }
+@media only screen and (min-width: 940px) {
+  /* navbar / main menu - tel number */
+  .nav li.nav-main-menu-bar-tel-number {
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    margin-left: unset;
+  }
+  /* END navbar / main menu - tel number */
+}
+
 @media (min-width: 992px) {
   .google-maps-thin-image {
       background: url(/wp-content/uploads/2022/04/google-maps-scaled-1200w.webp) no-repeat center;

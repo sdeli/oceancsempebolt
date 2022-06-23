@@ -1,11 +1,13 @@
 <?php
 namespace Inc;
 use Shared\Utils;
+use Shared\Config;
 
 class AllPages 
 {
   static function init() {
     self::modifyFlatsomeMobileSidebar();
+    self::addTelNumbersToNavBar();
     add_action('flatsome_before_footer', function () {
       if(is_front_page()){
         self::echoFrontPageSliders(); 
@@ -24,6 +26,32 @@ class AllPages
 
   // This function makes in the mobile sidebar possible to switch between categories and main menu
   // It adds "menu" and the "categories" buttons to it and the categories sidebar widget as well
+  protected static function addTelNumbersToNavBar() {
+    $options = get_theme_mod( 'header_mobile_elements_right' );
+    if (!$options) set_theme_mod('header_mobile_elements_right', ['call-icon', 'cart']);
+
+    $no_call_btn_in_mobile_navbar_enabled = ! in_array('call-icon', $options);
+    if($no_call_btn_in_mobile_navbar_enabled) set_theme_mod('header_mobile_elements_right', ['call-icon', 'cart']);
+
+    add_action( 'flatsome_header_elements', function($value) {
+      if ($value === 'nav') {
+        [ $rand_tel_number ] = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)];
+      ?>
+        <li class="nav-main-menu-bar-tel-number menu-item menu-item-type-post_type menu-item-object-page menu-item-19796 menu-item-design-default">
+          <a href="tel:<?= $rand_tel_number ?>" class="nav-top-link"><i class="icon-phone"></i><?= $rand_tel_number ?></a>
+        </li>      
+      <?php };
+
+      if ($value === 'call-icon') {
+      ?>
+        <li>
+          <a href="tel:<?= $rand_tel_number ?>" class="nav-right-call-btn"><i class="icon-phone"></i><?= $rand_tel_number ?></a> 
+        </li>
+        <li class="header-divider"></li>
+      <?php };
+    });
+  }
+
   protected static function modifyFlatsomeMobileSidebar() {
     $options = get_theme_mods();
     

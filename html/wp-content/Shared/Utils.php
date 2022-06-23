@@ -46,7 +46,7 @@ class Utils {
     }
   }
 
-  static function get_main_product_category(\WP_Term $main_term = null): \WP_Term {
+  static function get_main_product_category(\WP_Term $main_term = null) {
     $main_term = is_null($main_term) ? false : $main_term;
     global $post;
 
