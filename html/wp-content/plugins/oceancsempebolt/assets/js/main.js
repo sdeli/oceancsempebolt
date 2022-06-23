@@ -4,8 +4,6 @@ if (!$) {
   var $ = jQuery;
 }
 
-const CHECKED_SELECTOR = '--checked';
-const COLOR_FILTER_ICONS_SELECTOR = 'filter-form__szin';
 const MOBILE_SIDEBAR_MENU_ITEMS_SELECTOR =
   '.nav-sidebar .menu-item-object-page';
 const MOBILE_SIDEBAR_PRODUCT_CATEGORIES_SELECTOR = '.mobile-sidebar-categories';
@@ -216,14 +214,6 @@ window.addEventListener(
 
         const isMainShopPage = window.location.pathname.includes('shop');
         if (isMainShopPage) removeUnneededFiltersFromMainShopPage();
-
-        const productCategId = window.location.pathname.replace(/\//g, '');
-        const isSidebarSubCateogry = CATEGORIES_WITH_FILTERS_DATA.find(
-            (filterData) => filterData.slug === productCategId,
-        );
-        if (isSidebarSubCateogry) {
-          addAttributeFilterIconsToCurrentCategory();
-        }
       }
       const hasProductCards = !!document.querySelectorAll('.product');
       if (hasProductCards) {
@@ -347,65 +337,6 @@ function openCurrentCategoryInSidebar() {
         .querySelector('.product-categories li.active')
         .setAttribute('aria-expanded', true);
   }, 0);
-}
-
-function addAttributeFilterIconsToCurrentCategory() {
-  const allFilterItems = Array.from(
-      document.querySelectorAll('.filter-form li'),
-  );
-  const productCategId = window.location.pathname.replace(/\//g, '');
-
-  sidebarFilterHtml = `<li id="${productCategId}" class=\"sidebar-filter --col-md-display-none cat-item cat-item-1458\"><ul>`;
-
-  allFilterItems.map((filterItem, i) => {
-    const isColorFilterIcon =
-      filterItem.parentElement.parentElement.parentElement.className.includes(
-          COLOR_FILTER_ICONS_SELECTOR,
-      );
-    if (isColorFilterIcon) {
-      sidebarFilterHtml += getFilterIconHtml(productCategId, filterItem);
-    } else {
-      sidebarFilterHtml += getFilterIconHtml(
-          productCategId,
-          filterItem,
-          isColorFilterIcon,
-      );
-    }
-  });
-
-  sidebarFilterHtml += '</ul></li>';
-  const {sidebarFilterClass: currentCategorySidebarClass} =
-    getCategoryData(productCategId);
-  const currCategory = $(`${currentCategorySidebarClass} > ul`);
-  const currentCategSidebarFilters = $(sidebarFilterHtml);
-  currCategory.append(currentCategSidebarFilters);
-}
-
-function getFilterIconHtml(productCategId, filterItem, isCircleShape = true) {
-  const filterId = filterItem.children[0].value;
-  const href = `javascript:activateColorFilter('${productCategId}', ${filterId})`;
-  const displayName =
-    filterItem.children[1].getAttribute('aria-label') ||
-    filterItem.children[1].innerText;
-  const isCheckedClass = filterItem.className.includes('checked') ?
-    CHECKED_SELECTOR :
-    '';
-  let filterIconHtml = '';
-
-  if (isCircleShape) {
-    filterIconHtml =
-      `<li class=\"sidebar-filter__circle ${isCheckedClass} sidebar__filter-${filterId}" title="${displayName.trim()}">` +
-      `<a href=\"${href}\">${displayName}</a>` +
-      // + `<label>${displayName}</label>`
-      '</li>';
-  } else {
-    filterIconHtml =
-      `<li class=\"sidebar-filter__tag ${isCheckedClass} sidebar__filter-${filterId}"\">` +
-      `<a href=\"${href}\">${displayName}</a>` +
-      '</li>';
-  }
-
-  return filterIconHtml;
 }
 
 function filterItemsOnClick() {
@@ -833,7 +764,7 @@ async function slideUpAndDownMobileMenuBar() {
     const topWhenHidden = (menuBar.height() - 3) * -1 + 'px';
     const invisibLeClassDef = `
       .stuck.--invisible {
-        top: ${topWhenHidden};
+        top: ${topWhenHidden} !important;
       }
     `;
     styleTag.text(invisibLeClassDef);
