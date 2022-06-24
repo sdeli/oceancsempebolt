@@ -96,7 +96,16 @@ class ProductCategoryPage
         <?php if ( ! is_shop() ): ?>
           <a href="<?php echo Utils::getPreviousSite() ?>"><i class="icon-angle-left" style="color:black;"></i></a>
         <?php endif ?>
-        <h1><?php echo ucwords(woocommerce_page_title(false)); ?></h1>
+        <h1>
+          <?php 
+            $title = woocommerce_page_title(false);
+            if ($title === 'Shop') {
+              echo __( 'Shop', 'oceancsempebolt' );
+            } else {
+              echo ucwords(woocommerce_page_title(false)); 
+            }
+          ?>
+        </h1>
         <span class="category-name-bar__filter-btn toggle-filter-modal">Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></span>
       </div>
     <?php
