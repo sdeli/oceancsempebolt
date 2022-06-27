@@ -3,12 +3,14 @@
 Template name: kollekciok
 */
 
-use RankMath\Schema\Product;
+use \Shared\Settings;
+
 
 get_header(); ?>
 
 <style>  
   .ocs_product-search {
+    position: relative;
     width: 100%;
   }
 
@@ -19,7 +21,6 @@ get_header(); ?>
     color: currentColor!important;
     border-radius: 99px;
     padding: 0 0 0 10px;
-    position: relative;
   }
 
   .ocs_product-search .magnifying-glass{
@@ -94,6 +95,7 @@ get_header(); ?>
     z-index: 10;
     width: 100%;
     height: 49.5vw;
+    max-height: 421px;
     overflow: hidden;
   }
 
@@ -167,29 +169,34 @@ get_header(); ?>
       width: 30%;
       display: block;
     }
-  }
-
-  @media only screen and (min-width: 1200px) {
     .ocs_collections {
       margin-right: auto;
       margin-left: auto;
       max-width: 1600px;
     }
-
+  
     .ocs_collection_image {
-      height: 26.5.5vw;
+      height: 26.5vw;
     }
   }
 
 </style>
 <?php do_action( 'flatsome_before_page' ); ?>
 <?php 
-  $tile_type_categories = get_tile_type_categories();
-
+  $tile_type_categories = get_category_names_by_parent(2803, [2440, 2435]);
+  $has_valid_choosen_tile_type = isset($GET[Settings::TILE_TYPE]) && in_array($GET[Settings::TILE_TYPE], $tile_type_categories);
+  $choosen_tile_type = $has_valid_choosen_tile_type ? $GET[Settings::TILE_TYPE] : '';
+  
+  $tile_color_categories = get_category_names_by_parent(2440);
+  $has_valid_choosen_tile_color = isset($GET[Settings::TILE_COLOR]) && in_array($GET[Settings::TILE_COLOR], $tile_type_categories);
+  $choosen_tile_color = $has_valid_choosen_tile_type ? $GET[Settings::TILE_COLOR] : '';
+  
+  $tile_room_categories = get_category_names_by_parent(2435);
+  $has_valid_choosen_room = isset($GET[Settings::ROOM]) && in_array($GET[Settings::ROOM], $tile_type_categories);
+  $choosen_room = $has_valid_choosen_tile_type ? $GET[Settings::ROOM] : '';
 ?>
    
 <div>
-
   <div class="ocs_filters">
     <div class="ocs_product-search">
       <input type="search" class="search-field mb-0" placeholder="Search…" value="" name="product_name" autocomplete="off"> 
@@ -197,35 +204,9 @@ get_header(); ?>
     </div>
 
     <div class="ocs_dropdowns">
-      <div class="ocs_dropdown">
-        <select name="setting" id="id_setting" class="ocs_select">
-          <?php foreach ($tile_type_categories as $tile_type_category) { ?>
-            <option value="<?= $tile_type_category->slug ?>" selected=""><?= $tile_type_category->name ?></option>
-          <?php } ?>
-        </select>
-      </div>
-
-      <div class="ocs_dropdown">
-        <select name="setting" id="id_setting" class="ocs_select">
-          <option value="" selected="">Színvilág</option>
-          <option value="1">Bagno</option>
-          <option value="3">Cucina</option>
-          <option value="2">Living</option>
-          <option value="5">Outdoor</option>
-          <option value="4">Pubblico</option>
-        </select>
-      </div>
-
-      <div class="ocs_dropdown">
-        <select name="setting" id="id_setting" class="ocs_select">
-          <option value="" selected="">Rooms</option>
-          <option value="1">Bagno</option>
-          <option value="3">Cucina</option>
-          <option value="2">Living</option>
-          <option value="5">Outdoor</option>
-          <option value="4">Pubblico</option>
-        </select>
-      </div>
+      <?php echo get_select_dropdown(Settings::TILE_TYPE, $tile_type_categories, 'Burkolat típus') ?>
+      <?php echo get_select_dropdown(Settings::TILE_COLOR, $tile_color_categories, 'Szín') ?>
+      <?php echo get_select_dropdown(Settings::ROOM, $tile_room_categories, 'Szoba') ?>
     </div>
 
     <div class="ocs_product-search --desktop">
@@ -257,7 +238,9 @@ get_header(); ?>
       ?>
 
       <div class="ocs_collekcion">
-        <div style="height: 35px; text-align: center; vertical-align:center"><?php the_title() ?></div>
+        <div style="height: 35px; text-align: center; vertical-align:center">
+        <h3 style="margin: 0; position: relative; top: 1px;"><?php the_title() ?></h3>
+        </div>
 
         <div class="ocs_collection_image">
           <img 

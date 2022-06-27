@@ -1,4 +1,5 @@
 <?php
+use \Shared\Settings;
 
 function get_collection_images() {
   $args = array(
@@ -15,7 +16,7 @@ function get_collection_images() {
     )
   );
 
-  $args['tax_query'][0]['terms'] = isset($_GET['tile_type']) ? [$_GET['tile_type']] : ['burkolatok-product-category'];
+  $args['tax_query'][0]['terms'] = isset($_GET[Settings::TILE_TYPE]) ? sanitize_text_field([$_GET[Settings::TILE_TYPE]]) : ['burkolatok-product-category'];
 
   return new \WP_Query($args);
 }
@@ -74,16 +75,34 @@ function is_exhibited_in_shop(string $product_or_categ_slug) {
   return false;
 }
 
-function get_tile_type_categories() {
+function get_category_names_by_parent(int $parent_id, array $excludes = []) {
   $termchildren = array(
     'hierarchical' => 1,
     'show_option_none' => '',
     'hide_empty' => 0,
-    'parent' => 2803 ,
+    'parent' => $parent_id ,
     'taxonomy' => 'design_category',
-    'exclude' => [2440, 2435]
   );
- 
-  $subcats = get_categories($termchildren);
-  return $subcats;
+
+  if (!empty($excludes))  $termchildren['exclude'] = $excludes;
+
+  $categ_names = array_map(function ($category) { 
+    return $category->name;
+  }, get_categories($termchildren));
+
+  return $categ_names;
+}
+
+function get_select_dropdown(string $name, array $items, string $label) {
+  ?>
+    <div class="ocs_dropdown">
+      <select name="<?= $name ?>" class="ocs_select">
+        <option value="" selected=""><?= $label ?></option>
+        <?php foreach ($items as $item) { ?>
+          <option value="<?= $item ?>"><?= $item ?></option>
+        <?php } ?>
+      </select>
+    </div>
+  <?php 
+  
 }
