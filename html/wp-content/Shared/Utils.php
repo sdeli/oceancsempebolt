@@ -77,7 +77,7 @@ class Utils {
     }
 
     foreach ($direct_categories as $product_cat) {
-      $is_referred_from_product_listing_page = strpos($_SERVER['HTTP_REFERER'], $product_cat->slug);
+      $is_referred_from_product_listing_page = $_SERVER['HTTP_REFERER'] ?? strpos($_SERVER['HTTP_REFERER'], $product_cat->slug);
       if ($is_referred_from_product_listing_page) {
         return $product_cat;
       }

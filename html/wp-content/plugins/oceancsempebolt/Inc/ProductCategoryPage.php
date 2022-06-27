@@ -50,10 +50,10 @@ class ProductCategoryPage
       global $product;
       $is_product_exhibited_in_shop = self::is_product_exhibited_in_shop(get_the_ID());
       if ($is_product_exhibited_in_shop) {
-        $message = 'Mintalap kérhető';
+        $message = Config::TILE_EXHIBITED_IN_SHOP_MESSAGE;
       } else {
         if ( ! Utils::is_tile($product->get_id()) ) return;
-        $message = 'Mintalap kérhető';
+        $message = Config::EXAMPLE_CAN_BE_REQUEST_MESSAGE;
       }
       ?>
         <p class="category uppercase is-smaller no-text-overflow product-cat op-7" style="margin-bottom: 5px; margin-top: 5px;"> <?= $message ?></p>

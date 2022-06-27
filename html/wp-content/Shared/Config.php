@@ -32,6 +32,7 @@ class Config
 
   const TILE_BRANDS_PRODUCT_CATEG_ID = 2787;
   const BRANDS_PRODUCT_CATEG_ID = 2241;
+  const DESIGN_BRANDS_PRODUCT_CATEG_ID = 2254;
 
   const BATHROOM_TAP_SLUG = 'furdoszobai-csaptelep';
   const TILES_SLUG = 'burkolatok';
@@ -96,4 +97,6 @@ class Config
   const SHOP_PAGE_SLIDER_CATEGORY = 'legszebb-termekek';
 
   const UKRAINE_WAR_MESSAGE = '<p>A <strong>fehér agyag</strong>, mely a csempe gyártás alapanyaga, Európában szinte csak a háborús <strong>Ukrajnában</strong> fellelhető, valamint a <strong>csempét gázzal égetik ki</strong>, majd kamionon, <strong>benzinnel/dízellel szállítják</strong>, melyek a jelenlegi gazdasági körülmények miatt <strong>napról napra drágulnak</strong>. Ezért az <strong>árak tájékoztató jellegűek</strong>. <i>A pontos árért kérjük hívjanak, megértésüket köszönjük.</i></p>';
+  const TILE_EXHIBITED_IN_SHOP_MESSAGE = 'Boltban megtekinthető';
+  const EXAMPLE_CAN_BE_REQUEST_MESSAGE = 'Mintalap kérhető';
 }

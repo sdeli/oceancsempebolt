@@ -2,14 +2,12 @@
 /*
 Template name: kollekciok
 */
+
+use RankMath\Schema\Product;
+
 get_header(); ?>
 
-<style>
-  .sannya {
-    background: blue;
-    height: 200px;
-  }
-
+<style>  
   .ocs_product-search {
     width: 100%;
   }
@@ -21,6 +19,7 @@ get_header(); ?>
     color: currentColor!important;
     border-radius: 99px;
     padding: 0 0 0 10px;
+    position: relative;
   }
 
   .ocs_product-search .magnifying-glass{
@@ -55,6 +54,11 @@ get_header(); ?>
     gap: 10px;
     margin-bottom: 10px;
     margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1600px;
+    padding-right: 5px;
+    padding-left: 5px;
   }
   
   .ocs_dropdowns {
@@ -89,7 +93,7 @@ get_header(); ?>
   .ocs_collection_image {
     z-index: 10;
     width: 100%;
-    height: 32.5vw;
+    height: 49.5vw;
     overflow: hidden;
   }
 
@@ -100,71 +104,104 @@ get_header(); ?>
     transform: translateY(-50%);
   }
 
-@media only screen and (min-width: 550px) {
-  .ocs_dropdowns {
+  .ocs_product_meta {
+    margin: 5px;
+    text-align: center;
+  }
+  .ocs_product_meta>span:first-child {
+    border-top: unset;
+  }
+  
+  .ocs_product_meta span.ocs_product_meta__brand_and_category {
+    display: flex;
     flex-direction: row;
-  }
-  .ocs_dropdown {
-    width: 33%;
-  }
-}
-
-@media only screen and (min-width: 960px) {
-  .ocs_collections {
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: -6px -6px;
+    justify-content: center;
+    gap: 13px;
+    font-size: 14px;
   }
 
-  .ocs_collekcion {
-    width: 49%;
-    margin: 5px 5px 5px 5px;
+  @media only screen and (min-width: 550px) {
+    .ocs_dropdowns {
+      flex-direction: row;
+    }
+    .ocs_dropdown {
+      width: 33%;
+    }
   }
 
-  .ocs_collekcion:first-child{
-    margin: 5px 5px 5px 5px;
-  }
-}
+  @media only screen and (min-width: 960px) {
+    .ocs_collections {
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin: -6px -6px 5px;
+      justify-content: center;
+    }
 
-@media only screen and (min-width: 1200px) {
-  .ocs_filters {
-    flex-direction: row;
+    .ocs_collekcion {
+      width: 48.5%;
+      margin: 5px 5px 5px 5px;
+    }
+
+    .ocs_collekcion:first-child{
+      margin: 5px 5px 5px 5px;
+    }
+
+    .ocs_collection_image {
+      height: 32.5vw;
+    }
   }
-  .ocs_dropdowns {
-    width: 70%;
+
+  @media only screen and (min-width: 1200px) {
+    .ocs_filters {
+      flex-direction: row;
+      padding-right: 12px;
+      padding-left: 12px;
+    }
+    .ocs_dropdowns {
+      width: 70%;
+    }
+    .ocs_product-search {
+      display: none;
+    }
+    .ocs_product-search.--desktop {
+      width: 30%;
+      display: block;
+    }
   }
-  .ocs_product-search {
-    display: none;
+
+  @media only screen and (min-width: 1200px) {
+    .ocs_collections {
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 1600px;
+    }
+
+    .ocs_collection_image {
+      height: 26.5.5vw;
+    }
   }
-  .ocs_product-search.--desktop {
-    width: 30%;
-    display: block;
-  }
-}
 
 </style>
 <?php do_action( 'flatsome_before_page' ); ?>
 <?php 
-   $collections = get_collection_images();
+  $tile_type_categories = get_tile_type_categories();
+
 ?>
    
 <div>
 
   <div class="ocs_filters">
     <div class="ocs_product-search">
-      <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="" name="s" autocomplete="off"> 
+      <input type="search" class="search-field mb-0" placeholder="Search…" value="" name="product_name" autocomplete="off"> 
       <i class="icon-search magnifying-glass"></i> 
     </div>
 
     <div class="ocs_dropdowns">
       <div class="ocs_dropdown">
         <select name="setting" id="id_setting" class="ocs_select">
-          <option value="" selected="">Burkolat típus</option>
-          <option value="1">Bagno</option>
-          <option value="3">Cucina</option>
-          <option value="2">Living</option>
-          <option value="5">Outdoor</option>
-          <option value="4">Pubblico</option>
+          <?php foreach ($tile_type_categories as $tile_type_category) { ?>
+            <option value="<?= $tile_type_category->slug ?>" selected=""><?= $tile_type_category->name ?></option>
+          <?php } ?>
         </select>
       </div>
 
@@ -198,18 +235,30 @@ get_header(); ?>
   </div>
   
   <div class="ocs_collections">
-    <?php if ($collections->have_posts()) {
-      while ( $collections->have_posts() ) {
-        $collections->the_post();
-        $post;
-        $featured_image_url_medium = get_the_post_thumbnail_url($post->ID, 'medium');
-        $featured_image_url_medium_large = get_the_post_thumbnail_url($post->ID, 'medium_large');
-        $featured_image_url_large = get_the_post_thumbnail_url($post->ID, 'large');
-        $featured_image_url_full = get_the_post_thumbnail_url($post->ID, 'full');
-        $featured_image_url_original = get_the_post_thumbnail_url($post->ID);
+    <?php 
+      $collections = get_collection_images();
+      if ($collections->have_posts()) {
+        while ( $collections->have_posts() ) {
+          $collections->the_post();
+          $post;
+          $featured_image_url_medium = get_the_post_thumbnail_url($post->ID, 'medium');
+          $featured_image_url_medium_large = get_the_post_thumbnail_url($post->ID, 'medium_large');
+          $featured_image_url_large = get_the_post_thumbnail_url($post->ID, 'large');
+          $featured_image_url_full = get_the_post_thumbnail_url($post->ID, 'full');
+          $featured_image_url_original = get_the_post_thumbnail_url($post->ID);
+
+          $brand_and_family = get_brand_and_family_design_categories($post);
+
+          $products_on_image_url = get_post_meta( $post->ID, 'products_in_design_url')[0];
+          $product_or_category_slug = basename($products_on_image_url);
+          $is_single_product = ! get_term_by('slug', $product_or_category_slug, 'design_category');
+          $is_exhibited_in_shop = is_exhibited_in_shop($product_or_category_slug);
+          $shop_message = $is_exhibited_in_shop ? \Shared\Config::TILE_EXHIBITED_IN_SHOP_MESSAGE : \Shared\Config::EXAMPLE_CAN_BE_REQUEST_MESSAGE;
       ?>
 
       <div class="ocs_collekcion">
+        <div style="height: 35px; text-align: center; vertical-align:center"><?php the_title() ?></div>
+
         <div class="ocs_collection_image">
           <img 
             class="skip-lazy"
@@ -219,6 +268,25 @@ get_header(); ?>
               <?php echo $featured_image_url_large ?> 1121w,
               <?php echo $featured_image_url_full ?> 1320w" 
           >
+        </div>
+        <div class="ocs_product_meta product_meta">
+          <?php if ($brand_and_family): ?>
+            <span class="ocs_product_meta__brand_and_category">
+              <span>Márka: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"><?= $brand_and_family[0]->name ?? '' ?></a></span>
+              <span>Család: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"><?= $brand_and_family[1]->name ?? '' ?></a></span>
+            </span>
+          <?php else: ?>
+            <span class="ocs_product_meta__brand_and_category">
+              <span>Márka: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"> - </a></span>
+              <span>Család: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"> - </a></span>
+            </span>
+          <?php endif; ?>
+
+          <span>
+            <span style="font-size: 15px;"><?= $shop_message ?></span>
+          </span>
+          <!-- <span class="sku_wrapper">SKU: <span class="sku">N/A</span></span> -->
+          <span><a href="<?= $products_on_image_url ?>"><?= $is_single_product ? 'Képen látható termék' : 'Képen látható termékek' ?></a></span>
         </div>
       </div>
 

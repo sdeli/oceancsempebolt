@@ -20,7 +20,8 @@
       "ls": "docker container ls -a",
       "importdb": "./scripts/import-db.sh",
       "debug:activate": "docker cp ./scripts/xdebug-3.1.4 wp:/xdebug-3.1.4; docker exec -it wp sh -c \"/xdebug-3.1.4/rebuild.sh\"; docker container restart wp",
-      "attach:wp": "docker exec -it wp /bin/bash"
+      "attach:wp": "docker exec -it wp /bin/bash",
+      "attach:logs": "docker-compose logs -f wordpress"
     },
     "config": { 
         "vendor-dir": "html/wp-content/vendor" 
