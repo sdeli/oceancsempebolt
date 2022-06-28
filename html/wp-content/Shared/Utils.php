@@ -391,27 +391,25 @@ class Utils {
     $repeater['class']        = implode( ' ', $repeater_classes );
     $repeater['slider_style'] = 'reveal';
     $repeater['row_spacing']  = 'small';
-    $current_post = $GLOBALS['post'];
     ?>
       <div class="related related-products-wrapper product-section">
         <h5 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase ux-builder-padding-top-5 ux-builder-padding-bottom-5">
           Ez is tetszhet			
         </h5>
         <?php 
-        get_flatsome_repeater_start( $repeater );
+          get_flatsome_repeater_start( $repeater );
 
-        foreach ( $args['related_products'] as $related_product ) {
-                    $post_object = get_post( $related_product->get_id() );
-          setup_postdata( $GLOBALS['post'] =& $post_object );
-          self::echo_related_product($related_product);
-        }
-        
-        get_flatsome_repeater_end( $repeater ); ?>
+          foreach ( $args['related_products'] as $related_product ) {
+            $post_object = get_post( $related_product->get_id() );
+            setup_postdata( $GLOBALS['post'] =& $post_object );
+            self::echo_related_product($related_product);
+          }
+          
+          get_flatsome_repeater_end( $repeater ); 
+          wp_reset_postdata();
+        ?>
       </div>
     <?php 
-        if (is_product()) {
-      setup_postdata($current_post);
-    }
   }
 
   static protected function echo_related_product($product) {

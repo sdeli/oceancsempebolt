@@ -1,22 +1,36 @@
 <?php
-use \Shared\Settings;
 
-function get_collection_images() {
+function get_collection_images(array $choosen_filters) {
+  if ( get_query_var('paged') ) {
+      $paged = get_query_var('paged');
+  } elseif ( get_query_var('page') ) { // 'page' is used instead of 'paged' on Static Front Page
+      $paged = get_query_var('page');
+  } else {
+      $paged = 1;
+  }
+
   $args = array(
     'post_type'             => 'designs',
     'post_status'           => 'publish',
     'ignore_sticky_posts'   => 1,
     'posts_per_page'        => 20,
-    'tax_query'             => array(
-      array(
-          'taxonomy'      => 'design_category',
-          'field' => 'slug',
-          'operator'      => 'IN'
-      ),
-    )
+    'paged'                 => $paged,
   );
 
-  $args['tax_query'][0]['terms'] = isset($_GET[Settings::TILE_TYPE]) ? sanitize_text_field([$_GET[Settings::TILE_TYPE]]) : ['burkolatok-product-category'];
+  if (!count($choosen_filters)) {
+    return new \WP_Query($args);
+  }
+
+  $args['tax_query'] = ['relation' => 'IN'];
+         
+  foreach ($choosen_filters as $query_var => $filter) {
+    $args['tax_query'][] = [
+      'taxonomy'      => 'design_category',
+      'field' => 'slug',
+      'terms' => [ $filter ]
+    ];
+  }
+
 
   return new \WP_Query($args);
 }
@@ -93,16 +107,77 @@ function get_category_names_by_parent(int $parent_id, array $excludes = []) {
   return $categ_names;
 }
 
-function get_select_dropdown(string $name, array $items, string $label) {
+function get_select_dropdown(string $name, array $items, string $label, string $choosen = '') {
+   $default = empty($choosen) ? 'selected' : '';
   ?>
     <div class="ocs_dropdown">
-      <select name="<?= $name ?>" class="ocs_select">
-        <option value="" selected=""><?= $label ?></option>
-        <?php foreach ($items as $item) { ?>
-          <option value="<?= $item ?>"><?= $item ?></option>
-        <?php } ?>
+      <select name="<?= $name ?>" class="ocs_select thin-input">
+        <option value="" <?= $default ?>><?= $label ?></option>
+        
+        <?php 
+          foreach ($items as $item) {
+            if (!empty($choosen) && $choosen === $item) {
+              echo '<option value="'. $item .'" selected>' . ucwords($item) . '</option>';
+            } else {
+              echo '<option value="'. $item .'">' . ucwords($item) . '</option>';
+            }
+          }
+        ?>
       </select>
     </div>
   <?php 
-  
+}
+
+function get_choosen_GET_category(string $get_variable_name, array $categories ) {
+  if (!isset($_GET[$get_variable_name])) {
+    return '';
+  }
+
+  $has_valid_choosen_category = in_array($_GET[$get_variable_name], $categories, true);
+  $choosen_category = $has_valid_choosen_category ? $_GET[$get_variable_name] : '';
+  return $choosen_category;
+}
+
+function  ocs_flatsome_posts_pagination(WP_Query $collections_query) {
+
+  $prev_arrow = is_rtl() ? get_flatsome_icon('icon-angle-right') : get_flatsome_icon('icon-angle-left');
+  $next_arrow = is_rtl() ? get_flatsome_icon('icon-angle-left') : get_flatsome_icon('icon-angle-right');
+
+  $total = $collections_query->max_num_pages;
+  $big = 999999999; // need an unlikely integer
+  if( $total > 1 )  {
+
+       if( get_option('permalink_structure') ) {
+           $format = 'page/%#%/';
+       } else {
+           $format = '&paged=%#%';
+       }
+      $pages = paginate_links(array(
+          'base'          => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+          'format'        => $format,
+          'current'       => max( 1, get_query_var('paged') ),
+          'total'         => $total,
+          'mid_size'      => 3,
+          'type'          => 'array',
+          'prev_text'     => $prev_arrow,
+          'next_text'     => $next_arrow,
+       ) );
+
+      if( is_array( $pages ) ) {
+          echo '<ul class="page-numbers nav-pagination links text-center">';
+          foreach ( $pages as $page ) {
+                  $page = str_replace("page-numbers","page-number",$page);
+                  echo "<li>$page</li>";
+          }
+         echo '</ul>';
+      }
+  }
+
+  function get_collection_brand_link() {
+    
+  }
+
+  function get_collection_family_link() {
+
+  }
 }

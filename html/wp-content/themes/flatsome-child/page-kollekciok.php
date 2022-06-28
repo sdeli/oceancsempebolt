@@ -8,7 +8,11 @@ use \Shared\Settings;
 
 get_header(); ?>
 
-<style>  
+<style>
+
+  .thin-input {
+    height: 2.207em;
+  }
   .ocs_product-search {
     position: relative;
     width: 100%;
@@ -72,7 +76,8 @@ get_header(); ?>
     width: 100%;
   }
 
-  .ocs_product-search.--desktop {
+  .ocs_product-search.--desktop,
+  input[type="submit"].--desktop {
     display: none;
   }
 
@@ -122,12 +127,24 @@ get_header(); ?>
     font-size: 14px;
   }
 
+  input[type="submit"] {
+    border-radius: 25px;
+    margin: unset;
+  }
+
+  ul.nav-pagination li {
+    margin-left: 0;
+  }
+
   @media only screen and (min-width: 550px) {
     .ocs_dropdowns {
       flex-direction: row;
     }
     .ocs_dropdown {
       width: 33%;
+    }
+    .thin-input {
+      height: 2.507em;
     }
   }
 
@@ -162,12 +179,18 @@ get_header(); ?>
     .ocs_dropdowns {
       width: 70%;
     }
-    .ocs_product-search {
+    .ocs_product-search,
+    input[type="submit"] {
       display: none;
     }
-    .ocs_product-search.--desktop {
+    .ocs_product-search.--desktop,
+    input[type="submit"].--desktop {
       width: 30%;
       display: block;
+    }
+
+    input[type="submit"].--desktop {
+      width: 15%;
     }
     .ocs_collections {
       margin-right: auto;
@@ -272,46 +295,67 @@ get_header(); ?>
 <?php do_action( 'flatsome_before_page' ); ?>
 <?php 
   $tile_type_categories = get_category_names_by_parent(2803, [2440, 2435]);
-  $has_valid_choosen_tile_type = isset($GET[Settings::TILE_TYPE]) && in_array($GET[Settings::TILE_TYPE], $tile_type_categories);
-  $choosen_tile_type = $has_valid_choosen_tile_type ? $GET[Settings::TILE_TYPE] : '';
+  $choosen_tile_type = get_choosen_GET_category(Settings::TILE_TYPE, $tile_type_categories);
   
   $tile_color_categories = get_category_names_by_parent(2440);
-  $has_valid_choosen_tile_color = isset($GET[Settings::TILE_COLOR]) && in_array($GET[Settings::TILE_COLOR], $tile_type_categories);
-  $choosen_tile_color = $has_valid_choosen_tile_type ? $GET[Settings::TILE_COLOR] : '';
+  $choosen_tile_color =  get_choosen_GET_category(Settings::TILE_COLOR, $tile_color_categories);
   
   $tile_room_categories = get_category_names_by_parent(2435);
-  $has_valid_choosen_room = isset($GET[Settings::ROOM]) && in_array($GET[Settings::ROOM], $tile_type_categories);
-  $choosen_room = $has_valid_choosen_tile_type ? $GET[Settings::ROOM] : '';
+  $choosen_room = get_choosen_GET_category(Settings::ROOM, $tile_room_categories);
+
+  $choosen_brand = '';
+  if (isset($_GET[Settings::BRAND])) {
+    $choosen_brand = filter_var($_GET[Settings::BRAND], FILTER_SANITIZE_STRING);
+  }
+
+  $choosen_family = '';
+  if (isset($_GET[Settings::FAMILY])) {
+    $choosen_family = filter_var($_GET[Settings::FAMILY], FILTER_SANITIZE_STRING);
+  }
+
+  $query_args = [];
+  if (empty(! $choosen_tile_type)) $query_args['tile_type'] = $choosen_tile_type;
+  if (empty(! $choosen_tile_color)) $query_args['tile_color'] = $choosen_tile_color;
+  if (empty(! $choosen_room)) $query_args['room'] = $choosen_room;
+  if (empty(! $choosen_brand)) $query_args['marka'] = $choosen_brand;
+  if (empty(! $choosen_family)) $query_args['csalad'] = $choosen_family;
+
+  $collections_query = get_collection_images($query_args);
+
 ?>
    
 <div>
-  <div class="ocs_filters">
-    <div class="ocs_product-search">
-      <input type="search" class="search-field mb-0" placeholder="Search…" value="" name="product_name" autocomplete="off"> 
-      <i class="icon-search magnifying-glass"></i> 
+  <form action="/kollekciok/" method="get" style="margin: unset;">
+    <div class="ocs_filters">
+      <div class="ocs_product-search thin-input">
+        <input type="search" class="search-field mb-0" placeholder="Search…" value="" name="product_name" autocomplete="off"> 
+        <i class="icon-search magnifying-glass"></i> 
+      </div>
+      
+      <div class="ocs_dropdowns">
+        <?php echo get_select_dropdown(Settings::TILE_TYPE, $tile_type_categories, 'Burkolat típus', $choosen_tile_type) ?>
+        <?php echo get_select_dropdown(Settings::TILE_COLOR, $tile_color_categories, 'Szín', $choosen_tile_color) ?>
+        <?php echo get_select_dropdown(Settings::ROOM, $tile_room_categories, 'Szoba', $choosen_room) ?>
+      </div>
+      <input type="submit" value="Keresés">
+      
+      <div class="ocs_product-search --desktop">
+        <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="" name="s" autocomplete="off"> 
+        <i class="icon-search magnifying-glass"></i> 
+      </div>
+  
+      <input class="--desktop" type="submit" value="Keresés">
     </div>
-
-    <div class="ocs_dropdowns">
-      <?php echo get_select_dropdown(Settings::TILE_TYPE, $tile_type_categories, 'Burkolat típus') ?>
-      <?php echo get_select_dropdown(Settings::TILE_COLOR, $tile_color_categories, 'Szín') ?>
-      <?php echo get_select_dropdown(Settings::ROOM, $tile_room_categories, 'Szoba') ?>
-    </div>
-
-    <div class="ocs_product-search --desktop">
-      <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="" name="s" autocomplete="off"> 
-      <i class="icon-search magnifying-glass"></i> 
-    </div>
-  </div>
+  </form>
   
   <div class="ocs_collections">
     <div class="collections-loader-position">
       <div class="collections-loader">Loading...</div>
     </div>
     <?php 
-      $collections = get_collection_images();
-      if ($collections->have_posts()) {
-        while ( $collections->have_posts() ) {
-          $collections->the_post();
+      if ($collections_query->have_posts()) {
+        while ( $collections_query->have_posts() ) {
+          $collections_query->the_post();
           $post;
           $featured_image_url_medium = get_the_post_thumbnail_url($post->ID, 'medium');
           $featured_image_url_medium_large = get_the_post_thumbnail_url($post->ID, 'medium_large');
@@ -326,6 +370,9 @@ get_header(); ?>
           $is_single_product = ! get_term_by('slug', $product_or_category_slug, 'design_category');
           $is_exhibited_in_shop = is_exhibited_in_shop($product_or_category_slug);
           $shop_message = $is_exhibited_in_shop ? \Shared\Config::TILE_EXHIBITED_IN_SHOP_MESSAGE : \Shared\Config::EXAMPLE_CAN_BE_REQUEST_MESSAGE;
+
+          $brand_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug;
+          $family_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug . '&' . Settings::FAMILY . "=" . $brand_and_family[1]->slug;
       ?>
 
       <div class="ocs_collekcion">
@@ -346,8 +393,8 @@ get_header(); ?>
         <div class="ocs_product_meta product_meta">
           <?php if ($brand_and_family): ?>
             <span class="ocs_product_meta__brand_and_category">
-              <span>Márka: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"><?= $brand_and_family[0]->name ?? '' ?></a></span>
-              <span>Család: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"><?= $brand_and_family[1]->name ?? '' ?></a></span>
+              <span>Márka: <a href="<?= $brand_link ?>" rel="tag"><?= $brand_and_family[0]->name ?? '' ?></a></span>
+              <span>Család: <a href="<?= $family_link ?>" rel="tag"><?= $brand_and_family[1]->name ?? '' ?></a></span>
             </span>
           <?php else: ?>
             <span class="ocs_product_meta__brand_and_category">
@@ -359,14 +406,18 @@ get_header(); ?>
           <span>
             <span style="font-size: 15px;"><?= $shop_message ?></span>
           </span>
-          <!-- <span class="sku_wrapper">SKU: <span class="sku">N/A</span></span> -->
           <span><a href="<?= $products_on_image_url ?>"><?= $is_single_product ? 'Képen látható termék' : 'Képen látható termékek' ?></a></span>
         </div>
       </div>
 
-    <?php }
-    } ?>
-  </div>  
+      <?php } ?>
+
+      
+      <?php } ?>
+    </div>  
+    <div class="pagination">
+      <?php ocs_flatsome_posts_pagination($collections_query); ?>
+    </div>
 </div>
 
 <?php do_action( 'flatsome_after_page' ); ?>
