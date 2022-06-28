@@ -7,7 +7,7 @@ class OCS_Product_Brand_Categories
   public $brand = null;
   public $family = null;
 
-  function __construct(WC_Product_Simple $product) {
+  function __construct($product) {
     $product_categories = wc_get_product_terms(
       $product->get_id(),
       'product_cat',
