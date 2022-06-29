@@ -314,14 +314,13 @@ get_header(); ?>
   }
 
   $query_args = [];
-  if (empty(! $choosen_tile_type)) $query_args['tile_type'] = $choosen_tile_type;
-  if (empty(! $choosen_tile_color)) $query_args['tile_color'] = $choosen_tile_color;
-  if (empty(! $choosen_room)) $query_args['room'] = $choosen_room;
-  if (empty(! $choosen_brand)) $query_args['marka'] = $choosen_brand;
-  if (empty(! $choosen_family)) $query_args['csalad'] = $choosen_family;
+  if ($choosen_tile_type) $query_args['tile_type'] = $choosen_tile_type->slug;
+  if ($choosen_tile_color) $query_args['tile_color'] = $choosen_tile_color->slug;
+  if ($choosen_room) $query_args['room'] = $choosen_room->slug;
+  if ($choosen_brand) $query_args['marka'] = $choosen_brand;
+  if ($choosen_family) $query_args['csalad'] = $choosen_family;
 
   $collections_query = get_collection_images($query_args);
-
 ?>
    
 <div>

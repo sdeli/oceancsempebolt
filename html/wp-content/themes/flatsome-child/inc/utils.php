@@ -1,5 +1,15 @@
 <?php
 
+class OCS_Display_Term {
+  public $name = null; 
+  public $slug = null;
+
+  function __construct(string $name, string $slug) {
+    $this->name = $name;
+    $this->slug = $slug;
+  }
+}
+
 function get_collection_images(array $choosen_filters) {
   if ( get_query_var('paged') ) {
       $paged = get_query_var('paged');
@@ -31,6 +41,7 @@ function get_collection_images(array $choosen_filters) {
     ];
   }
 
+  r($args);
 
   return new \WP_Query($args);
 }
@@ -89,7 +100,7 @@ function is_exhibited_in_shop(string $product_or_categ_slug) {
   return false;
 }
 
-function get_category_names_by_parent(int $parent_id, array $excludes = []) {
+function get_category_names_by_parent(int $parent_id, array $excludes = []): array {
   $termchildren = array(
     'hierarchical' => 1,
     'show_option_none' => '',
@@ -100,15 +111,17 @@ function get_category_names_by_parent(int $parent_id, array $excludes = []) {
 
   if (!empty($excludes))  $termchildren['exclude'] = $excludes;
 
-  $categ_names = array_map(function ($category) { 
-    return $category->name;
+  $categories = array_map(function ($category) { 
+    return new OCS_Display_Term($category->name, $category->slug);
   }, get_categories($termchildren));
 
-  return $categ_names;
+  return $categories;
 }
 
-function get_select_dropdown(string $name, array $items, string $label, string $choosen = '') {
-   $default = empty($choosen) ? 'selected' : '';
+function get_select_dropdown(string $name, array $items, string $label, $choosen) {
+  $hasChoosen = !empty($choosen) && $choosen;
+  $default = $hasChoosen ? 'selected' : '';
+
   ?>
     <div class="ocs_dropdown">
       <select name="<?= $name ?>" class="ocs_select thin-input">
@@ -116,10 +129,10 @@ function get_select_dropdown(string $name, array $items, string $label, string $
         
         <?php 
           foreach ($items as $item) {
-            if (!empty($choosen) && $choosen === $item) {
-              echo '<option value="'. $item .'" selected>' . ucwords($item) . '</option>';
+            if (!empty($choosen) && $choosen->slug === $item->slug) {
+              echo '<option value="'. $item->slug .'" selected>' . ucwords($item->name) . '</option>';
             } else {
-              echo '<option value="'. $item .'">' . ucwords($item) . '</option>';
+              echo '<option value="'. $item->slug .'">' . ucwords($item->name) . '</option>';
             }
           }
         ?>
@@ -133,9 +146,15 @@ function get_choosen_GET_category(string $get_variable_name, array $categories )
     return '';
   }
 
-  $has_valid_choosen_category = in_array($_GET[$get_variable_name], $categories, true);
-  $choosen_category = $has_valid_choosen_category ? $_GET[$get_variable_name] : '';
-  return $choosen_category;
+  $valid_choosen_category = array_values(array_filter($categories, function($category) use($get_variable_name) {
+    return $category->slug === $_GET[$get_variable_name];
+  }));
+
+  if (empty($valid_choosen_category)) {
+    return false;
+  }
+  r($valid_choosen_category);
+  return $valid_choosen_category[0];
 }
 
 function  ocs_flatsome_posts_pagination(WP_Query $collections_query) {
