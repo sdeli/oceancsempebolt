@@ -43,9 +43,10 @@ class AllPages
       <?php };
 
       if ($value === 'call-icon') {
+        [ $rand_tel_number ] = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)];
       ?>
         <li>
-          <a href="tel:<?= $rand_tel_number ?>" class="nav-right-call-btn"><i class="icon-phone"></i><?= $rand_tel_number ?></a> 
+          <a href="tel:<?= $rand_tel_number ?>" class="nav-right-call-btn"><i class="icon-phone"></i></a> 
         </li>
         <li class="header-divider"></li>
       <?php };

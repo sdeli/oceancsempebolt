@@ -9,7 +9,9 @@ use \Shared\Settings;
 get_header(); ?>
 
 <style>
-
+  .lightbox {
+    line-height: unset;
+  }
   .thin-input {
     height: 2.207em;
   }
@@ -102,6 +104,7 @@ get_header(); ?>
     height: 49.5vw;
     max-height: 421px;
     overflow: hidden;
+    cursor: pointer;
   }
 
   .ocs_collection_image > img {
@@ -380,6 +383,7 @@ get_header(); ?>
         </div>
 
         <div class="ocs_collection_image">
+          <a href="<?= $featured_image_url_full ?>" data-lightbox="collection" style="display: none;"  data-title="<?php the_title() ?>"></a>
           <img 
             class="skip-lazy"
             src="<?php echo $featured_image_url_original ?>"
@@ -422,3 +426,11 @@ get_header(); ?>
 <?php do_action( 'flatsome_after_page' ); ?>
 
 <?php get_footer(); ?>
+
+<script>
+  $( document ).ready(function() {
+    $('.ocs_collection_image > img').click(function() {
+      const hiddenLightboxLink = $(this).siblings().eq(0).click();
+    });
+  });
+</script>
