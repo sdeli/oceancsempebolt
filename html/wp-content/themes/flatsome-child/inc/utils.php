@@ -27,6 +27,11 @@ function get_collection_images(array $choosen_filters) {
     'paged'                 => $paged,
   );
 
+  if ($choosen_filters['tile_name']) {
+    $args['search_title'] = $choosen_filters['tile_name'];
+    unset($choosen_filters['tile_name']);
+  }
+
   if (!count($choosen_filters)) {
     return new \WP_Query($args);
   }

@@ -2,9 +2,27 @@
 /*
 Template name: kollekciok
 */
-
 use \Shared\Settings;
 
+add_filter( 'posts_where', 'ocs_posts_where', 10, 2 );
+function ocs_posts_where( $where, $wp_query )
+{
+  $searched_title = $wp_query->get( 'search_title' );
+  if (empty($searched_title)) return $where;
+
+  $title_parts = explode(" ", $searched_title);
+  global $wpdb;
+
+  // $where .= " AND " . $wpdb->posts . ".post_title LIKE '%" . esc_sql( $wpdb->esc_like( $title ) ) . "%'";
+  $where .= " AND " . $wpdb->posts . ".post_title LIKE '";
+
+  foreach($title_parts as $title_part) {
+    $where .= '%' . esc_sql( $wpdb->esc_like( $title_part ) );
+  }
+
+  $where .= "%'";
+  return $where;
+}
 
 get_header(); ?>
 
@@ -15,6 +33,11 @@ get_header(); ?>
     z-index: 100;
     background: white;
     display: none;
+    cursor: pointer;
+  }
+
+  .autocomplete-suggestion {
+    cursor: pointer;
   }
   .lightbox {
     line-height: unset;
@@ -329,12 +352,25 @@ get_header(); ?>
     $choosen_family = filter_var($_GET[Settings::FAMILY], FILTER_SANITIZE_STRING);
   }
 
+  $choosen_family = '';
+  if (isset($_GET[Settings::FAMILY])) {
+    $choosen_family = filter_var($_GET[Settings::FAMILY], FILTER_SANITIZE_STRING);
+  }
+
+  $choosen_name = '';
+  if (isset($_GET['tile_name'])) {
+    $choosen_name = filter_var($_GET['tile_name'], FILTER_SANITIZE_STRING);
+  }
+
+
+
   $query_args = [];
   if ($choosen_tile_type) $query_args['tile_type'] = $choosen_tile_type->slug;
   if ($choosen_tile_color) $query_args['tile_color'] = $choosen_tile_color->slug;
   if ($choosen_room) $query_args['room'] = $choosen_room->slug;
   if ($choosen_brand) $query_args['marka'] = $choosen_brand;
   if ($choosen_family) $query_args['csalad'] = $choosen_family;
+  if ($choosen_name) $query_args['tile_name'] = $choosen_name;
 
   $collections_query = get_collection_images($query_args);
 ?>
@@ -343,7 +379,7 @@ get_header(); ?>
   <form action="/kollekciok/" method="get" style="margin: unset;">
     <div class="ocs_filters">
       <div class="ocs_product-search thin-input">
-        <input type="search" class="search-field mb-0" placeholder="Search…" value="" name="product_name" autocomplete="off"> 
+        <input type="search" class="search-field mb-0" placeholder="Search…" value="<?= $choosen_name ?>" name="tile_name" autocomplete="off"> 
         <i class="icon-search magnifying-glass"></i>
       </div>
       
@@ -355,7 +391,7 @@ get_header(); ?>
       <input type="submit" value="Keresés">
       
       <div class="ocs_product-search --desktop">
-        <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="" name="s" autocomplete="off"> 
+        <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="<?= $choosen_name ?>" name="tile_name" autocomplete="off"> 
         <i class="icon-search magnifying-glass"></i>
         <div class="products_preview"></div>
       </div>
@@ -388,8 +424,13 @@ get_header(); ?>
           $is_exhibited_in_shop = is_exhibited_in_shop($product_or_category_slug);
           $shop_message = $is_exhibited_in_shop ? \Shared\Config::TILE_EXHIBITED_IN_SHOP_MESSAGE : \Shared\Config::EXAMPLE_CAN_BE_REQUEST_MESSAGE;
 
-          $brand_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug;
-          $family_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug . '&' . Settings::FAMILY . "=" . $brand_and_family[1]->slug;
+          if (!empty($brand_and_family[0])) {
+            $brand_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug;
+          }
+
+          if (!empty($brand_and_family[1])) {
+            $family_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug . '&' . Settings::FAMILY . "=" . $brand_and_family[1]->slug;
+          }
       ?>
 
       <div class="ocs_collekcion">
@@ -409,7 +450,7 @@ get_header(); ?>
           >
         </div>
         <div class="ocs_product_meta product_meta">
-          <?php if ($brand_and_family): ?>
+          <?php if (!empty($brand_and_family[0]) && !empty($brand_and_family[1])): ?>
             <span class="ocs_product_meta__brand_and_category">
               <span>Márka: <a href="<?= $brand_link ?>" rel="tag"><?= $brand_and_family[0]->name ?? '' ?></a></span>
               <span>Család: <a href="<?= $family_link ?>" rel="tag"><?= $brand_and_family[1]->name ?? '' ?></a></span>
@@ -449,64 +490,69 @@ get_header(); ?>
   let loadTerminated = false;
 
   $( document ).ready(function() {
+    $('[type="submit"]').click(() => {
+      isLoading = true;
+      toggleLoader();
+    })
+
     $('.ocs_collection_image > img').click(function() {
       const hiddenLightboxLink = $(this).siblings().eq(0).click();
     });
 
     $('.search-field').keyup(debounce(function() {
-      if (isLoading) {
-        if (requestForDesigns) {
-          loadTerminated = true;
-          requestForDesigns.abort();
-        };
-      }
-
-      const isAutocompleteContainer = $('.searched_products_preview');
-      const isAutocompleteContainerOpen = isAutocompleteContainer.is(':visible');
-      if (isAutocompleteContainerOpen) closeSearchedDesignsDropdown();
-
-      isLoading = true;
-      toggleLoader();
-
-      const searchField = $(this);
-      capitalizedSearchedName = capitalizeWords(searchField.val())
-      const searchedName = searchField.val() + ' ' + capitalizedSearchedName;
-
-      const ep = DESIGN_CATEGORIES_AJAX_EP + '&search=' + searchedName; 
-      
-      requestForDesigns = $.get(ep, function( data ) {
-        isLoading = false;
-        toggleLoader();
-        relevantDesigns = removeUnrelevantDesigns(data, searchedName);
-        if (relevantDesigns.length) {
-          displaySearchedDesignsDropdown(relevantDesigns, searchedName);
-        } else {
-          displaySearchedDesignsDropdown(relevantDesigns, searchField.val());
-        }
-      })
-      .fail(() => {
-        if (loadTerminated) {
-          loadTerminated = false;
-        } else {
-          alert('Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.');
-          isLoading = false;
-          toggleLoader(true);
-        }
-        
-      });
+      handleTypingIntoSearchField(this)
     }));
 
     $('.invisble_overlay').click(function() {
       $(this).removeClass('--blocking');
       closeSearchedDesignsDropdown();
     });
-
-    $('.autocomplete-suggestion').click(function() {
-      const choosenDesingsName = $(this).find('.search-name').text();
-      $('.search-field').val(choosenDesingsName);
-      closeSearchedDesignsDropdown();
-    });
   });
+
+  function handleTypingIntoSearchField(that) {
+    if (isLoading) {
+      if (requestForDesigns) {
+        loadTerminated = true;
+        requestForDesigns.abort();
+      };
+    }
+
+    const isAutocompleteContainer = $('.searched_products_preview');
+    const isAutocompleteContainerOpen = isAutocompleteContainer.is(':visible');
+    if (isAutocompleteContainerOpen) closeSearchedDesignsDropdown();
+
+    const searchField = $(that);
+    const clearedSearchField = !searchField.val().trim().length;
+    if (clearedSearchField) {
+      toggleLoader(true);
+      return;
+    };
+
+    isLoading = true;
+    toggleLoader();
+
+    searchedName = searchField.val().trim();
+    const ep = DESIGN_CATEGORIES_AJAX_EP + '&search=' + searchedName; 
+
+    requestForDesigns = $.get(ep, function( data ) {
+      isLoading = false;
+      toggleLoader();
+      if (data.length) {
+        displaySearchedDesignsDropdown(data, searchedName);
+      } else {
+        displaySearchedDesignsDropdown(data, searchedName);
+      }
+    })
+    .fail(() => {
+      if (loadTerminated) {
+        loadTerminated = false;
+      } else {
+        alert('Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.');
+        isLoading = false;
+        toggleLoader(true);
+      }
+    });
+  }
 
   function debounce(func, timeout = 300){
     let timer;
@@ -538,18 +584,25 @@ get_header(); ?>
     });
 
     autocompleteContainer.append(collectionItemsHtml);
+
+    $('.autocomplete-suggestion').click(function() {
+      const choosenDesingsName = $(this).find('.search-name').text();
+      $('.search-field').val(choosenDesingsName);
+      closeSearchedDesignsDropdown();
+    });
+    
     autocompleteContainer.fadeIn();
   }
 
   function getAutocomleteItemHtml(imageSrc, collectionName, i, searchedName) {
     const searchedParts = searchedName.split(' ');
-    collectionNameWithHighlights = searchedParts.reduce((collectionName, searchedPart) => {
+    collectionName = searchedParts.reduce((collectionName, searchedPart) => {
       const regex = new RegExp(`${searchedPart}`, 'g');
-      const replace = `<strong>${searchedPart}</strong>`;
+      const replace = `<*>${searchedPart}</*>`;
       return collectionName.replace(regex, replace);
     }, collectionName);
 
-
+    const collectionNameWithHighlights = collectionName.replace(/\*/g, 'strong');
     return `<div class="autocomplete-suggestion" data-index="${i}">
         <img class="search-image" src="${imageSrc}">
         <div class="search-name" style="text-align: left;">${collectionNameWithHighlights}</div>
@@ -557,6 +610,7 @@ get_header(); ?>
   }
 
   function closeSearchedDesignsDropdown() {
+    $('.autocomplete-suggestion').off('click');
     const autocompleteContainer = $('.searched_products_preview');
     autocompleteContainer.fadeOut(() => {
       autocompleteContainer.children().remove();
@@ -575,33 +629,4 @@ get_header(); ?>
       loader.fadeOut();
     }
   }
-
-function capitalizeWords(words) {
-
-  const capitalizadArr = words.split(' ').map(element => {
-    return element.charAt(0).toUpperCase() + element.substring(1).toLowerCase();
-  });
-
-  return capitalizadArr.join(' ');
-}
-
-function removeUnrelevantDesigns(data, searchedName) {
-  const searchedWords = searchedName.split(' ');
-  const validDesigns = [];
-
-  data.forEach((design) => {
-    let areAlWordsInTitle = true;
-    const title = design.title.rendered;
-
-    for (let i = 0; i < searchedWords.length; i++) {
-      const currentWord = searchedWords[i];
-      areAlWordsInTitle = title.toLowerCase().includes(currentWord.toLowerCase());
-      if (!areAlWordsInTitle) break;
-    }
-
-    if (areAlWordsInTitle) validDesigns.push(design);
-  })
-
-  return validDesigns;
-}
 </script>
