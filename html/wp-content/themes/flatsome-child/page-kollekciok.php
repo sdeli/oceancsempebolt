@@ -9,6 +9,13 @@ use \Shared\Settings;
 get_header(); ?>
 
 <style>
+  .searched_products_preview {
+    box-shadow: 1px 1px 15px rgb(0 0 0 / 15%);
+    position: absolute;
+    z-index: 100;
+    background: white;
+    display: none;
+  }
   .lightbox {
     line-height: unset;
   }
@@ -139,6 +146,11 @@ get_header(); ?>
     margin-left: 0;
   }
 
+  .products_preview {
+    padding: 10px;
+    background-color: white;
+  }
+
   @media only screen and (min-width: 550px) {
     .ocs_dropdowns {
       flex-direction: row;
@@ -213,6 +225,7 @@ get_header(); ?>
     right: 50%;
     z-index: 100;
     transform: translateX(50%);
+    transition: display 1s ease-in-out;
   }
   .collections-loader {
   color: #1184EF;
@@ -331,7 +344,7 @@ get_header(); ?>
     <div class="ocs_filters">
       <div class="ocs_product-search thin-input">
         <input type="search" class="search-field mb-0" placeholder="Search…" value="" name="product_name" autocomplete="off"> 
-        <i class="icon-search magnifying-glass"></i> 
+        <i class="icon-search magnifying-glass"></i>
       </div>
       
       <div class="ocs_dropdowns">
@@ -343,11 +356,13 @@ get_header(); ?>
       
       <div class="ocs_product-search --desktop">
         <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="" name="s" autocomplete="off"> 
-        <i class="icon-search magnifying-glass"></i> 
+        <i class="icon-search magnifying-glass"></i>
+        <div class="products_preview"></div>
       </div>
   
       <input class="--desktop" type="submit" value="Keresés">
     </div>
+    <div class="searched_products_preview"></div>
   </form>
   
   <div class="ocs_collections">
@@ -401,8 +416,8 @@ get_header(); ?>
             </span>
           <?php else: ?>
             <span class="ocs_product_meta__brand_and_category">
-              <span>Márka: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"> - </a></span>
-              <span>Család: <a href="https://flatsome3.uxthemes.com/product-category/shoes/" rel="tag"> - </a></span>
+              <span>Márka: <a href="#" rel="tag"> - </a></span>
+              <span>Kollekció: <a href="#" rel="tag"> - </a></span>
             </span>
           <?php endif; ?>
 
@@ -422,15 +437,171 @@ get_header(); ?>
       <?php ocs_flatsome_posts_pagination($collections_query); ?>
     </div>
 </div>
-
+<div class="invisble_overlay"></div>
 <?php do_action( 'flatsome_after_page' ); ?>
 
 <?php get_footer(); ?>
 
 <script>
+  const DESIGN_CATEGORIES_AJAX_EP = window.location.protocol + '//' +  window.location.hostname + '/wp-json/wp/v2/designs/?per_page=20&page1&orderby=relevance';
+  let isLoading = false;
+  let requestForDesigns = false;
+  let loadTerminated = false;
+
   $( document ).ready(function() {
     $('.ocs_collection_image > img').click(function() {
       const hiddenLightboxLink = $(this).siblings().eq(0).click();
     });
+
+    $('.search-field').keyup(debounce(function() {
+      if (isLoading) {
+        if (requestForDesigns) {
+          loadTerminated = true;
+          requestForDesigns.abort();
+        };
+      }
+
+      const isAutocompleteContainer = $('.searched_products_preview');
+      const isAutocompleteContainerOpen = isAutocompleteContainer.is(':visible');
+      if (isAutocompleteContainerOpen) closeSearchedDesignsDropdown();
+
+      isLoading = true;
+      toggleLoader();
+
+      const searchField = $(this);
+      capitalizedSearchedName = capitalizeWords(searchField.val())
+      const searchedName = searchField.val() + ' ' + capitalizedSearchedName;
+
+      const ep = DESIGN_CATEGORIES_AJAX_EP + '&search=' + searchedName; 
+      
+      requestForDesigns = $.get(ep, function( data ) {
+        isLoading = false;
+        toggleLoader();
+        relevantDesigns = removeUnrelevantDesigns(data, searchedName);
+        if (relevantDesigns.length) {
+          displaySearchedDesignsDropdown(relevantDesigns, searchedName);
+        } else {
+          displaySearchedDesignsDropdown(relevantDesigns, searchField.val());
+        }
+      })
+      .fail(() => {
+        if (loadTerminated) {
+          loadTerminated = false;
+        } else {
+          alert('Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.');
+          isLoading = false;
+          toggleLoader(true);
+        }
+        
+      });
+    }));
+
+    $('.invisble_overlay').click(function() {
+      $(this).removeClass('--blocking');
+      closeSearchedDesignsDropdown();
+    });
+
+    $('.autocomplete-suggestion').click(function() {
+      const choosenDesingsName = $(this).find('.search-name').text();
+      $('.search-field').val(choosenDesingsName);
+      closeSearchedDesignsDropdown();
+    });
   });
+
+  function debounce(func, timeout = 300){
+    let timer;
+    return function(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
+  function displaySearchedDesignsDropdown(collectionsData, searchedName) {
+    $('.invisble_overlay').addClass('--blocking');
+    const autocompleteContainer = $('.searched_products_preview');
+
+    const noDesignsFound = !collectionsData.length;
+    if (noDesignsFound) {
+      autocompleteContainer.append($(
+        `<div class="autocomplete-suggestion" data-index="0">
+          <div class="search-name" style="text-align: center;">Nem találtunk egy kollekciót sem ezzel a névvel: <strong>${searchedName}</strong></div>
+        </div>`));
+        autocompleteContainer.fadeIn();
+
+        return;
+    }
+    
+    collectionItemsHtml = '';
+    collectionsData.forEach((collectionData, i) => {
+      const {thumbnail, title } = collectionData;
+      collectionItemsHtml += getAutocomleteItemHtml(thumbnail, title.rendered, i, searchedName)
+    });
+
+    autocompleteContainer.append(collectionItemsHtml);
+    autocompleteContainer.fadeIn();
+  }
+
+  function getAutocomleteItemHtml(imageSrc, collectionName, i, searchedName) {
+    const searchedParts = searchedName.split(' ');
+    collectionNameWithHighlights = searchedParts.reduce((collectionName, searchedPart) => {
+      const regex = new RegExp(`${searchedPart}`, 'g');
+      const replace = `<strong>${searchedPart}</strong>`;
+      return collectionName.replace(regex, replace);
+    }, collectionName);
+
+
+    return `<div class="autocomplete-suggestion" data-index="${i}">
+        <img class="search-image" src="${imageSrc}">
+        <div class="search-name" style="text-align: left;">${collectionNameWithHighlights}</div>
+      </div>`;
+  }
+
+  function closeSearchedDesignsDropdown() {
+    const autocompleteContainer = $('.searched_products_preview');
+    autocompleteContainer.fadeOut(() => {
+      autocompleteContainer.children().remove();
+    })
+  }
+
+  function toggleLoader(shouldCloseIfOpen) {
+    const loader = $('.collections-loader-position');
+    if (shouldCloseIfOpen && loader.is(':visible')) {
+      loader.fadeOut();
+    }
+
+    if (isLoading) {
+      loader.fadeIn();
+    } else {
+      loader.fadeOut();
+    }
+  }
+
+function capitalizeWords(words) {
+
+  const capitalizadArr = words.split(' ').map(element => {
+    return element.charAt(0).toUpperCase() + element.substring(1).toLowerCase();
+  });
+
+  return capitalizadArr.join(' ');
+}
+
+function removeUnrelevantDesigns(data, searchedName) {
+  const searchedWords = searchedName.split(' ');
+  const validDesigns = [];
+
+  data.forEach((design) => {
+    let areAlWordsInTitle = true;
+    const title = design.title.rendered;
+
+    for (let i = 0; i < searchedWords.length; i++) {
+      const currentWord = searchedWords[i];
+      areAlWordsInTitle = title.toLowerCase().includes(currentWord.toLowerCase());
+      if (!areAlWordsInTitle) break;
+    }
+
+    if (areAlWordsInTitle) validDesigns.push(design);
+  })
+
+  return validDesigns;
+}
 </script>

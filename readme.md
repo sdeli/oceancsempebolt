@@ -88,7 +88,7 @@ composer attach:wp
 
 # disable plugins not needed for development
 # example:
-wp plugin delete algori-pdf-viewer gtm-ecommerce-woo-pro autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
+wp plugin deactivate algori-pdf-viewer gtm-ecommerce-woo-pro autoptimize wordfence wp-rocket wps-woocommerce-simplepay-payment-gateway --allow-root
 ```
 
 ### 6. Install Dev Plugins

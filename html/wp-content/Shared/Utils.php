@@ -284,6 +284,7 @@ class Utils {
     'has_archive' => true,
     'hierarchical' => false,
     'taxonomies' => array('design_category'), 
+    'show_in_rest' => true
     );
   
     register_post_type('designs', $args);

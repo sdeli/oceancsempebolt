@@ -41,8 +41,6 @@ function get_collection_images(array $choosen_filters) {
     ];
   }
 
-  r($args);
-
   return new \WP_Query($args);
 }
 
@@ -153,7 +151,7 @@ function get_choosen_GET_category(string $get_variable_name, array $categories )
   if (empty($valid_choosen_category)) {
     return false;
   }
-  r($valid_choosen_category);
+
   return $valid_choosen_category[0];
 }
 
@@ -199,4 +197,109 @@ function  ocs_flatsome_posts_pagination(WP_Query $collections_query) {
   function get_collection_family_link() {
 
   }
+}
+
+function create_api_designs_thumbnails_field() {
+  register_rest_field( array('designs'),
+  'thumbnail',
+  array(
+      'get_callback'    => 'get_rest_featured_image',
+      'update_callback' => null,
+      'schema'          => null,
+  )
+ );
+ }
+ 
+ function get_rest_featured_image( $object ) {
+   if( $object['featured_media'] ){
+     return get_the_post_thumbnail_url($object['id'], 'thumbnail');
+   }
+ 
+   return false;
+ }
+
+ function echoFakeSliderInteractionJs(){
+  ?>
+    <script title="unlazy-footer"> 
+        window.addEventListener('DOMContentLoaded', () => {
+          let fakeSliderGesuredZone = document.querySelector('.design-slider__fake-slider-img');
+          let fakeNextArrow = document.querySelector('.fake-arrow-next');
+          let fakePrevArrow = document.querySelector('.fake-arrow-prev');
+
+          let hasFakeSliderOnPage = fakeSliderGesuredZone && fakeNextArrow && fakePrevArrow;
+          if (hasFakeSliderOnPage) {
+            fakeSliderInteractions(fakeSliderGesuredZone, fakeNextArrow, fakePrevArrow)
+          }
+        });
+
+        function fakeSliderInteractions(fakeSliderGesuredZone, fakeNextArrow, fakePrevArrow) {
+          var touchstartX = 0;
+          var touchendX = 0;
+
+          fakeNextArrow.addEventListener('click', () => {
+            slideSliderWhenLoaded(true);
+          });
+          
+          fakePrevArrow.addEventListener('click', () => {
+            slideSliderWhenLoaded(false);
+          });
+
+          fakeSliderGesuredZone.addEventListener('touchstart', function(event) {
+            touchstartX = event.pageX;
+          }, false);
+            
+          fakeSliderGesuredZone.addEventListener('touchend', function(event) {
+            touchendX = event.pageX;
+            handleSwipe(touchstartX, touchendX);
+          }, false);
+        }
+
+        function handleSwipe(touchstartX, touchendX) {
+          const swipedLeft = touchendX < touchstartX;
+          if (swipedLeft) {
+            slideSliderWhenLoaded(true);
+            return;
+          }
+          
+          const swipedRight = touchendX > touchstartX;
+          if (swipedRight) {
+            slideSliderWhenLoaded(false);
+            return;
+          }
+        }
+
+        function slideSliderWhenLoaded(next) {
+          let sliderLoader =  document.querySelector('.slider-loader');
+          sliderLoader.style.display = 'block';
+          var isSliderLoadedInterval = setInterval(function () {
+            const designSlider = document.querySelector(
+              '.design-slider__real-slider [data-ssid]'
+            );
+
+            if (designSlider) {
+              clearInterval(isSliderLoadedInterval);
+              const designSliderId = `#n2-ss-${designSlider.getAttribute("data-ssid")}`;
+              setTimeout(() => {
+                moveSlider(next, designSliderId, sliderLoader)
+              }, 300);
+            }
+          }, 200);
+        }
+
+        function moveSlider(next, designSliderId, sliderLoader) {
+          _N2.r(designSliderId, function(){
+            var slider = _N2[designSliderId];
+            if (next) {
+              slider.next();
+            } else {
+              slider.previous();
+            }
+            sliderLoader.style.opacity = 0;
+            setTimeout(() => {
+              sliderLoader.style.display = 'none';
+            }, 1000)
+          });
+        }
+    </script>
+  <?php 
 }
