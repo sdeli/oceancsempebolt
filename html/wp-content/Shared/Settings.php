@@ -9,4 +9,5 @@ class Settings
   const ROOM = 'szoba';
   const BRAND = 'marka';
   const FAMILY = 'csalad';
+  const NO_COLLECTIONS_WITH_THIS_NAME_MESSAGE = 'Ezzel a névvel és szűrőkkel nem találtunk kollekciókat ezért a szűrőket eltávolítottuk.';
 }

@@ -34,11 +34,23 @@ get_header(); ?>
     background: white;
     display: none;
     cursor: pointer;
+    position: absolute;
+    top: 45px;
   }
 
   .autocomplete-suggestion {
     cursor: pointer;
+    min-width: 300px;
   }
+
+  .autocomplete-suggestion img {
+    margin-right: 21px;
+  }
+
+  .autocomplete-suggestion strong {
+    color: #0173dd
+  }
+
   .lightbox {
     line-height: unset;
   }
@@ -167,11 +179,6 @@ get_header(); ?>
 
   ul.nav-pagination li {
     margin-left: 0;
-  }
-
-  .products_preview {
-    padding: 10px;
-    background-color: white;
   }
 
   @media only screen and (min-width: 550px) {
@@ -373,34 +380,48 @@ get_header(); ?>
   if ($choosen_name) $query_args['tile_name'] = $choosen_name;
 
   $collections_query = get_collection_images($query_args);
+  $found_kollections_without_filters = isset($GLOBALS['ocs_no_posts_message']) && $GLOBALS['ocs_no_posts_message'] === \Shared\Settings::NO_COLLECTIONS_WITH_THIS_NAME_MESSAGE;
 ?>
    
 <div>
   <form action="/kollekciok/" method="get" style="margin: unset;">
     <div class="ocs_filters">
       <div class="ocs_product-search thin-input">
-        <input type="search" class="search-field mb-0" placeholder="Search…" value="<?= $choosen_name ?>" name="tile_name" autocomplete="off"> 
+        <input type="search" class="search-field mb-0" placeholder="Kollekció név" value="<?= $choosen_name ?>" name="tile_name" autocomplete="off"> 
         <i class="icon-search magnifying-glass"></i>
+        <div class="searched_products_preview"></div>
       </div>
       
-      <div class="ocs_dropdowns">
-        <?php echo get_select_dropdown(Settings::TILE_TYPE, $tile_type_categories, 'Burkolat típus', $choosen_tile_type) ?>
-        <?php echo get_select_dropdown(Settings::TILE_COLOR, $tile_color_categories, 'Szín', $choosen_tile_color) ?>
-        <?php echo get_select_dropdown(Settings::ROOM, $tile_room_categories, 'Szoba', $choosen_room) ?>
-      </div>
+      <?php if ($found_kollections_without_filters): ?>
+        <div class="ocs_dropdowns">
+          <?php echo get_select_dropdown(Settings::TILE_TYPE, $tile_type_categories, 'Burkolat típus') ?>
+          <?php echo get_select_dropdown(Settings::TILE_COLOR, $tile_color_categories, 'Szín') ?>
+          <?php echo get_select_dropdown(Settings::ROOM, $tile_room_categories, 'Szoba') ?>
+        </div>
+      <?php else: ?>
+        <div class="ocs_dropdowns">
+          <?php echo get_select_dropdown(Settings::TILE_TYPE, $tile_type_categories, 'Burkolat típus', $choosen_tile_type) ?>
+          <?php echo get_select_dropdown(Settings::TILE_COLOR, $tile_color_categories, 'Szín', $choosen_tile_color) ?>
+          <?php echo get_select_dropdown(Settings::ROOM, $tile_room_categories, 'Szoba', $choosen_room) ?>
+        </div>
+      <?php endif; ?>
       <input type="submit" value="Keresés">
       
       <div class="ocs_product-search --desktop">
-        <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Search…" value="<?= $choosen_name ?>" name="tile_name" autocomplete="off"> 
+        <input type="search" id="woocommerce-product-search-field-0" class="search-field mb-0" placeholder="Kollekció név" value="<?= $choosen_name ?>" name="tile_name" autocomplete="off"> 
         <i class="icon-search magnifying-glass"></i>
-        <div class="products_preview"></div>
+        <div class="searched_products_preview"></div>
       </div>
-  
+      
       <input class="--desktop" type="submit" value="Keresés">
     </div>
-    <div class="searched_products_preview"></div>
   </form>
   
+  <?php if (isset($GLOBALS['ocs_no_posts_message'])): ?>
+    <div style="height: 35px; text-align: center; vertical-align:center">
+      <strong style="margin: 0; position: relative; top: 1px;"><?= $GLOBALS['ocs_no_posts_message'] ?></strong>
+    </div>
+  <?php endif; ?>
   <div class="ocs_collections">
     <div class="collections-loader-position">
       <div class="collections-loader">Loading...</div>
@@ -428,7 +449,7 @@ get_header(); ?>
             $brand_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug;
           }
 
-          if (!empty($brand_and_family[1])) {
+          if (!empty($brand_and_family[0]) && !empty($brand_and_family[1])) {
             $family_link = Settings::KOLLECTIONS_PATH . "/?" . Settings::BRAND . "=" . $brand_and_family[0]->slug . '&' . Settings::FAMILY . "=" . $brand_and_family[1]->slug;
           }
       ?>
@@ -482,151 +503,171 @@ get_header(); ?>
 <?php do_action( 'flatsome_after_page' ); ?>
 
 <?php get_footer(); ?>
+<script> 
+  (function() {
+    const ERROR_MESSAGE = 'Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.'
+    const DESIGNS_REST_EP = window.location.protocol + '//' +  window.location.hostname + '/wp-json/wp/v2/designs/?per_page=20&page1&orderby=relevance';
+    
+    let isLoading = false;
+    let requestForDesigns = false;
+    let loadTerminated = false;
 
-<script>
-  const DESIGN_CATEGORIES_AJAX_EP = window.location.protocol + '//' +  window.location.hostname + '/wp-json/wp/v2/designs/?per_page=20&page1&orderby=relevance';
-  let isLoading = false;
-  let requestForDesigns = false;
-  let loadTerminated = false;
+    $( document ).ready(function() {
+      $('[type="submit"]').click(() => {
+        isLoading = true;
+        toggleLoader();
+      })
 
-  $( document ).ready(function() {
-    $('[type="submit"]').click(() => {
+      $('.ocs_collection_image > img').click(function() {
+        const hiddenLightboxLink = $(this).siblings().eq(0).click();
+      });
+
+      $('[name="tile_name"]').keyup(debounce(async function() {
+        handleTypingIntoSearchField(this);
+        syncDataBetweenSearchFields(this);
+      }));
+
+      $('.invisble_overlay').click(function() {
+        $(this).removeClass('--blocking');
+        closeSearchedDesignsDropdown();
+      });
+    });
+
+    function handleTypingIntoSearchField(that) {
+      if (isLoading) {
+        if (requestForDesigns) {
+          loadTerminated = true;
+          requestForDesigns.abort();
+        };
+      }
+
+      const autocompleteContainer = $('.searched_products_preview');
+      const isAutocompleteContainerOpen = autocompleteContainer.is(':visible');
+      if (isAutocompleteContainerOpen) closeSearchedDesignsDropdown();
+
+      const nameSearchField = $(that);
+      const userClearedSearchField = !nameSearchField.val().trim().length;
+      if (userClearedSearchField) {
+        toggleLoader(true);
+        return;
+      };
+
       isLoading = true;
       toggleLoader();
-    })
 
-    $('.ocs_collection_image > img').click(function() {
-      const hiddenLightboxLink = $(this).siblings().eq(0).click();
-    });
+      const searchedName = nameSearchField.val().trim();
+      const ep = DESIGNS_REST_EP + '&search=' + searchedName; 
 
-    $('.search-field').keyup(debounce(function() {
-      handleTypingIntoSearchField(this)
-    }));
+      requestForDesigns = $.get(ep, function( data ) {
+        isLoading = false;
+        toggleLoader();
+        if (data.length) {
+          displaySearchedDesignsDropdown(data, searchedName);
+        } else {
+          displaySearchedDesignsDropdown(data, searchedName);
+        }
+      })
+      .fail(() => {
+        if (loadTerminated) {
+          loadTerminated = false;
+        } else {
+          alert(ERROR_MESSAGE);
+          isLoading = false;
+          toggleLoader(true);
+        }
+      });
+    }
 
-    $('.invisble_overlay').click(function() {
-      $(this).removeClass('--blocking');
-      closeSearchedDesignsDropdown();
-    });
-  });
-
-  function handleTypingIntoSearchField(that) {
-    if (isLoading) {
-      if (requestForDesigns) {
-        loadTerminated = true;
-        requestForDesigns.abort();
+    function debounce(func, timeout = 300){
+      let timer;
+      return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
       };
     }
 
-    const isAutocompleteContainer = $('.searched_products_preview');
-    const isAutocompleteContainerOpen = isAutocompleteContainer.is(':visible');
-    if (isAutocompleteContainerOpen) closeSearchedDesignsDropdown();
+    function displaySearchedDesignsDropdown(collectionsData, searchedName) {
+      $('.invisble_overlay').addClass('--blocking');
+      const autocompleteContainer = $('.searched_products_preview');
 
-    const searchField = $(that);
-    const clearedSearchField = !searchField.val().trim().length;
-    if (clearedSearchField) {
-      toggleLoader(true);
-      return;
-    };
+      const noDesignsFound = !collectionsData.length;
+      if (noDesignsFound) {
+        autocompleteContainer.append($(
+          `<div class="autocomplete-suggestion" data-index="0">
+            <div class="search-name" style="text-align: center;">Nem találtunk egy kollekciót sem ezzel a névvel: <strong>${searchedName}</strong></div>
+          </div>`));
+          autocompleteContainer.fadeIn();
 
-    isLoading = true;
-    toggleLoader();
-
-    searchedName = searchField.val().trim();
-    const ep = DESIGN_CATEGORIES_AJAX_EP + '&search=' + searchedName; 
-
-    requestForDesigns = $.get(ep, function( data ) {
-      isLoading = false;
-      toggleLoader();
-      if (data.length) {
-        displaySearchedDesignsDropdown(data, searchedName);
-      } else {
-        displaySearchedDesignsDropdown(data, searchedName);
+          return;
       }
-    })
-    .fail(() => {
-      if (loadTerminated) {
-        loadTerminated = false;
-      } else {
-        alert('Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.');
-        isLoading = false;
-        toggleLoader(true);
+      
+      collectionItemsHtml = '';
+      collectionsData.forEach((collectionData, i) => {
+        const {thumbnail, title, design_category } = collectionData;
+        collectionItemsHtml += getAutocomleteItemHtml(thumbnail, title.rendered, i, searchedName, design_category)
+      });
+
+      autocompleteContainer.append(collectionItemsHtml);
+
+      $('.autocomplete-suggestion').click(function() {
+        const choosenDesingsName = $(this).find('.search-name').text();
+        $('[name="tile_name"]').val(choosenDesingsName);
+        closeSearchedDesignsDropdown();
+      });
+      
+      autocompleteContainer.fadeIn();
+    }
+
+    function getAutocomleteItemHtml(imageSrc, collectionName, i, searchedName, design_category) {
+      const searchedParts = searchedName.split(' ');
+      collectionName = searchedParts.reduce((collectionName, searchedPart) => {
+        let regex = new RegExp(`${searchedPart.toLowerCase()}`, 'g');
+        let replace = `<*>${searchedPart.toLowerCase()}</*>`;
+        collectionName = collectionName.replace(regex, replace);
+
+        lower = searchedPart.toLowerCase();
+        searchedPart = searchedPart.charAt(0).toUpperCase() + lower.slice(1);
+        regex = new RegExp(`${searchedPart}`, 'g');
+        replace = `<*>${searchedPart}</*>`;
+        return collectionName.replace(regex, replace);
+      }, collectionName);
+
+      const collectionNameWithHighlights = collectionName.replace(/\*/g, 'strong');
+      return `<div class="autocomplete-suggestion" data-index="${i}">
+          <img class="search-image" src="${imageSrc}">
+          <div class="search-name" style="text-align: left;">${collectionNameWithHighlights}</div>
+        </div>`;
+    }
+
+    function closeSearchedDesignsDropdown() {
+      $('.autocomplete-suggestion').off('click');
+      const autocompleteContainer = $('.searched_products_preview');
+      autocompleteContainer.fadeOut(() => {
+        autocompleteContainer.children().remove();
+      })
+    }
+
+    function toggleLoader(shouldCloseIfOpen) {
+      const loader = $('.collections-loader-position');
+      if (shouldCloseIfOpen && loader.is(':visible')) {
+        loader.fadeOut();
       }
-    });
-  }
 
-  function debounce(func, timeout = 300){
-    let timer;
-    return function(...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => { func.apply(this, args); }, timeout);
-    };
-  }
-
-  function displaySearchedDesignsDropdown(collectionsData, searchedName) {
-    $('.invisble_overlay').addClass('--blocking');
-    const autocompleteContainer = $('.searched_products_preview');
-
-    const noDesignsFound = !collectionsData.length;
-    if (noDesignsFound) {
-      autocompleteContainer.append($(
-        `<div class="autocomplete-suggestion" data-index="0">
-          <div class="search-name" style="text-align: center;">Nem találtunk egy kollekciót sem ezzel a névvel: <strong>${searchedName}</strong></div>
-        </div>`));
-        autocompleteContainer.fadeIn();
-
-        return;
-    }
-    
-    collectionItemsHtml = '';
-    collectionsData.forEach((collectionData, i) => {
-      const {thumbnail, title } = collectionData;
-      collectionItemsHtml += getAutocomleteItemHtml(thumbnail, title.rendered, i, searchedName)
-    });
-
-    autocompleteContainer.append(collectionItemsHtml);
-
-    $('.autocomplete-suggestion').click(function() {
-      const choosenDesingsName = $(this).find('.search-name').text();
-      $('.search-field').val(choosenDesingsName);
-      closeSearchedDesignsDropdown();
-    });
-    
-    autocompleteContainer.fadeIn();
-  }
-
-  function getAutocomleteItemHtml(imageSrc, collectionName, i, searchedName) {
-    const searchedParts = searchedName.split(' ');
-    collectionName = searchedParts.reduce((collectionName, searchedPart) => {
-      const regex = new RegExp(`${searchedPart}`, 'g');
-      const replace = `<*>${searchedPart}</*>`;
-      return collectionName.replace(regex, replace);
-    }, collectionName);
-
-    const collectionNameWithHighlights = collectionName.replace(/\*/g, 'strong');
-    return `<div class="autocomplete-suggestion" data-index="${i}">
-        <img class="search-image" src="${imageSrc}">
-        <div class="search-name" style="text-align: left;">${collectionNameWithHighlights}</div>
-      </div>`;
-  }
-
-  function closeSearchedDesignsDropdown() {
-    $('.autocomplete-suggestion').off('click');
-    const autocompleteContainer = $('.searched_products_preview');
-    autocompleteContainer.fadeOut(() => {
-      autocompleteContainer.children().remove();
-    })
-  }
-
-  function toggleLoader(shouldCloseIfOpen) {
-    const loader = $('.collections-loader-position');
-    if (shouldCloseIfOpen && loader.is(':visible')) {
-      loader.fadeOut();
+      if (isLoading) {
+        loader.fadeIn();
+      } else {
+        loader.fadeOut();
+      }
     }
 
-    if (isLoading) {
-      loader.fadeIn();
-    } else {
-      loader.fadeOut();
+    function syncDataBetweenSearchFields(that) {
+      const currentText = $(that).val();
+      $('[name="tile_name"]').each(function(field) {
+        const currentField = $(this);
+        if (currentField.val() !== currentText) {
+          currentField.val(currentText);
+        }
+      });
     }
-  }
+  })();
 </script>

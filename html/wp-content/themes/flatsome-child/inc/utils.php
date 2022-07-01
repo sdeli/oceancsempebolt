@@ -27,13 +27,14 @@ function get_collection_images(array $choosen_filters) {
     'paged'                 => $paged,
   );
 
-  if ($choosen_filters['tile_name']) {
+  if (isset($choosen_filters['tile_name'])) {
     $args['search_title'] = $choosen_filters['tile_name'];
     unset($choosen_filters['tile_name']);
   }
 
-  if (!count($choosen_filters)) {
-    return new \WP_Query($args);
+  if (!isset($choosen_filters['tile_type'])) {
+    $args['orderby'] = 'rand';
+    $choosen_filters['tile_type'] = 'burkolatok-product-category';
   }
 
   $args['tax_query'] = ['relation' => 'IN'];
@@ -46,7 +47,25 @@ function get_collection_images(array $choosen_filters) {
     ];
   }
 
-  return new \WP_Query($args);
+  $collections_query = new \WP_Query($args);
+  if ($collections_query->post_count) {
+    return $collections_query;
+  };
+  
+  $GLOBALS['ocs_no_posts_message'] = 'Nem találtunk kollekciókat ezekkel a szűrőkkel, kérjük próbálozzon máshogy.';
+
+  if (!isset($args['search_title'])) {
+    return $collections_query;
+  }
+
+  unset($args['tax_query']);
+
+  $collections_query = new \WP_Query($args);
+  if ($collections_query->post_count) {
+    $GLOBALS['ocs_no_posts_message'] = \Shared\Settings::NO_COLLECTIONS_WITH_THIS_NAME_MESSAGE;
+  }
+
+  return $collections_query;
 }
 
 function get_brand_and_family_design_categories(WP_Post $design) {
@@ -121,8 +140,8 @@ function get_category_names_by_parent(int $parent_id, array $excludes = []): arr
   return $categories;
 }
 
-function get_select_dropdown(string $name, array $items, string $label, $choosen) {
-  $hasChoosen = !empty($choosen) && $choosen;
+function get_select_dropdown(string $name, array $items, string $label, $choosen = null) {
+  $hasChoosen = !empty($choosen) && !is_null($choosen) && $choosen;
   $default = $hasChoosen ? 'selected' : '';
 
   ?>
