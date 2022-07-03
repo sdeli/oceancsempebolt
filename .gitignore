@@ -19,3 +19,6 @@ wp/wp-content/plugins/oceancsempebolt/vendor
 node_modules
 docker-compose.yml
 web
+.credentials
+composer-temp.lock
+.gitignore
