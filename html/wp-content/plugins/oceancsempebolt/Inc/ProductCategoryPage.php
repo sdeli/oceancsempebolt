@@ -932,7 +932,7 @@ class ProductCategoryPage
         $smartSliderId = 110;	
       }
       if ($cat->slug === "notta") {
-        $smartSliderId = 110;	
+        $smartSliderId = 111;	
       }
       if ($cat->slug === "safari-porcelanosa") {
         $smartSliderId = 112;	
@@ -1741,6 +1741,48 @@ class ProductCategoryPage
       }
       if ($cat->slug === "marble") {
         $smartSliderId = 403;
+      }
+      if ($cat->slug === "patchwork") {
+        $smartSliderId = 399;
+      }
+      if ($cat->slug === "glaciar") {
+        $smartSliderId = 412;
+      }
+      if ($cat->slug === "oken") {
+        $smartSliderId = 411;
+      }
+      if ($cat->slug === "metallic") {
+        $smartSliderId = 410;
+      }
+      if ($cat->slug === "splash-kategoria") {
+        $smartSliderId = 409;
+      }
+      if ($cat->slug === "oxidart") {
+        $smartSliderId = 416;
+      }
+      if ($cat->slug === "hexagon-burkolatok") {
+        $smartSliderId = 405;
+      }
+      if ($cat->slug === "markak-burkolatok") {
+        $smartSliderId = 413;
+      }
+      if ($cat->slug === "cifre") {
+        $smartSliderId = 414;
+      }
+      if ($cat->slug === "love") {
+        $smartSliderId = 415;
+      }
+      if ($cat->slug === "fargo") {
+        $smartSliderId = 400;
+      }
+      if ($cat->slug === "sant-agostino") {
+        $smartSliderId = 417;
+      }
+      if ($cat->slug === "mondo-nowa-gala") {
+        $smartSliderId = 418;
+      }
+      if ($cat->slug === "softcement") {
+        $smartSliderId = 419;
       }
     }
 

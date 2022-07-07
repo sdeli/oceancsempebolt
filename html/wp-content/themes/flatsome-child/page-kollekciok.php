@@ -486,7 +486,7 @@ get_header(); ?>
           <span>
             <span style="font-size: 15px;"><?= $shop_message ?></span>
           </span>
-          <span><a href="<?= $products_on_image_url ?>"><?= $is_single_product ? 'Képen látható termék' : 'Képen látható termékek' ?></a></span>
+          <span><a href="<?= $products_on_image_url ?>"><?= $is_single_product ? 'Megnézem a képen látható terméket' : 'Megnézem a képen látható termékeket' ?></a></span>
         </div>
       </div>
 

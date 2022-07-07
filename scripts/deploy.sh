@@ -7,18 +7,23 @@ fi
 
 ENV=$1
 
-if [ $ENV = 'production' ]; then
+if [[ $ENV == 'production' ]]; then
+  read -p "did you update design categories? (y|n): " has_checked_categories_file  
+  if [ $has_checked_categories_file = 'n' ]; then exit 0; fi;
+
   FTP_USER=$DEV_FTP_USER
   FTP_PASSWORD=$DEV_FTP_PASSWORD
   FTP_HOST=$DEV_FTP_HOST
   FTP_PORT=$DEV_FTP_PORT
   echo 'deploying to prod env'
 else
+  read -p "did you update design categories? (y|n): " has_checked_categories_file  
+  if [ $has_checked_categories_file = 'n' ]; then exit 0; fi;
+
   FTP_USER=$DEV_FTP_USER
   FTP_PASSWORD=$DEV_FTP_PASSWORD
   FTP_HOST=$DEV_FTP_HOST
   FTP_PORT=$DEV_FTP_PORT
-  echo 'deploying to dev env'
 fi
 
 mv ./html ./web

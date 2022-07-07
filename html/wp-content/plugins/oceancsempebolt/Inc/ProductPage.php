@@ -66,7 +66,7 @@ class ProductPage
     . ' - Térkép a bolthoz'
     . '<i class="icon-map-pin-fill" style="color: #e94336; font-size: 23px;"></i>'
     . '</a></div>'
-    . '<a href="/kollekciok" target="_blank"><strong style="color:#686868;">Legszebb kollekcióink</strong><span style="color: #4e657b""> - kattints ide és meríts ötletet képeinkből!</span></a>';
+    . '<a href="/kollekciok" target="_blank"><strong style="color:#686868;">Burkolat kollekcióink</strong><span style="color: #4e657b""> - Kattints ide és meríts ötletet képeinkből!</span></a>';
     
     return $post_post_excerpt;
   }
