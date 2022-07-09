@@ -4,7 +4,8 @@ class OCS_Display_Term {
   public $name = null; 
   public $slug = null;
 
-  function __construct(string $name, string $slug) {
+  function __construct(int $id, string $name, string $slug) {
+    $this->id = $id;
     $this->name = $name;
     $this->slug = $slug;
   }
@@ -134,7 +135,7 @@ function get_category_names_by_parent(int $parent_id, array $excludes = []): arr
   if (!empty($excludes))  $termchildren['exclude'] = $excludes;
 
   $categories = array_map(function ($category) { 
-    return new OCS_Display_Term($category->name, $category->slug);
+    return new OCS_Display_Term($category->cat_ID, $category->name, $category->slug);
   }, get_categories($termchildren));
 
   return $categories;

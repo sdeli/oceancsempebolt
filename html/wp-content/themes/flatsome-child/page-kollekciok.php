@@ -181,6 +181,16 @@ get_header(); ?>
     margin-left: 0;
   }
 
+
+  .autocomplete-suggestion__categs {
+    color: #afaaaa;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    font-size: 15px;
+    margin-top: 3px;
+  }
+
   @media only screen and (min-width: 550px) {
     .ocs_dropdowns {
       flex-direction: row;
@@ -342,10 +352,10 @@ get_header(); ?>
 <?php 
   $tile_type_categories = get_category_names_by_parent(2803, [2440, 2435]);
   $choosen_tile_type = get_choosen_GET_category(Settings::TILE_TYPE, $tile_type_categories);
-  
+
   $tile_color_categories = get_category_names_by_parent(2440);
   $choosen_tile_color =  get_choosen_GET_category(Settings::TILE_COLOR, $tile_color_categories);
-  
+
   $tile_room_categories = get_category_names_by_parent(2435);
   $choosen_room = get_choosen_GET_category(Settings::ROOM, $tile_room_categories);
 
@@ -381,6 +391,9 @@ get_header(); ?>
 
   $collections_query = get_collection_images($query_args);
   $found_kollections_without_filters = isset($GLOBALS['ocs_no_posts_message']) && $GLOBALS['ocs_no_posts_message'] === \Shared\Settings::NO_COLLECTIONS_WITH_THIS_NAME_MESSAGE;
+  $filter_categories = array_merge($tile_type_categories, $tile_color_categories, $tile_room_categories);
+  // r($filter_categories);
+  // var_dump($filter_categories);
 ?>
    
 <div>
@@ -503,8 +516,23 @@ get_header(); ?>
 <?php do_action( 'flatsome_after_page' ); ?>
 
 <?php get_footer(); ?>
+<?php 
+  $filter_categories = json_encode($filter_categories);
+  $str = <<<EOL
+  <script title="filter-categories" type="text/javascript">
+    const filterCategoriesJson = $filter_categories;
+    const FILTER_CATEGORIES_JSON = filterCategoriesJson.reduce((acc, item) => {
+      acc[item.id] = item;
+      return acc;
+    }, {});
+  </script>
+  EOL;
+
+  echo $str;
+?>
 <script> 
   (function() {
+    console.log(FILTER_CATEGORIES_JSON);
     const ERROR_MESSAGE = 'Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.'
     const DESIGNS_REST_EP = window.location.protocol + '//' +  window.location.hostname + '/wp-json/wp/v2/designs/?per_page=20&page1&orderby=relevance';
     
@@ -561,6 +589,8 @@ get_header(); ?>
       requestForDesigns = $.get(ep, function( data ) {
         isLoading = false;
         toggleLoader();
+        console.log('data')
+        console.log(data);
         if (data.length) {
           displaySearchedDesignsDropdown(data, searchedName);
         } else {
@@ -633,10 +663,26 @@ get_header(); ?>
       }, collectionName);
 
       const collectionNameWithHighlights = collectionName.replace(/\*/g, 'strong');
-      return `<div class="autocomplete-suggestion" data-index="${i}">
-          <img class="search-image" src="${imageSrc}">
+      let html =
+      `<div class="autocomplete-suggestion" data-index="${i}">
+        <img class="search-image" src="${imageSrc}">
+        <div>
           <div class="search-name" style="text-align: left;">${collectionNameWithHighlights}</div>
-        </div>`;
+          <div class="autocomplete-suggestion__categs">`;
+            
+      const categsHtml = design_category
+      .filter((categId) => !!FILTER_CATEGORIES_JSON[categId])
+      .map(categItem => {
+        const categ = FILTER_CATEGORIES_JSON[categItem];
+        return `<span>${categ.name}</span>`;
+      })
+      .join(' - ');
+
+      html += categsHtml
+            
+      html += '</div></div></div>';
+
+      return html;
     }
 
     function closeSearchedDesignsDropdown() {
