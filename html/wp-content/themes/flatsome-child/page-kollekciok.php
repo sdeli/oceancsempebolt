@@ -184,11 +184,11 @@ get_header(); ?>
 
   .autocomplete-suggestion__categs {
     color: #afaaaa;
-    display: flex;
-    flex-direction: row;
-    gap: 3px;
     font-size: 15px;
-    margin-top: 3px;
+    padding-right: 10px;
+    text-align: left;
+    margin-bottom: 2px;
+    margin-top: 5px;
   }
 
   @media only screen and (min-width: 550px) {
@@ -472,7 +472,7 @@ get_header(); ?>
         <h3 style="margin: 0; position: relative; top: 1px;"><?php the_title() ?></h3>
         </div>
 
-        <div class="ocs_collection_image">
+        <div class="ocs_collection_image" style="background: #fbf9f9;">
           <a href="<?= $featured_image_url_full ?>" data-lightbox="collection" style="display: none;"  data-title="<?php the_title() ?>"></a>
           <img 
             class="skip-lazy"
@@ -532,7 +532,6 @@ get_header(); ?>
 ?>
 <script> 
   (function() {
-    console.log(FILTER_CATEGORIES_JSON);
     const ERROR_MESSAGE = 'Valami hiba történt... Vagy nincs internet, vagy hiba az oldalon. Ebben az esetben kérjük hivja fel a boltot, köszönjük.'
     const DESIGNS_REST_EP = window.location.protocol + '//' +  window.location.hostname + '/wp-json/wp/v2/designs/?per_page=20&page1&orderby=relevance';
     
@@ -589,8 +588,7 @@ get_header(); ?>
       requestForDesigns = $.get(ep, function( data ) {
         isLoading = false;
         toggleLoader();
-        console.log('data')
-        console.log(data);
+
         if (data.length) {
           displaySearchedDesignsDropdown(data, searchedName);
         } else {
@@ -668,19 +666,22 @@ get_header(); ?>
         <img class="search-image" src="${imageSrc}">
         <div>
           <div class="search-name" style="text-align: left;">${collectionNameWithHighlights}</div>
-          <div class="autocomplete-suggestion__categs">`;
-            
+          <p class="autocomplete-suggestion__categs">`;
+            console.log('design_category')
+            console.log(design_category);
       const categsHtml = design_category
       .filter((categId) => !!FILTER_CATEGORIES_JSON[categId])
+      .sort( () => .5 - Math.random() )
+      .slice(0, 4)
       .map(categItem => {
         const categ = FILTER_CATEGORIES_JSON[categItem];
-        return `<span>${categ.name}</span>`;
+        return `${categ.name}`;
       })
       .join(' - ');
 
       html += categsHtml
             
-      html += '</div></div></div>';
+      html += '</p></div></div>';
 
       return html;
     }

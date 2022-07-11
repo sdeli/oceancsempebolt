@@ -1,23 +1,29 @@
 #!/bin/bash
 source ./.credentials
-if [ -z $DEV_FTP_PASSWORD ] || [ -z $DEV_FTP_USER ] || [ -z $DEV_FTP_HOST ] || [ -z $DEV_FTP_PORT ]; then
-        echo "one of the variables: \"DEV_FTP_USER DEV_FTP_PASSWORD DEV_FTP_HOST DEV_FTP_PORT\" is not set in .credentials"
-        exit 1;
-fi
 
 ENV=$1
 
-if [[ $ENV == 'production' ]]; then
+if [[ $ENV == '--production' ]]; then
+  if [ -z $PROD_FTP_PASSWORD ] || [ -z $PROD_FTP_USER ] || [ -z $PROD_FTP_HOST ] || [ -z $PROD_FTP_PORT ]; then
+          echo "one of the variables: \"DEV_FTP_USER DEV_FTP_PASSWORD DEV_FTP_HOST DEV_FTP_PORT\" is not set in .credentials"
+          exit 1;
+  fi
+
   read -p "did you update design categories? (y|n): " has_checked_categories_file  
+
   if [ $has_checked_categories_file = 'n' ]; then exit 0; fi;
 
-  FTP_USER=$DEV_FTP_USER
-  FTP_PASSWORD=$DEV_FTP_PASSWORD
-  FTP_HOST=$DEV_FTP_HOST
-  FTP_PORT=$DEV_FTP_PORT
+  FTP_USER=$PROD_FTP_USER
+  FTP_PASSWORD=$PROD_FTP_PASSWORD
+  FTP_HOST=$PROD_FTP_HOST
+  FTP_PORT=$PROD_FTP_PORT
   echo 'deploying to prod env'
 else
   read -p "did you update design categories? (y|n): " has_checked_categories_file  
+  if [ -z $DEV_FTP_PASSWORD ] || [ -z $DEV_FTP_USER ] || [ -z $DEV_FTP_HOST ] || [ -z $DEV_FTP_PORT ]; then
+          echo "one of the variables: \"DEV_FTP_USER DEV_FTP_PASSWORD DEV_FTP_HOST DEV_FTP_PORT\" is not set in .credentials"
+          exit 1;
+  fi
   if [ $has_checked_categories_file = 'n' ]; then exit 0; fi;
 
   FTP_USER=$DEV_FTP_USER
