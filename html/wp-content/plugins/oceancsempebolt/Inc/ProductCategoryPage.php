@@ -106,7 +106,15 @@ class ProductCategoryPage
             }
           ?>
         </h1>
-        <span class="category-name-bar__filter-btn toggle-filter-modal">Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i></span>
+        <span class="category-name-bar__filter-btn toggle-filter-modal">
+          <?php 
+            [ $smartSliderId, $category_specific_filter_id ] = ProductCategoryPage::getShortcodeIds();
+            if ($category_specific_filter_id) {
+              echo 'Szűrők <i class="icon-equalizer color-alert-coral" style="vertical-align: text-bottom; font-size: 17px;"></i>';
+            }
+
+          ?>
+        </span>
       </div>
     <?php
   }
