@@ -22,7 +22,8 @@ require_once(OCEANCSEMPEBOLT_PATH . '/front/enqueue.php');
 add_styles_to_footer();
 add_action( 'wp_enqueue_scripts', 'ocs_enqueue' ); 
 
-add_action( 'init', function() { Utils::add_design_post_type(); });
+add_action( 'init', function() { 
+  Utils::add_design_post_type(); });
 
 add_filter( 'body_class', function( $classes ) {
   return array_merge( $classes, array( 'ocs' ) );
@@ -32,8 +33,11 @@ add_action( 'woocommerce_email_before_order_table', function($order, $sent_to_ad
   Utils::email_instructions($order, $sent_to_admin); 
 }, 9, 3 ); 
 
-
 ProductCategoryPage::init();
 AllPages::init();
 ProductPage::init();
 Purchase::init();
+
+if(is_admin()) {
+    ShoppingFeed::init();
+}
