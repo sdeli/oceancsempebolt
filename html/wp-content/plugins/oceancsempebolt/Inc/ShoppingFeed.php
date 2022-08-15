@@ -68,9 +68,9 @@ class ShoppingFeed
   
   protected static function google_shopping_feed_xml_correction() {
     try {
-      $xml_file_name = wp_upload_dir()['basedir'] . get_option(self::SETTING_NAME);
+      $xml_file_path = wp_upload_dir()['basedir'] . get_option(self::SETTING_NAME);
       $doc = new \DOMDocument();
-      $doc->load($xml_file_name);
+      $doc->load($xml_file_path);
       $products = $doc->getElementsByTagName('item');
 
       for ($i = 0; $i < $products->count(); $i++) { 
@@ -112,7 +112,10 @@ class ShoppingFeed
         }
         
         $xml = str_replace("=**=","&gt;", $doc->saveXML());
-        file_put_contents($xml_file_name, $xml);
+        $xml_path_info = pathinfo($xml_file_path);
+        $new_file_path = $xml_path_info['dirname'] . '/' . $xml_path_info['filename'] . '.modified.' . $xml_path_info['extension'];
+
+        file_put_contents($new_file_path, $xml);
         wp_die(); // this is required to terminate immediately and return a proper response
       } catch (\Exception $error) {
         wp_send_json_error( $error );
