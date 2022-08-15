@@ -5,10 +5,14 @@ use Shared\Config;
 class ShoppingFeed 
 {
   const OPTIONS_GROUP = 'shopping-feed-settings-group';
-  const SETTING_NAME = 'google-shopping-feed-xml-file';
+  const FEED_XML_FILE_PATH_SETTING = 'google-shopping-feed-xml-file';
+  const EMAIL_RECIPIENTS_SETTING = 'google-shopping-feed-email-recipients';
+  const STARTED_FEED_CORRECTION_MSG = 'started feed correction';
+  const FINISHED_FEED_CORRECTION_MSG = 'finished feed correction';
 
   static function init() {
-    register_setting( self::OPTIONS_GROUP, self::SETTING_NAME );
+    register_setting( self::OPTIONS_GROUP, self::FEED_XML_FILE_PATH_SETTING );
+    register_setting( self::OPTIONS_GROUP, self::EMAIL_RECIPIENTS_SETTING );
 
     add_action('admin_menu', function() {
       add_menu_page(
@@ -20,6 +24,15 @@ class ShoppingFeed
       );
     });
 
+    add_action( 'rest_api_init', function () {
+      register_rest_route( 'shopping-feed/v1', '/google-xml-feed-correction', array(
+        'methods' => 'GET',
+        'callback' => function() {
+          self::google_shopping_feed_xml_correction();
+        },
+      ) );
+    } );
+
     if (WP_ENVIRONMENT_TYPE === Config::ENVIRONMENT_TYPE_PROD) {
       $page_name = str_replace("/home/www/clients/client4478/web9628/web/wp-content/plugins/", "", __FILE__);
     } else {
@@ -29,7 +42,7 @@ class ShoppingFeed
     $is_on_this_admin_page = isset($_GET['page']) && $_GET['page'] === $page_name;
     if ($is_on_this_admin_page || defined( 'DOING_AJAX' )) {
       add_action( 'admin_init', function() {
-        register_setting( self::OPTIONS_GROUP, self::SETTING_NAME );
+        register_setting( self::OPTIONS_GROUP, self::FEED_XML_FILE_PATH_SETTING );
       } );
       add_action( 'admin_footer', function() {
         self::request_google_shopping_feed_xml_correction_js();
@@ -51,7 +64,11 @@ class ShoppingFeed
             <table class="form-table">
                 <tr valign="top">
                   <th scope="row">google shopping feed xml file</th>
-                  <td><input type="text" name="<?= self::SETTING_NAME ?>" style="width: 400px" value="<?php echo esc_attr( get_option(self::SETTING_NAME) ); ?>" /></td>
+                  <td><input type="text" name="<?= self::FEED_XML_FILE_PATH_SETTING ?>" style="width: 400px" value="<?php echo esc_attr( get_option(self::FEED_XML_FILE_PATH_SETTING) ); ?>" /></td>
+                </tr>
+                <tr valign="top">
+                  <th scope="row">Nofitication email recipients</th>
+                  <td><input type="text" name="<?= self::EMAIL_RECIPIENTS_SETTING ?>" style="width: 400px" value="<?php echo esc_attr( get_option(self::EMAIL_RECIPIENTS_SETTING) ); ?>" /></td>
                 </tr>
             </table>
             
@@ -68,7 +85,11 @@ class ShoppingFeed
   
   protected static function google_shopping_feed_xml_correction() {
     try {
-      $xml_file_path = wp_upload_dir()['basedir'] . get_option(self::SETTING_NAME);
+      $email_recipients = explode(' ', get_option(self::EMAIL_RECIPIENTS_SETTING));
+      get_option(self::FEED_XML_FILE_PATH_SETTING);
+      wp_mail($email_recipients, self::STARTED_FEED_CORRECTION_MSG, self::STARTED_FEED_CORRECTION_MSG);
+
+      $xml_file_path = wp_upload_dir()['basedir'] . get_option(self::FEED_XML_FILE_PATH_SETTING);
       $doc = new \DOMDocument();
       $doc->load($xml_file_path);
       $products = $doc->getElementsByTagName('item');
@@ -116,6 +137,7 @@ class ShoppingFeed
         $new_file_path = $xml_path_info['dirname'] . '/' . $xml_path_info['filename'] . '.modified.' . $xml_path_info['extension'];
 
         file_put_contents($new_file_path, $xml);
+        wp_mail($email_recipients, self::FINISHED_FEED_CORRECTION_MSG, self::FINISHED_FEED_CORRECTION_MSG);
         wp_die(); // this is required to terminate immediately and return a proper response
       } catch (\Exception $error) {
         wp_send_json_error( $error );
