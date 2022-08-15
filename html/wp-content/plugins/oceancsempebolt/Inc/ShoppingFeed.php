@@ -10,6 +10,11 @@ class ShoppingFeed
   const STARTED_FEED_CORRECTION_MSG = 'started feed correction';
   const FINISHED_FEED_CORRECTION_MSG = 'finished feed correction';
 
+  /**
+   * Undocumented function
+   *
+   * @return void
+   */
   static function init() {
     register_setting( self::OPTIONS_GROUP, self::FEED_XML_FILE_PATH_SETTING );
     register_setting( self::OPTIONS_GROUP, self::EMAIL_RECIPIENTS_SETTING );
@@ -82,7 +87,11 @@ class ShoppingFeed
     <?php 
   }
 
-  
+  /**
+   * Undocumented function
+   *
+   * @return void
+   */
   protected static function google_shopping_feed_xml_correction() {
     try {
       $email_recipients = explode(' ', get_option(self::EMAIL_RECIPIENTS_SETTING));
@@ -98,12 +107,12 @@ class ShoppingFeed
           $product = $products->item($i);
           if (!$product) continue;
 
-          $cat = $product->childNodes->item(15);
+          $cat = self::get_node($product, 'g:product_type'); //$product->childNodes->item(15);
           if (!$cat) continue;
-          
-          $id = $product->childNodes->item(1);
-          if (!$id) continue;
 
+          $id = self::get_node($product, 'g:id'); //$product->childNodes->item(1);
+          if (!$id) continue;
+          
           $current_post = get_post($id->textContent);
           if (!$current_post) continue;
 
@@ -134,10 +143,13 @@ class ShoppingFeed
         
         $xml = str_replace("=**=","&gt;", $doc->saveXML());
         $xml_path_info = pathinfo($xml_file_path);
-        $new_file_path = $xml_path_info['dirname'] . '/' . $xml_path_info['filename'] . '.modified.' . $xml_path_info['extension'];
+        $new_file_name = $xml_path_info['filename'] . '.modified.' . $xml_path_info['extension'];
+        $new_file_path = $xml_path_info['dirname'] . '/' . $new_file_name;
 
         file_put_contents($new_file_path, $xml);
         wp_mail($email_recipients, self::FINISHED_FEED_CORRECTION_MSG, self::FINISHED_FEED_CORRECTION_MSG);
+        $new_file_url = wp_upload_dir()['baseurl'] . pathinfo(get_option(self::FEED_XML_FILE_PATH_SETTING))['dirname'] . '/' . $new_file_name;
+        echo $new_file_url;
         wp_die(); // this is required to terminate immediately and return a proper response
       } catch (\Exception $error) {
         wp_send_json_error( $error );
@@ -153,6 +165,9 @@ class ShoppingFeed
      */
     protected static function get_non_brand_root_Category($categories) {
       foreach ($categories as $product_cat) {
+        $is_invalid_categ = strpos($product_cat->name, "update") !== false;
+        if ($is_invalid_categ) continue;
+
         $is_invalid_categ = Config::TILE_BRANDS_PRODUCT_CATEG_ID === $product_cat->term_id || Config::BRANDS_PRODUCT_CATEG_ID === $product_cat->term_id;
         if ($is_invalid_categ) continue;
         
@@ -165,12 +180,42 @@ class ShoppingFeed
         $is_main_category = count( get_term_children( $product_cat->term_id, 'product_cat' ) ) === 0;
         if ($is_main_category) {
           return $product_cat;
-        } 
+        } else {
+          $root_category = $product_cat;
+        }
+      }
+
+      if (isset($root_category)) {
+        return $root_category;
+      } else {
+        return false;
+      }
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param \DOMElement $product
+     * @param string $node_type
+     * @return \DOMNode|false
+     */
+    protected static function get_node($product, $node_type) {
+      for ($i = 0; $i < $product->childNodes->count(); $i++) { 
+        $current_node = $product->childNodes->item($i);
+        if (isset($current_node->tagName) && $current_node->tagName === $node_type) {
+          return $current_node;
+        }
       }
 
       return false;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     protected static function request_google_shopping_feed_xml_correction_js() { 
       ?>
         <script type="text/javascript">
@@ -188,10 +233,11 @@ class ShoppingFeed
               toggleLoader();
               // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
               jQuery.post(ajaxurl, data, function(response) {
+                console.log('url: ' + response);
                 isLoading = false;
                 toggleLoader();
                 setTimeout(() => {
-                  alert('editing finished');
+                  alert(`Editing finished! new file can be reached here: ${response}`);
                 }, 500)
               })
               .fail(function(xhr, status, error) {
