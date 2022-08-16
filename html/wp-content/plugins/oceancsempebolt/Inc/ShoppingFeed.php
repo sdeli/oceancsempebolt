@@ -112,12 +112,15 @@ class ShoppingFeed
 
           $id = self::get_node($product, 'g:id'); //$product->childNodes->item(1);
           if (!$id) continue;
-          
-          $current_post = get_post($id->textContent);
+
+          $current_post = get_post(intval($id->nodeValue));
           if (!$current_post) continue;
 
           $categories = get_the_terms( $current_post, 'product_cat' );
-          if (!$categories || $categories instanceof \WP_Error) continue;
+          if ($categories instanceof \WP_Error) continue;
+
+          if (!$categories) $categories = get_the_terms(get_post_parent($current_post), 'product_cat');
+          if (!$categories) continue;
 
           $main_prod_cat = self::get_non_brand_root_Category($categories);
           if (!$main_prod_cat) continue;
@@ -138,7 +141,8 @@ class ShoppingFeed
 
           $main_prod_cat_ancestor_names[] = $main_prod_cat->name;
           $product_category_path = implode(' =**= ', $main_prod_cat_ancestor_names);
-          $cat->textContent = $product_category_path;
+          $cat->nodeValue = $product_category_path;
+          $i = $i;
         }
         
         $xml = str_replace("=**=","&gt;", $doc->saveXML());
@@ -166,6 +170,9 @@ class ShoppingFeed
     protected static function get_non_brand_root_Category($categories) {
       foreach ($categories as $product_cat) {
         $is_invalid_categ = strpos($product_cat->name, "update") !== false;
+        if ($is_invalid_categ) continue;
+
+        $is_invalid_categ = strpos($product_cat->name, "telefonhívás") !== false;
         if ($is_invalid_categ) continue;
 
         $is_invalid_categ = Config::TILE_BRANDS_PRODUCT_CATEG_ID === $product_cat->term_id || Config::BRANDS_PRODUCT_CATEG_ID === $product_cat->term_id;
