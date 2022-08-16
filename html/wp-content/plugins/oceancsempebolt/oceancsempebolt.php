@@ -37,7 +37,4 @@ ProductCategoryPage::init();
 AllPages::init();
 ProductPage::init();
 Purchase::init();
-
-if(is_admin()) {
-    ShoppingFeed::init();
-}
+ShoppingFeed::init();

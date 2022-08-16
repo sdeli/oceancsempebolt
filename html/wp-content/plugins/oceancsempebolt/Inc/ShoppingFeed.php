@@ -1,7 +1,6 @@
 <?php
 namespace Inc;
 use Shared\Config;
-
 class ShoppingFeed 
 {
   const OPTIONS_GROUP = 'shopping-feed-settings-group';
@@ -9,15 +8,29 @@ class ShoppingFeed
   const EMAIL_RECIPIENTS_SETTING = 'google-shopping-feed-email-recipients';
   const STARTED_FEED_CORRECTION_MSG = 'started feed correction';
   const FINISHED_FEED_CORRECTION_MSG = 'finished feed correction';
+  const IS_RUNNING = 'finished feed correction';
 
   /**
-   * Undocumented function
+   * Undocumented function redirection/v1
    *
    * @return void
    */
   static function init() {
+    if(!is_admin()) {
+      add_action( 'rest_api_init', function() {
+        register_rest_route( 'shopping-feed/v1', '/google-xml-feed-correction', array(
+          'methods' => 'GET',
+          'callback' => function() {
+            self::google_shopping_feed_xml_correction();
+          },
+        ) );
+      } );
+
+      return;
+    }
     register_setting( self::OPTIONS_GROUP, self::FEED_XML_FILE_PATH_SETTING );
     register_setting( self::OPTIONS_GROUP, self::EMAIL_RECIPIENTS_SETTING );
+    register_setting( self::OPTIONS_GROUP, self::IS_RUNNING );
 
     add_action('admin_menu', function() {
       add_menu_page(
@@ -94,6 +107,15 @@ class ShoppingFeed
    */
   protected static function google_shopping_feed_xml_correction() {
     try {
+      $is_running = get_option(self::IS_RUNNING);
+      if ($is_running) {
+        echo 'it is running, wait until you get an email about the finish!';
+        wp_die();
+        return;
+      } else {
+        update_option(self::IS_RUNNING, 1);
+      }
+
       $email_recipients = explode(' ', get_option(self::EMAIL_RECIPIENTS_SETTING));
       get_option(self::FEED_XML_FILE_PATH_SETTING);
       wp_mail($email_recipients, self::STARTED_FEED_CORRECTION_MSG, self::STARTED_FEED_CORRECTION_MSG);
@@ -154,6 +176,7 @@ class ShoppingFeed
         wp_mail($email_recipients, self::FINISHED_FEED_CORRECTION_MSG, self::FINISHED_FEED_CORRECTION_MSG);
         $new_file_url = wp_upload_dir()['baseurl'] . pathinfo(get_option(self::FEED_XML_FILE_PATH_SETTING))['dirname'] . '/' . $new_file_name;
         echo $new_file_url;
+        update_option(self::IS_RUNNING, 0);
         wp_die(); // this is required to terminate immediately and return a proper response
       } catch (\Exception $error) {
         wp_send_json_error( $error );
