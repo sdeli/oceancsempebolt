@@ -37,4 +37,5 @@ ProductCategoryPage::init();
 AllPages::init();
 ProductPage::init();
 Purchase::init();
+
 ShoppingFeed::init();

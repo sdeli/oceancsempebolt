@@ -4,11 +4,13 @@ use Shared\Config;
 class ShoppingFeed 
 {
   const OPTIONS_GROUP = 'shopping-feed-settings-group';
-  const FEED_XML_FILE_PATH_SETTING = 'google-shopping-feed-xml-file';
+  const GOOGLE_FEED_XML_FILE_PATH_SETTING = 'google-shopping-feed-xml-file';
+  const FACEBOOK_FEED_XML_FILE_PATH_SETTING = 'facebook-shopping-feed-xml-file';
   const EMAIL_RECIPIENTS_SETTING = 'google-shopping-feed-email-recipients';
   const STARTED_FEED_CORRECTION_MSG = 'started feed correction';
   const FINISHED_FEED_CORRECTION_MSG = 'finished feed correction';
-  const IS_RUNNING = 'finished feed correction';
+  const IS_GOOGLE_RUNNING = 0;
+  const IS_FACEBOOK_RUNNING = 0;
 
   /**
    * Undocumented function redirection/v1
@@ -21,16 +23,28 @@ class ShoppingFeed
         register_rest_route( 'shopping-feed/v1', '/google-xml-feed-correction', array(
           'methods' => 'GET',
           'callback' => function() {
-            self::google_shopping_feed_xml_correction();
+            self::shopping_feed_xml_correction(self::GOOGLE_FEED_XML_FILE_PATH_SETTING);
+          },
+        ) );
+      } );
+
+      add_action( 'rest_api_init', function() {
+        register_rest_route( 'shopping-feed/v1', '/facebook-xml-feed-correction', array(
+          'methods' => 'GET',
+          'callback' => function() {
+            self::shopping_feed_xml_correction(self::FACEBOOK_FEED_XML_FILE_PATH_SETTING);
           },
         ) );
       } );
 
       return;
     }
-    register_setting( self::OPTIONS_GROUP, self::FEED_XML_FILE_PATH_SETTING );
+
+    register_setting( self::OPTIONS_GROUP, self::GOOGLE_FEED_XML_FILE_PATH_SETTING );
+    register_setting( self::OPTIONS_GROUP, self::FACEBOOK_FEED_XML_FILE_PATH_SETTING );
     register_setting( self::OPTIONS_GROUP, self::EMAIL_RECIPIENTS_SETTING );
-    register_setting( self::OPTIONS_GROUP, self::IS_RUNNING );
+    register_setting( self::OPTIONS_GROUP, self::IS_GOOGLE_RUNNING );
+    register_setting( self::OPTIONS_GROUP, self::IS_FACEBOOK_RUNNING );
 
     add_action('admin_menu', function() {
       add_menu_page(
@@ -42,17 +56,10 @@ class ShoppingFeed
       );
     });
 
-    add_action( 'rest_api_init', function () {
-      register_rest_route( 'shopping-feed/v1', '/google-xml-feed-correction', array(
-        'methods' => 'GET',
-        'callback' => function() {
-          self::google_shopping_feed_xml_correction();
-        },
-      ) );
-    } );
-
+	  /** @phpstan-ignore-next-line */
     if (WP_ENVIRONMENT_TYPE === Config::ENVIRONMENT_TYPE_PROD) {
       $page_name = str_replace("/home/www/clients/client4478/web9628/web/wp-content/plugins/", "", __FILE__);
+    /** @phpstan-ignore-next-line */
     } else {
       $page_name = str_replace("/var/www/html/wp-content/plugins/", "", __FILE__);
     }
@@ -60,13 +67,19 @@ class ShoppingFeed
     $is_on_this_admin_page = isset($_GET['page']) && $_GET['page'] === $page_name;
     if ($is_on_this_admin_page || defined( 'DOING_AJAX' )) {
       add_action( 'admin_init', function() {
-        register_setting( self::OPTIONS_GROUP, self::FEED_XML_FILE_PATH_SETTING );
+        register_setting( self::OPTIONS_GROUP, self::GOOGLE_FEED_XML_FILE_PATH_SETTING );
       } );
       add_action( 'admin_footer', function() {
-        self::request_google_shopping_feed_xml_correction_js();
+        self::request_shopping_feed_xml_correction_js();
       } );
-      add_action( 'wp_ajax_google_shopping_feed_xml_correction', function() {
-        self::google_shopping_feed_xml_correction();
+      add_action( 'wp_ajax_shopping_feed_xml_correction', function() {
+        if (isset($_POST['plattform']) && $_POST['plattform'] === 'google') {
+          self::shopping_feed_xml_correction(self::GOOGLE_FEED_XML_FILE_PATH_SETTING);
+        }
+        
+        if (isset($_POST['plattform']) && $_POST['plattform'] === 'facebook') {
+          self::shopping_feed_xml_correction(self::FACEBOOK_FEED_XML_FILE_PATH_SETTING);
+        }
       } );
     }
   }
@@ -82,7 +95,11 @@ class ShoppingFeed
             <table class="form-table">
                 <tr valign="top">
                   <th scope="row">google shopping feed xml file</th>
-                  <td><input type="text" name="<?= self::FEED_XML_FILE_PATH_SETTING ?>" style="width: 400px" value="<?php echo esc_attr( get_option(self::FEED_XML_FILE_PATH_SETTING) ); ?>" /></td>
+                  <td><input type="text" name="<?= self::GOOGLE_FEED_XML_FILE_PATH_SETTING ?>" style="width: 400px" value="<?php echo esc_attr( get_option(self::GOOGLE_FEED_XML_FILE_PATH_SETTING) ); ?>" /></td>
+                </tr>
+                <tr valign="top">
+                  <th scope="row">facebook shopping feed xml file</th>
+                  <td><input type="text" name="<?= self::FACEBOOK_FEED_XML_FILE_PATH_SETTING ?>" style="width: 400px" value="<?php echo esc_attr( get_option(self::FACEBOOK_FEED_XML_FILE_PATH_SETTING) ); ?>" /></td>
                 </tr>
                 <tr valign="top">
                   <th scope="row">Nofitication email recipients</th>
@@ -92,7 +109,8 @@ class ShoppingFeed
             
             <?php submit_button(); ?>
         </form>
-        <p><a class="button button-primary" value="Módosítások mentése" onclick="requestGoogleShoppingFeedXmlCorrection()">request google shopping feed xml correction</a>
+        <p><a class="button button-primary" value="Módosítások mentése" onclick="requestGoogleShoppingFeedXmlCorrection('google')">request google shopping feed xml correction</a>
+        <p><a class="button button-primary" value="Módosítások mentése" onclick="requestGoogleShoppingFeedXmlCorrection('facebook')">request facebook shopping feed xml correction</a>
         <div class="collections-loader-position">
             <div class="collections-loader">Loading...</div>
           </div>
@@ -103,24 +121,27 @@ class ShoppingFeed
   /**
    * Undocumented function
    *
+   * @param string $xml_path_settings
    * @return void
    */
-  protected static function google_shopping_feed_xml_correction() {
+  protected static function shopping_feed_xml_correction($xml_path_settings) {
+    $is_runnin_setting_name = $xml_path_settings === self::GOOGLE_FEED_XML_FILE_PATH_SETTING ? self::IS_GOOGLE_RUNNING : self::IS_FACEBOOK_RUNNING;
     try {
-      $is_running = get_option(self::IS_RUNNING);
+      $is_running = get_option($is_runnin_setting_name);
+      /** @phpstan-ignore-next-line */
       if ($is_running) {
         echo 'it is running, wait until you get an email about the finish!';
         wp_die();
         return;
       } else {
-        update_option(self::IS_RUNNING, 1);
+        update_option($is_runnin_setting_name, 1);
       }
 
       $email_recipients = explode(' ', get_option(self::EMAIL_RECIPIENTS_SETTING));
-      get_option(self::FEED_XML_FILE_PATH_SETTING);
+      get_option($xml_path_settings);
       wp_mail($email_recipients, self::STARTED_FEED_CORRECTION_MSG, self::STARTED_FEED_CORRECTION_MSG);
 
-      $xml_file_path = wp_upload_dir()['basedir'] . get_option(self::FEED_XML_FILE_PATH_SETTING);
+      $xml_file_path = wp_upload_dir()['basedir'] . get_option($xml_path_settings);
       $doc = new \DOMDocument();
       $doc->load($xml_file_path);
       $products = $doc->getElementsByTagName('item');
@@ -136,14 +157,15 @@ class ShoppingFeed
           if (!$id) continue;
 
           $current_post = get_post(intval($id->nodeValue));
-          if (!$current_post) continue;
+          if (!$current_post || is_array($current_post)) continue;
 
           $categories = get_the_terms( $current_post, 'product_cat' );
-          if ($categories instanceof \WP_Error) continue;
-
+          
+          
           if (!$categories) $categories = get_the_terms(get_post_parent($current_post), 'product_cat');
           if (!$categories) continue;
-
+          
+          if ($categories instanceof \WP_Error) continue;
           $main_prod_cat = self::get_non_brand_root_Category($categories);
           if (!$main_prod_cat) continue;
 
@@ -153,8 +175,8 @@ class ShoppingFeed
            * @var string[]
            */
           $main_prod_cat_ancestor_names = [];
-          foreach($main_prod_cat_ancestor_ids as $id) {
-            $ancestor = get_term_by('term_id', $id, 'product_cat');
+          foreach($main_prod_cat_ancestor_ids as $ancestor_id) {
+            $ancestor = get_term_by('term_id', $ancestor_id, 'product_cat');
             if (!$ancestor) continue;
             if (is_array($ancestor)) continue;
 
@@ -167,16 +189,18 @@ class ShoppingFeed
           $i = $i;
         }
         
+        /** @phpstan-ignore-next-line */
         $xml = str_replace("=**=","&gt;", $doc->saveXML());
         $xml_path_info = pathinfo($xml_file_path);
-        $new_file_name = $xml_path_info['filename'] . '.modified.' . $xml_path_info['extension'];
+        $extension = isset($xml_path_info['extension']) ? $xml_path_info['extension'] : '';
+        $new_file_name = $xml_path_info['filename'] . '.modified.' . $extension;
         $new_file_path = $xml_path_info['dirname'] . '/' . $new_file_name;
 
         file_put_contents($new_file_path, $xml);
         wp_mail($email_recipients, self::FINISHED_FEED_CORRECTION_MSG, self::FINISHED_FEED_CORRECTION_MSG);
-        $new_file_url = wp_upload_dir()['baseurl'] . pathinfo(get_option(self::FEED_XML_FILE_PATH_SETTING))['dirname'] . '/' . $new_file_name;
+        $new_file_url = wp_upload_dir()['baseurl'] . pathinfo(get_option($xml_path_settings))['dirname'] . '/' . $new_file_name;
         echo $new_file_url;
-        update_option(self::IS_RUNNING, 0);
+        update_option($is_runnin_setting_name, 0);
         wp_die(); // this is required to terminate immediately and return a proper response
       } catch (\Exception $error) {
         wp_send_json_error( $error );
@@ -233,6 +257,7 @@ class ShoppingFeed
     protected static function get_node($product, $node_type) {
       for ($i = 0; $i < $product->childNodes->count(); $i++) { 
         $current_node = $product->childNodes->item($i);
+        
         if (isset($current_node->tagName) && $current_node->tagName === $node_type) {
           return $current_node;
         }
@@ -246,15 +271,15 @@ class ShoppingFeed
      *
      * @return void
      */
-    protected static function request_google_shopping_feed_xml_correction_js() { 
+    protected static function request_shopping_feed_xml_correction_js() { 
       ?>
         <script type="text/javascript">
           let isLoading = false;
-          function requestGoogleShoppingFeedXmlCorrection() {
+          function requestGoogleShoppingFeedXmlCorrection(plattform) {
             jQuery(document).ready(function($) {
               var data = {
-                'action': 'google_shopping_feed_xml_correction',
-                'whatever': 1234
+                'action': 'shopping_feed_xml_correction',
+                'plattform': plattform
               };
               console.log('data')
               console.log(data);
