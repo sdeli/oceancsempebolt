@@ -1,0 +1,6 @@
+includes:
+  - html/wp-content/vendor/szepeviktor/phpstan-wordpress/phpstan.neon
+parameters:
+ 	level: 7
+ 	paths: [html/wp-content/Shared, html/wp-content/plugins/oceancsempebolt, html/wp-content/themes/flatsome-child]
+ 	ignoreErrors: ['#Only booleans are allowed in a negated boolean.*#']

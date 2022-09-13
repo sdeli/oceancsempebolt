@@ -34,7 +34,14 @@
       },
       "classmap": ["html/wp-content/plugins/oceancsempebolt/classes"]
     },
+    "extra": {
+      "phpstan": {
+        "includes": [
+          "html/wp-content/vendor/szepeviktor/phpstan-wordpress/extension.neon"
+        ]
+      }
+    },
     "require-dev": {
-      "digitalnature/php-ref": "^1.3"
+        "digitalnature/php-ref": "^1.3"
     }
 }
