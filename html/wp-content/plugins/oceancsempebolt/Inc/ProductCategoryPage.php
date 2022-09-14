@@ -1792,6 +1792,29 @@ class ProductCategoryPage
       if ($cat->slug === "softcement") {
         $smartSliderId = 419;
       }
+
+      	
+      if ($cat->slug === "genesis") {	
+        $smartSliderId = 420;	
+      }	
+      if ($cat->slug === "rice") {	
+        $smartSliderId = 421;	
+      }	
+      if ($cat->slug === "new-dot") {	
+        $smartSliderId = 422;	
+      }	
+      if ($cat->slug === "soap-stone") {	
+        $smartSliderId = 423;	
+      }	
+      if ($cat->slug === "macchia") {	
+        $smartSliderId = 424;	
+      }	
+      if ($cat->slug === "mellow") {	
+        $smartSliderId = 425;	
+      }	
+      if ($cat->slug === "gravity") {	
+        $smartSliderId = 426;	
+      }
     }
 
     return [$smartSliderId, $category_specific_filter_id];
