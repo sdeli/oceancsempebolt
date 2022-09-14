@@ -22,6 +22,11 @@ class AllPages
       self::echoSidebarFilters();
       self::echoFakehamburgerbtn();
     });
+
+    add_filter( 'woocommerce_gallery_image_html_attachment_image_params', function($details) {
+      $details['alt'] = $details['title'];
+      return $details;
+    } );
   }
 
   // This function makes in the mobile sidebar possible to switch between categories and main menu

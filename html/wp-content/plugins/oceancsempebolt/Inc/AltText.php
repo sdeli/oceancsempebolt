@@ -73,8 +73,9 @@ class AltText
     // $i = 0;
     // 	http://localhost/wp-content/uploads/2022/06/OXIDART-SILVER-3060-08.jpg
     foreach(self::$html_titles_data as $image_id => $data) {
-      $new_title = $data['name'] . ' ' . self::getCategsForSEO($data['categories']);
-      wp_update_post(['ID' => $image_id, 'post_title' => $new_title]);
+      $seo_title = $data['name'] . ' ' . self::getCategsForSEO($data['categories']);
+      wp_update_post(['ID' => $image_id, 'post_title' => $seo_title]);
+      update_post_meta($image_id, '_wp_attachment_image_alt', $seo_title);
       // $i++;
       // if ($i > 5) return;
     }
