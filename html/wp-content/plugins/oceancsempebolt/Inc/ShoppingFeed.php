@@ -138,7 +138,7 @@ class ShoppingFeed
       }
 
       $email_recipients = explode(' ', get_option(self::EMAIL_RECIPIENTS_SETTING));
-      get_option($xml_path_settings);
+
       wp_mail($email_recipients, self::STARTED_FEED_CORRECTION_MSG, self::STARTED_FEED_CORRECTION_MSG);
 
       $xml_file_path = wp_upload_dir()['basedir'] . get_option($xml_path_settings);

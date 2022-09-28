@@ -28,7 +28,7 @@ Version: 3.0
 
 /* Mobile navbar / prev to cart - round call btn */
 .nav > li > a.nav-right-call-btn {
-  border: 1.5px solid rgba(102,102,102,.85);
+  border: 1.5px solid #5290cb;
   padding: 2px 5px;
   border-radius: 16px;
 }
@@ -804,74 +804,74 @@ a.add_to_cart_button.button.primary {
 }
 
 .sidebar-filter__circle[title="szürke"] a {
-  background: #898989;
+  background: #898989 !important;
 }
 
 .sidebar-filter__circle[title="arany szín"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -5px -44px;
 }
 
 .sidebar-filter__circle[title="aranyozott"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -203px -44px;
 }
 
 .sidebar-filter__circle[title="ezüst"] a,
 .sidebar-filter__circle[title="króm"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -101px -44px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: 676px -44px;
 }
 
 .sidebar-filter__circle[title="színes"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -404px -45px;
 }
 
 .sidebar-filter__circle[title="fa mintás"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -702px -44px;
 }
 
 .sidebar-filter__circle[title="márványos"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -302px -44px;
 }
 
 .sidebar-filter__circle[title="kő hatású"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -601px -44px;
   color: white !important;
 }
 
 .sidebar-filter__circle[title="mintás"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: 499px -44px;
 }
 
 .sidebar-filter__circle[title="színes"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -404px -44px;  
 }
 
 .sidebar-filter__circle[title="színes"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -404px -44px;  
 }
 
 .sidebar-filter__circle[title="szürke árnyalatai"] a {
   background-color: none;
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
   background-position: -803px -45px;
 }
 
@@ -969,77 +969,127 @@ span.filter-form__szin__label {
 }
 
 .filter-form__szin [aria-label="barna"] span {
-  background: #62411f;
+  color: white !important;
+  background: #73492b!important;
 }
 
-.filter-form__szin [aria-label="beige"] span {
-  background: #c5a878;
+.filter-form__szin [aria-label="zöld"] span {
+  background: #85f785 !important;
+}
+
+.filter-form__szin [aria-label="türkiz"] span {
+  background-color: #00CED1 !important;
+}
+
+.filter-form__szin [aria-label="antracit"] span {
+  background-color: #434854 !important;
+  color: white !important;
+}
+
+.filter-form__szin [aria-label="acél metál"] span {
+  background-color: #aaa9ad !important;
+}
+
+.filter-form__szin [aria-label="grafit"] span {
+  background-color: #251607 !important;
+  color: white !important;
+}
+
+.filter-form__szin [aria-label="kék"] span {
+  background-color: #70a6ff !important;
+}
+
+.filter-form__szin [aria-label="lila"] span {
+  background-color: #be7dff !important;
+}
+
+.filter-form__szin [aria-label="narancssárga"] span {
+  background-color: orange !important;
+}
+
+.filter-form__szin [aria-label="piros"] span {
+  background-color: red !important;
+}
+
+.filter-form__szin [aria-label="rózsaszín"] span {
+  background-color: pink !important;
+}
+
+.filter-form__szin [aria-label="sárga"] span {
+  background-color: yellow !important;
+}
+
+.filter-form__szin [aria-label="beige"] span,
+.filter-form__szin [aria-label="bézs"] span {
+  background: #c5a878 !important;
 }
 
 .filter-form__szin [aria-label="fekete"] span {
   background: black;
-  color: #858383 !important;
+  color: white !important;
 }
 
-.filter-form__szin [aria-label="fekete"] span {
-  background: black;
-  color: #858383 !important;
-}
-
+.filter-form__szin [aria-label="betonszürke"] span,
 .filter-form__szin [aria-label="szürke"] span {
-  background: #898989;
+  background: #898989 !important;
 }
 
+.filter-form__szin [aria-label="aranyozott"] span,
 .filter-form__szin [aria-label="arany szín"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: 0px -44px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -569px -44px
 }
 
-.filter-form__szin [aria-label="aranyozott"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -203px -44px;
+.filter-form__szin [aria-label="arany"] span {
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -772px -44px;
+  color: white !important;
 }
 
 .filter-form__szin [aria-label="ezüst"] span,
 .filter-form__szin [aria-label="króm"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -101px -44px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -670px -44px;
 }
 
 .filter-form__szin [aria-label="fa mintás"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: 101px -45px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -1222px -44px;
+  color: white !important;
+}
+
+.filter-form__szin [aria-label="bronz"] span {
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -142px -45px;
+  color: white !important;
+  width: 70px !important;
 }
 
 .filter-form__szin [aria-label="márványos"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -302px -44px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position:-1964px -44px;
 }
 
 .filter-form__szin [aria-label="kő hatású"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -601px -44px;  
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -1116px -44px;  
   color: white !important;
 }
 
 .filter-form__szin [aria-label="mintás"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: 499px -44px;
-}
-
-.filter-form__szin [aria-label="fa mintás"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -702px -44px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: 1165px -44px;
 }
 
 .filter-form__szin [aria-label="színes"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -404px -45px;  
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -887px -45px;  
 }
 
 .filter-form__szin [aria-label="szürke árnyalatai"] span {
-  background-image: url(/wp-content/uploads/2021/11/textures.png);
-  background-position: -803px -45px;
+  background-image: url(/wp-content/uploads/2022/09/filter-textures-2200-×-40-px.png);
+  background-position: -1335px -45px;
+  color: #eee8e8 !important;
 }
 
 .filter-form__szin .bapf_clr_span {

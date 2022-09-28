@@ -51,7 +51,7 @@ class AllPages
         [ $rand_tel_number ] = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)];
       ?>
         <li>
-          <a href="tel:<?= $rand_tel_number ?>" class="nav-right-call-btn"><i class="icon-phone"></i></a> 
+          <a href="tel:<?= $rand_tel_number ?>" class="nav-right-call-btn" style="color: #5290cb;"><i class="icon-phone"></i></a> 
         </li>
         <li class="header-divider"></li>
       <?php };

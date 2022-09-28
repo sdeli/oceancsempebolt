@@ -267,6 +267,7 @@ class ProductCategoryPage
     <?php 
   }
 
+  
   protected static function echoFilterModal($category_specific_filter_id) {
     add_action('wp_footer', function() use ($category_specific_filter_id) {
       ?>

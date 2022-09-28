@@ -44,7 +44,10 @@ add_filter( 'body_class', function( $classes ) {
 
 add_action( 'woocommerce_email_before_order_table', function($order, $sent_to_admin) { 
   Utils::email_instructions($order, $sent_to_admin); 
-}, 9, 3 ); 
+}, 9, 3 );
+
+remove_action( 'woocommerce_share', 'flatsome_product_share',  11 );
+
 
 ProductCategoryPage::init();
 AllPages::init();
