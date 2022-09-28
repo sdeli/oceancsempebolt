@@ -21,6 +21,92 @@ class Purchase
         echo self::get_payment_and_shipment_notes($message);
       }
     });
+
+    add_filter('woocommerce_cart_totals_after_order_total', function ($message) {
+      self::echo_shipping_costs_forecast();
+    }, 10);
+
+    add_filter('woocommerce_review_order_after_order_total', function ($message) {
+      self::echo_shipping_costs_forecast();
+    }, 10);
+  }
+
+  static private function echo_shipping_costs_forecast() {
+    // Config::PALLET_SHIPPING_WOO_ID
+    $chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' )[0];
+    $chosen_shipping_method = is_array($chosen_shipping_methods) ? $chosen_shipping_methods[0] : $chosen_shipping_methods;
+    $is_palett_shipping_choosen = Config::PALLET_SHIPPING_WOO_ID === $chosen_shipping_method;
+    if (!$is_palett_shipping_choosen) return;
+    ?>
+      <tr>
+        <th style="width: 60%;">Várható szállítási költség:</th>
+        <td><?php self::echo_tile_shipping_cost_estimate() ?></td>
+      </tr>
+    <?php 
+  }
+
+  static private function echo_tile_shipping_cost_estimate() {
+    $get_all_tiles_in_cart = function () {
+      $all_tiles_sq_foot_in_cart = 0;
+
+      foreach( WC()->cart->get_cart() as $cart_item ){
+        $product_custom_fields = get_post_custom($cart_item['product_id']);
+        $tile_amount_in_box = $product_custom_fields[Config::TILE_SQ_FOOT_IN_BOX_META_KEY];
+        $is_price_by_square_foot = !is_null($tile_amount_in_box[0]) && !empty($tile_amount_in_box[0]);
+        if ($is_price_by_square_foot) {
+          $tile_amount_in_box = $cart_item['quantity'] * floatval($tile_amount_in_box[0]);
+          $all_tiles_sq_foot_in_cart += $tile_amount_in_box;
+        } else {
+          continue;
+        }
+      }
+
+      return $all_tiles_sq_foot_in_cart;
+    };
+
+    $get_trace_palett_price = function($remainding_square_foot) {
+      foreach( Config::TILE_SHIPPING_COSTS as $palett_type ){
+        $max_sq_foot_on_palett_type = $palett_type['max_weigth'] / Config::ONE_SQ_FOOT_TILE_WEIGTH_KG;
+        if ($max_sq_foot_on_palett_type > $remainding_square_foot) {
+          return $palett_type['price'];
+        }
+      }
+
+      return Config::TILE_SHIPPING_COSTS['full_palett']['price'];
+    };
+
+    $echo_formated_cost = function(string $shipping_costs_estimate, int $all_tiles_sq_foot_in_cart) {
+      ?>
+      <strong style="color: black"><?= $shipping_costs_estimate ?>Ft</strong><span> (<?= $all_tiles_sq_foot_in_cart ?>m2 csempe)</span>
+      <?php 
+    };
+
+    $full_paletts_capacity = 40;
+    $all_tiles_sq_foot_in_cart = $get_all_tiles_in_cart();
+
+    $has_no_trace_paletts = $all_tiles_sq_foot_in_cart % $full_paletts_capacity === 0;
+    if ($has_no_trace_paletts) {
+      $full_paletts_count = $all_tiles_sq_foot_in_cart / 40;
+      $shipping_costs_estimate = $full_paletts_count * Config::TILE_SHIPPING_COSTS['full_palett']['price'];
+      $echo_formated_cost($shipping_costs_estimate, $all_tiles_sq_foot_in_cart);
+      return;
+    }
+
+    $has_one_trace_palett = $all_tiles_sq_foot_in_cart < $full_paletts_capacity;
+    if ($has_one_trace_palett) {
+      $trace_palett_price = $get_trace_palett_price($all_tiles_sq_foot_in_cart, $all_tiles_sq_foot_in_cart);
+      $echo_formated_cost($trace_palett_price, $all_tiles_sq_foot_in_cart);
+      return;
+    }
+
+    $has_more_paletts_and_one_trace_palett = $all_tiles_sq_foot_in_cart > $full_paletts_capacity && $all_tiles_sq_foot_in_cart % $full_paletts_capacity > 0;
+    if ($has_more_paletts_and_one_trace_palett) {
+      $full_paletts_count = intval($all_tiles_sq_foot_in_cart / 40);
+      $remainding_square_foot = $all_tiles_sq_foot_in_cart % 40;
+      $shipping_costs_estimate = $full_paletts_count * Config::TILE_SHIPPING_COSTS['full_palett']['price'];
+      $shipping_costs_estimate += $get_trace_palett_price($remainding_square_foot);
+      $echo_formated_cost($shipping_costs_estimate, $all_tiles_sq_foot_in_cart);
+    }
   }
 
   static private function removeInvalidShippingMethods() {

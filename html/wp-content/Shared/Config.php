@@ -107,4 +107,17 @@ class Config
   const UKRAINE_WAR_MESSAGE = '<p>A <strong>fehér agyag</strong>, mely a csempe gyártás alapanyaga, Európában szinte csak a háborús <strong>Ukrajnában</strong> fellelhető, valamint a <strong>csempét gázzal égetik ki</strong>, majd kamionon, <strong>benzinnel/dízellel szállítják</strong>, melyek a jelenlegi gazdasági körülmények miatt <strong>napról napra drágulnak</strong>. Ezért az <strong>árak tájékoztató jellegűek</strong>. <i>A pontos árért kérjük hívjanak, megértésüket köszönjük.</i></p>';
   const TILE_EXHIBITED_IN_SHOP_MESSAGE = 'Boltban megtekinthető';
   const EXAMPLE_CAN_BE_REQUEST_MESSAGE = 'Mintalap kérhető';
+
+  const TILE_SQ_FOOT_IN_BOX_META_KEY = '_mcmp_ppu_cust_num_of_units_override';
+
+  const ONE_SQ_FOOT_TILE_WEIGTH_KG = 22;
+
+  const TILE_SHIPPING_COSTS = [
+    'trace_palett' => ['max_weigth' => 150, 'price' => 14679],
+    'until_medium_palett' => ['max_weigth' => 500, 'price' => 16889],
+    'over_medium_palett' => ['max_weigth' => 750, 'price' => 20810],
+    'full_palett' => ['max_weigth' => 999, 'price' => 23211],
+  ];
+
+  const PALETT_SQUARE_FOOT_CAPACITY = 40;
 }
