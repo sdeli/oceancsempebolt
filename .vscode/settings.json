@@ -1,4 +1,4 @@
 {
-  "phpstan.binPath": "/Users/sandordeli/Projects/oceancsempebolt/html/wp-content/vendor/bin/phpstan",
+  // "phpstan.binPath": "/Users/sandordeli/Projects/oceancsempebolt/html/wp-content/vendor/bin/phpstan",
   // "phpstan.binCommand": ["/Users/sandordeli/Projects/oceancsempebolt/html/wp-content/vendor/bin/phpstan"],
 }

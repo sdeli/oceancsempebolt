@@ -8,7 +8,7 @@ class Purchase
   static function init() {
     add_action( 'woocommerce_cart_totals_before_shipping', function() { self::removeInvalidShippingMethods(); });
     add_action( 'woocommerce_review_order_before_shipping', function() { self::removeInvalidShippingMethods(); });
-    add_action( 'woocommerce_review_order_before_payment', function() { self::echo_payment_methods_heading(); });
+    add_action( 'woocommerce_review_order_before_payment', function() { self::echo_payment_methods_heading(); }, 10);
 
     add_action( 'woocommerce_available_payment_gateways', function( $gateways ) {  
       if (!is_admin()) {
@@ -23,28 +23,47 @@ class Purchase
     });
 
     add_filter('woocommerce_cart_totals_after_order_total', function ($message) {
-      self::echo_shipping_costs_forecast();
+      $hadForecast = self::echo_shipping_costs_forecast();
+      if ($hadForecast) {
+        add_filter('woocommerce_proceed_to_checkout', function() {
+          self::echoShippingCostForecatExplanation();
+        });
+      }
+      
     }, 10);
-
+    
     add_filter('woocommerce_review_order_after_order_total', function ($message) {
-      self::echo_shipping_costs_forecast();
-    }, 10);
+      $hadForecast = self::echo_shipping_costs_forecast();
+      if ($hadForecast) {
+        add_filter('woocommerce_review_order_before_payment', function() {
+          ?>
+        <?php 
+          self::echoShippingCostForecatExplanation();
+        }, 9);
+      }
+    });
   }
-
   static private function echo_shipping_costs_forecast() {
     // Config::PALLET_SHIPPING_WOO_ID
     $chosen_shipping_methods = WC()->session->get( 'chosen_shipping_methods' )[0];
     $chosen_shipping_method = is_array($chosen_shipping_methods) ? $chosen_shipping_methods[0] : $chosen_shipping_methods;
     $is_palett_shipping_choosen = Config::PALLET_SHIPPING_WOO_ID === $chosen_shipping_method;
-    if (!$is_palett_shipping_choosen) return;
+    if (!$is_palett_shipping_choosen) return false;
     ?>
       <tr>
         <th style="width: 60%;">Várható szállítási költség:</th>
         <td><?php self::echo_tile_shipping_cost_estimate() ?></td>
       </tr>
     <?php 
+
+    return true;
   }
 
+  /**
+   * Undocumented function
+   *
+   * @return int|float
+   */
   static private function echo_tile_shipping_cost_estimate() {
     $get_all_tiles_in_cart = function () {
       $all_tiles_sq_foot_in_cart = 0;
@@ -109,6 +128,19 @@ class Purchase
     }
   }
 
+
+
+  static private function echoShippingCostForecatExplanation() {
+    $randTelNumber = Config::TEL_NUMBERS[array_rand(Config::TEL_NUMBERS)];
+
+    ?>
+    <p style="margin-bottom: 5px; font-size: 15px; margin-top: -15px;">A fenti <strong>szállítási költség</strong> a benzin ár alakulasa végett <strong>lehet több</strong> vagy <strong>akár kevesebb</strong> a feltüntetettnél.</p>
+    <p style="margin-bottom: 5px; font-size: 15px;">Rendelés esetén <strong>kollégánk jelentkezni fog önnél, ennek egyeztetése céljából.</strong></p>
+    <p style="margin-bottom: 10px; font-size: 15px;">Pontosításért hívjon minket:
+      <a class="<?= Config::OCEAN_PHONE_CALL_LINK_CLASS ?>" href="tel:<?=  $randTelNumber[1] ?> '" style="cursor: pointer; color: #4e657b"><?=  $randTelNumber[0] ?> - <?=  $randTelNumber[2] ?></a>
+    </p>
+  <?php 
+  }
   static private function removeInvalidShippingMethods() {
     $available_methods = WC()->shipping()->packages[0]['rates'];
     $has_pallet_product_in_cart = self::has_palet_product_in_cart();
