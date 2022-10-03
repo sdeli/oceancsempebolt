@@ -94,7 +94,7 @@ class Purchase
       return Config::TILE_SHIPPING_COSTS['full_palett']['price'];
     };
 
-    $echo_formated_cost = function(string $shipping_costs_estimate, int $all_tiles_sq_foot_in_cart) {
+    $echo_formated_cost = function(string $shipping_costs_estimate, $all_tiles_sq_foot_in_cart) {
       ?>
       <strong style="color: black"><?= $shipping_costs_estimate ?>Ft</strong><span> (<?= $all_tiles_sq_foot_in_cart ?>m2 csempe)</span>
       <?php 
@@ -103,7 +103,7 @@ class Purchase
     $full_paletts_capacity = 40;
     $all_tiles_sq_foot_in_cart = $get_all_tiles_in_cart();
 
-    $has_no_trace_paletts = $all_tiles_sq_foot_in_cart % $full_paletts_capacity === 0;
+    $has_no_trace_paletts = $all_tiles_sq_foot_in_cart >= 40 && $all_tiles_sq_foot_in_cart % $full_paletts_capacity === 0;
     if ($has_no_trace_paletts) {
       $full_paletts_count = $all_tiles_sq_foot_in_cart / 40;
       $shipping_costs_estimate = $full_paletts_count * Config::TILE_SHIPPING_COSTS['full_palett']['price'];
@@ -114,6 +114,7 @@ class Purchase
     $has_one_trace_palett = $all_tiles_sq_foot_in_cart < $full_paletts_capacity;
     if ($has_one_trace_palett) {
       $trace_palett_price = $get_trace_palett_price($all_tiles_sq_foot_in_cart, $all_tiles_sq_foot_in_cart);
+      r($all_tiles_sq_foot_in_cart);
       $echo_formated_cost($trace_palett_price, $all_tiles_sq_foot_in_cart);
       return;
     }
