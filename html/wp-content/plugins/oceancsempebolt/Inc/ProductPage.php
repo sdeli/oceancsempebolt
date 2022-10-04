@@ -23,7 +23,13 @@ class ProductPage
       }
     }, 15);
     add_action( 'woocommerce_after_single_product_summary', function() {
-      Utils::echoPopularProducts();
+      global $product;
+      $prod_id = $product->get_id();
+      if ($prod_id && Utils::is_tile($prod_id)) {
+        Utils::echoTilesGrid();
+      } else {
+        Utils::echoPopularProducts();
+      }
     }, 25);
 
     add_action( 'woocommerce_breadcrumb_main_term', function(\WP_Term $main_term) {
