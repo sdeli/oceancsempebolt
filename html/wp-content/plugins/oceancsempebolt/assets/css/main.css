@@ -1971,3 +1971,23 @@ animation: lineLoader 1.3s ease-in-out infinite;
       height: 462.25px;
   }
 }
+
+/* after add to cart btn / to contact form btn */
+.ocs.single-product .sticky-add-to-cart:not(.sticky-add-to-cart--active) {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.ocs.single-product .sticky-add-to-cart--active a.single_add_to_cart_button.to_contact_form_btn {
+  display: none;
+}
+.ocs.single-product .sticky-add-to-cart:not(.sticky-add-to-cart--active) a.single_add_to_cart_button.to_contact_form_btn {
+  color: white !important;
+  font-weight: 700 !important;
+  background: #1184ef !important;
+  margin-left: 5px;
+}
+.ocs.single-product .sticky-add-to-cart:not(.sticky-add-to-cart--active) button[name="add-to-cart"] {
+  margin-right: 7px;
+}
+/* END after add to cart btn / to contact form btn */

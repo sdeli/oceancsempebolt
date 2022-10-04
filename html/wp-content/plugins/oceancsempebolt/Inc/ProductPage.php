@@ -33,6 +33,19 @@ class ProductPage
     add_action( 'woocommerce_product_categories_widget_main_term', function(\WP_Term $main_term) {
       return Utils::get_main_product_category($main_term);
     });
+
+    add_action( 'woocommerce_after_add_to_cart_button', function() {
+      self::echoContactFormBtn();
+    });
+  }
+
+
+
+  static private function echoContactFormBtn() {
+    $contact_page_url = get_site_url() . Config::CONTACT_PAGE_PATH . '/#scroll-to-contact-form';
+    ?>
+      <a href="<?= $contact_page_url ?>" name="add-to-cart" value="24445" class="to_contact_form_btn single_add_to_cart_button button alt">Kérjen egyedi ájánlatot</a>
+    <?php 
   }
 
   static private function extendShortDescription(string $post_post_excerpt) {

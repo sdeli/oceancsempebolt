@@ -8,7 +8,7 @@ class Config
   const ENVIRONMENT_TYPE_LOCAL = 'local';
   const ENVIRONMENT_TYPE_DEV = 'development';
   const ENVIRONMENT_TYPE_PROD = 'production';
-
+  const CONTACT_PAGE_PATH =  '/kapcsolat';
   const PDF_CATALOGS_BY_PRODUCT_CATEGORIES = [
     'rock-ceramic' => [ 'term_id' => 4116, 'url' => "/rock-ceramic-katalogus/", 'name' => 'rock ceramic'],
     'marazzi' => [ 'term_id' => 2399, 'url' => "/marazzi-kollekcio/", 'name' => 'Marazzi'],
