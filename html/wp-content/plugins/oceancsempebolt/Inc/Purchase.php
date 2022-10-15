@@ -114,7 +114,6 @@ class Purchase
     $has_one_trace_palett = $all_tiles_sq_foot_in_cart < $full_paletts_capacity;
     if ($has_one_trace_palett) {
       $trace_palett_price = $get_trace_palett_price($all_tiles_sq_foot_in_cart, $all_tiles_sq_foot_in_cart);
-      r($all_tiles_sq_foot_in_cart);
       $echo_formated_cost($trace_palett_price, $all_tiles_sq_foot_in_cart);
       return;
     }
